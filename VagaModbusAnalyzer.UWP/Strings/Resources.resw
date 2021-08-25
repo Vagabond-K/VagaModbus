@@ -1,0 +1,576 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ModbusChannelsView_AddChannel.Content" xml:space="preserve">
+    <value>Add channel</value>
+  </data>
+  <data name="ModbusChannelsView_AppBarButton_AddChannel.Label" xml:space="preserve">
+    <value>Add channel</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingSerialPort_DTR.Text" xml:space="preserve">
+    <value>DTR:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingSerialPort_Handshake.Text" xml:space="preserve">
+    <value>Handshake:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingSerialPort_Parity.Text" xml:space="preserve">
+    <value>Parity:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingSerialPort_RTS.Text" xml:space="preserve">
+    <value>RTS:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingSerialPort_Description.Text" xml:space="preserve">
+    <value>Serial port:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingTcpClient_ConnectTimeout.Text" xml:space="preserve">
+    <value>Connect Timeout:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingTcpClient_Host.Text" xml:space="preserve">
+    <value>Host name:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingTcpClient_Port.Text" xml:space="preserve">
+    <value>TCP port:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingTcpServer_Port.Text" xml:space="preserve">
+    <value>TCP server listening port:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingTcpServer_Description.Text" xml:space="preserve">
+    <value>This channel operates by listening for connections through a TCP socket.</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingUdpSocket_RemotePort.Text" xml:space="preserve">
+    <value>Remote UDP port:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingUdpSocket_Host.Text" xml:space="preserve">
+    <value>Host name:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingUdpSocket_LocalPort.Text" xml:space="preserve">
+    <value>Local UDP port:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSetting_ModbusType.Text" xml:space="preserve">
+    <value>Protocol version:</value>
+  </data>
+  <data name="EditModbusChannelView_AddChannel.Title" xml:space="preserve">
+    <value>Add channel</value>
+  </data>
+  <data name="EditModbusChannelView_AppBarButton_Save.Label" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="EditModbusChannelView_ChannelName.Header" xml:space="preserve">
+    <value>Channel name</value>
+  </data>
+  <data name="EditModbusChannelView_ChannelType.Text" xml:space="preserve">
+    <value>Channel type</value>
+  </data>
+  <data name="EditModbusChannelView_ChannelType_SerialPort.Content" xml:space="preserve">
+    <value>Serial port</value>
+  </data>
+  <data name="EditModbusChannelView_ChannelType_TcpClient.Content" xml:space="preserve">
+    <value>TCP Client</value>
+  </data>
+  <data name="EditModbusChannelView_ChannelType_TcpServer.Content" xml:space="preserve">
+    <value>TCP Server</value>
+  </data>
+  <data name="EditModbusChannelView_ChannelType_UdpSocket.Content" xml:space="preserve">
+    <value>UDP Socket</value>
+  </data>
+  <data name="EditModbusChannelView_EditChannel.Title" xml:space="preserve">
+    <value>Edit channel</value>
+  </data>
+  <data name="EditModbusChannelView_ProtocolVersion.Text" xml:space="preserve">
+    <value>Protocol version</value>
+  </data>
+  <data name="EditModbusChannelView_ScanInterval.Text" xml:space="preserve">
+    <value>Scan interval</value>
+  </data>
+  <data name="EditModbusChannelView_SerialPort_BaudRate.Header" xml:space="preserve">
+    <value>Baud rate</value>
+  </data>
+  <data name="EditModbusChannelView_SerialPort_DataBits.Header" xml:space="preserve">
+    <value>Data bits</value>
+  </data>
+  <data name="EditModbusChannelView_SerialPort_Handshake.Header" xml:space="preserve">
+    <value>Handshake</value>
+  </data>
+  <data name="EditModbusChannelView_SerialPort_Parity.Header" xml:space="preserve">
+    <value>Parity</value>
+  </data>
+  <data name="EditModbusChannelView_SerialPort_PortName.Header" xml:space="preserve">
+    <value>Serial port name</value>
+  </data>
+  <data name="EditModbusChannelView_SerialPort_StopBits.Header" xml:space="preserve">
+    <value>Stop bits</value>
+  </data>
+  <data name="EditModbusChannelView_TcpClient_ConnectTimeout.Text" xml:space="preserve">
+    <value>Connection timeout</value>
+  </data>
+  <data name="EditModbusChannelView_TcpClient_HostName.Header" xml:space="preserve">
+    <value>Host name</value>
+  </data>
+  <data name="EditModbusChannelView_TcpClient_Port.Header" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="EditModbusChannelView_TcpServer_Port.Header" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="EditModbusChannelView_UdpSocket_HostName.Header" xml:space="preserve">
+    <value>Host name</value>
+  </data>
+  <data name="EditModbusChannelView_UdpSocket_RemotePort.Header" xml:space="preserve">
+    <value>Remote port</value>
+  </data>
+  <data name="EditModbusChannelView_UdpSocket_LocalPort.Header" xml:space="preserve">
+    <value>Local port</value>
+  </data>
+  <data name="EditModbusScanView.PrimaryButtonText" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="EditModbusScanView.SecondaryButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="EditModbusScanView_AddScan.Title" xml:space="preserve">
+    <value>Add scan</value>
+  </data>
+  <data name="EditModbusScanView_EditScan.Title" xml:space="preserve">
+    <value>Edit scan</value>
+  </data>
+  <data name="ItemDeleteButton.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ItemEditButton.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="MasterDetailMenuButton_ModbusChannels.Content" xml:space="preserve">
+    <value>Channels</value>
+  </data>
+  <data name="MasterDetailMenuButton_Logs.Content" xml:space="preserve">
+    <value>Comm. Logs</value>
+  </data>
+  <data name="MasterDetailMenuButton_ReadData.Content" xml:space="preserve">
+    <value>Read Data</value>
+  </data>
+  <data name="MasterDetailMenuButton_Settings.Content" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="NewChannelName" xml:space="preserve">
+    <value>New channel</value>
+  </data>
+  <data name="NotSupportedAccentColorText.Text" xml:space="preserve">
+    <value>This color is not supported.</value>
+  </data>
+  <data name="ReadDataView_AddScan.Content" xml:space="preserve">
+    <value>Add scan</value>
+  </data>
+  <data name="ReadDataView_AppBarButton_AddScan.Label" xml:space="preserve">
+    <value>Add scan</value>
+  </data>
+  <data name="Settings_About.Header" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="Settings_About_ModbusOrg.Content" xml:space="preserve">
+    <value>The Modbus Organization</value>
+  </data>
+  <data name="Settings_About_ModbusWiki.Content" xml:space="preserve">
+    <value>Modbus Protocol (Wikipedia)</value>
+  </data>
+  <data name="Settings_General.Header" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="Settings_General_ThemeSelect.Text" xml:space="preserve">
+    <value>Choose a mode</value>
+  </data>
+  <data name="Settings_General_ThemeSelect_CustomAccent.Text" xml:space="preserve">
+    <value>Custom accent color</value>
+  </data>
+  <data name="Settings_General_ThemeSelect_Dark.Content" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="Settings_General_ThemeSelect_Default.Content" xml:space="preserve">
+    <value>Windows default</value>
+  </data>
+  <data name="Settings_General_ThemeSelect_DefaultAccent.Text" xml:space="preserve">
+    <value>Windows default accent color</value>
+  </data>
+  <data name="Settings_General_ThemeSelect_Light.Content" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="Settings_General_ThemeSelect_Windows.Content" xml:space="preserve">
+    <value>Windows color settings</value>
+  </data>
+  <data name="Text_Big_endian.Text" xml:space="preserve">
+    <value>Big-endian</value>
+  </data>
+  <data name="Text_Binary.Text" xml:space="preserve">
+    <value>Binary</value>
+  </data>
+  <data name="Text_Bytes.Text" xml:space="preserve">
+    <value>bytes</value>
+  </data>
+  <data name="Text_CommNormal.Text" xml:space="preserve">
+    <value>Communication is in progress normally.</value>
+  </data>
+  <data name="Text_DataAddress.Text" xml:space="preserve">
+    <value>Data address</value>
+  </data>
+  <data name="Text_DataAddresses.Text" xml:space="preserve">
+    <value>Data addresses</value>
+  </data>
+  <data name="Text_DataType.Text" xml:space="preserve">
+    <value>Data type</value>
+  </data>
+  <data name="Text_DoubleValue.Text" xml:space="preserve">
+    <value>Double precision</value>
+  </data>
+  <data name="Text_FloatValue.Text" xml:space="preserve">
+    <value>Single precision</value>
+  </data>
+  <data name="Text_Hexadecimal.Text" xml:space="preserve">
+    <value>Hexadecimal</value>
+  </data>
+  <data name="Text_LastUpdated.Text" xml:space="preserve">
+    <value>Last Updated</value>
+  </data>
+  <data name="Text_Little_endian.Text" xml:space="preserve">
+    <value>Little-endian</value>
+  </data>
+  <data name="Text_LogicalValue.Text" xml:space="preserve">
+    <value>Logical Value</value>
+  </data>
+  <data name="Text_NumOfData.Text" xml:space="preserve">
+    <value>Number of data</value>
+  </data>
+  <data name="Text_ResponseTimeout.Text" xml:space="preserve">
+    <value>Response timeout</value>
+  </data>
+  <data name="Text_ScanOff.Text" xml:space="preserve">
+    <value>N/A (Scan is not turned on.)</value>
+  </data>
+  <data name="Text_SignedInteger.Text" xml:space="preserve">
+    <value>Signed integer</value>
+  </data>
+  <data name="Text_SlaveAddress.Text" xml:space="preserve">
+    <value>Slave address</value>
+  </data>
+  <data name="Text_Status.Text" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Text_UnsignedInteger.Text" xml:space="preserve">
+    <value>Unsigned integer</value>
+  </data>
+  <data name="ThemeColorPickerPopupView.PrimaryButtonText" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ThemeColorPickerPopupView.SecondaryButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ThemeColorPickerPopupView.Title" xml:space="preserve">
+    <value>Choose custom accent color</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.Acknowledge" xml:space="preserve">
+    <value>Acknowledge</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.GatewayPathUnavailable" xml:space="preserve">
+    <value>Gateway Path Unavailable</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.GatewayTargetDeviceFailedToRespond" xml:space="preserve">
+    <value>Gateway Target Device Failed to Respond</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.IllegalDataAddress" xml:space="preserve">
+    <value>Illegal Data Address</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.IllegalDataValue" xml:space="preserve">
+    <value>Illegal Data Value</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.IllegalFunction" xml:space="preserve">
+    <value>Illegal Function</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.MemoryParityError" xml:space="preserve">
+    <value>Memory Parity Error</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.NegativeAcknowledge" xml:space="preserve">
+    <value>Negative Acknowledge</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.NotDefined" xml:space="preserve">
+    <value>Not defined</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.SlaveDeviceBusy" xml:space="preserve">
+    <value>Slave Device Busy</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.SlaveDeviceFailure" xml:space="preserve">
+    <value>Slave Device Failure</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusFunction.ReadCoils" xml:space="preserve">
+    <value>Read Coils</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusFunction.ReadDiscreteInputs" xml:space="preserve">
+    <value>Read Discrete Inputs</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusFunction.ReadHoldingRegisters" xml:space="preserve">
+    <value>Read Holding Registers</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusFunction.ReadInputRegisters" xml:space="preserve">
+    <value>Read Input Registers</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusFunction.WriteMultipleCoils" xml:space="preserve">
+    <value>Write Multiple Coils</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusFunction.WriteMultipleHoldingRegisters" xml:space="preserve">
+    <value>Write Multiple Holding Registers</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusFunction.WriteSingleCoil" xml:space="preserve">
+    <value>Write Single Coil</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusFunction.WriteSingleHoldingRegister" xml:space="preserve">
+    <value>Write Single Holding Register</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusObjectType.Coil" xml:space="preserve">
+    <value>Coil</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusObjectType.DiscreteInput" xml:space="preserve">
+    <value>Discrete Input</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusObjectType.HoldingRegister" xml:space="preserve">
+    <value>Holding Register</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusObjectType.InputRegister" xml:space="preserve">
+    <value>Input Register</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ErrorCRC" xml:space="preserve">
+    <value>CRC error</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ErrorLRC" xml:space="preserve">
+    <value>LRC error</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ModbusTcpSymbolError" xml:space="preserve">
+    <value>Modbus TCP protocol ID is non-zero.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.NotDefined" xml:space="preserve">
+    <value>Not defined</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.NotDefinedModbusSerializer" xml:space="preserve">
+    <value>Modbus serialization format not defined.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseAddressDoNotMatch" xml:space="preserve">
+    <value>Address of request and response do not match.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseAsciiEndError" xml:space="preserve">
+    <value>The terminating characters (CR LF) in Modbus ASCII could not be found.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseAsciiStartError" xml:space="preserve">
+    <value>The starting character (:) for Modbus ASCII could not be found.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseFunctionDoNotMatch" xml:space="preserve">
+    <value>Function code of request and response do not match.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseLengthDoNotMatch" xml:space="preserve">
+    <value>Data length in request and response do not match.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseSlaveAddressDoNotMatch" xml:space="preserve">
+    <value>Slave address of request and response do not match.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseTcpLengthDoNotMatch" xml:space="preserve">
+    <value>The length indicated in the Modbus TCP header does not match the length of the Modbus message.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseTimeout" xml:space="preserve">
+    <value>Response timeout</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseWritedLengthDoNotMatch" xml:space="preserve">
+    <value>Multiple write length in request and response do not match.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseWritedValueDoNotMatch" xml:space="preserve">
+    <value>The write value ​​in the request and response do not match.</value>
+  </data>
+  <data name="Text_UnrecognizedError.Text" xml:space="preserve">
+    <value>Received an unrecognized message</value>
+  </data>
+  <data name="Text_ChannelCloseMessage.Text" xml:space="preserve">
+    <value>Communication channel has been closed.</value>
+  </data>
+  <data name="Text_ChannelOpenMessage.Text" xml:space="preserve">
+    <value>Communication channel has been opened.</value>
+  </data>
+  <data name="ModbusExceptionDetails.Acknowledge" xml:space="preserve">
+    <value>Slave device has accepted request and is processing it, but a long duration of time is required. This response is returned to prevent a timeout error from occurring in the master. client can next issue a Poll Program Complete message to determine whether processing is completed.</value>
+  </data>
+  <data name="ModbusExceptionDetails.GatewayPathUnavailable" xml:space="preserve">
+    <value>Specialized for Modbus gateways. Indicates a misconfigured gateway.</value>
+  </data>
+  <data name="ModbusExceptionDetails.GatewayTargetDeviceFailedToRespond" xml:space="preserve">
+    <value>Specialized for Modbus gateways. Sent when slave device fails to respond.</value>
+  </data>
+  <data name="ModbusExceptionDetails.IllegalDataAddress" xml:space="preserve">
+    <value>Data address of some or all the required entities are not allowed or do not exist in slave device.</value>
+  </data>
+  <data name="ModbusExceptionDetails.IllegalDataValue" xml:space="preserve">
+    <value>Value is not accepted by slave device.</value>
+  </data>
+  <data name="ModbusExceptionDetails.IllegalFunction" xml:space="preserve">
+    <value>Function code received in the query is not recognized or allowed by slave device.</value>
+  </data>
+  <data name="ModbusExceptionDetails.MemoryParityError" xml:space="preserve">
+    <value>Slave device detected a parity error in memory. Master can retry the request, but service may be required on the slave device.</value>
+  </data>
+  <data name="ModbusExceptionDetails.NegativeAcknowledge" xml:space="preserve">
+    <value>Slave device cannot perform the programming functions. Master should request diagnostic or error information from slave device.</value>
+  </data>
+  <data name="ModbusExceptionDetails.NotDefined" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="ModbusExceptionDetails.SlaveDeviceBusy" xml:space="preserve">
+    <value>Slave device is engaged in processing a long-duration command. Master should retry later.</value>
+  </data>
+  <data name="ModbusExceptionDetails.SlaveDeviceFailure" xml:space="preserve">
+    <value>Unrecoverable error occurred while slave device was attempting to perform requested action.</value>
+  </data>
+  <data name="Text_Channel.Text" xml:space="preserve">
+    <value>Channel</value>
+  </data>
+  <data name="Text_Code.Text" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Text_RawData.Text" xml:space="preserve">
+    <value>Raw data</value>
+  </data>
+  <data name="Text_Description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Text_Details.Text" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Text_ReceivedException.Text" xml:space="preserve">
+    <value>An error message has been received.</value>
+  </data>
+  <data name="Text_Text.Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="Text_TimeStamp.Text" xml:space="preserve">
+    <value>Time stamp</value>
+  </data>
+  <data name="Text_FunctionCode.Text" xml:space="preserve">
+    <value>Function code</value>
+  </data>
+  <data name="Text_Request.Text" xml:space="preserve">
+    <value>Request</value>
+  </data>
+  <data name="Text_Response.Text" xml:space="preserve">
+    <value>Response</value>
+  </data>
+  <data name="Settings_About_ReferenceSites.Text" xml:space="preserve">
+    <value>Reference sites</value>
+  </data>
+</root>

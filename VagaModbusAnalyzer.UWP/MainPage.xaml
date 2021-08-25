@@ -1,0 +1,199 @@
+﻿<Page
+    x:Class="VagaModbusAnalyzer.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:VagaModbusAnalyzer.Controls"
+    xmlns:converters="using:VagaModbusAnalyzer.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <AcrylicBrush x:Key="DefaultMasterDetailShellPageAppBarBackground" BackgroundSource="HostBackdrop" TintOpacity="0.85" TintColor="{ThemeResource SystemChromeMediumColor}" FallbackColor="{ThemeResource SystemChromeMediumColor}"/>
+                    <LinearGradientBrush x:Key="DefaultMasterDetailShellPageAppBarLinearGradientBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#52FFFFFF" Offset="0"/>
+                        <GradientStop Color="#3CFFFFFF" Offset="0.07"/>
+                        <GradientStop Color="#1FFFFFFF" Offset="0.25"/>
+                        <GradientStop Color="#00FFFFFF" Offset="0.25"/>
+                        <GradientStop Color="#1FFFFFFF" Offset="0.9"/>
+                        <GradientStop Color="#32FFFFFF" Offset="1"/>
+                    </LinearGradientBrush>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <AcrylicBrush x:Key="DefaultMasterDetailShellPageAppBarBackground" BackgroundSource="HostBackdrop" TintOpacity="1" TintColor="{ThemeResource SystemChromeMediumColor}" FallbackColor="{ThemeResource SystemChromeMediumColor}"/>
+                    <LinearGradientBrush x:Key="DefaultMasterDetailShellPageAppBarLinearGradientBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFFFFFFF" Offset="0"/>
+                        <GradientStop Color="#DDFFFFFF" Offset="0.07"/>
+                        <GradientStop Color="#A4FFFFFF" Offset="0.25"/>
+                        <GradientStop Color="#00FFFFFF" Offset="0.25"/>
+                        <GradientStop Color="#A4FFFFFF" Offset="0.9"/>
+                        <GradientStop Color="#FFFFFFFF" Offset="1"/>
+                    </LinearGradientBrush>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid x:Name="Root">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="640" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="PART_SplitView.IsPaneOpen" Value="{Binding IsPaneOpen, Mode=TwoWay}" />
+                        <Setter Target="PART_SplitView.DisplayMode" Value="CompactInline" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid x:FieldModifier="private" x:Name="PART_TitleBar" Height="34">
+            <Grid.Background>
+                <AcrylicBrush BackgroundSource="HostBackdrop" TintOpacity="0.7" TintColor="{ThemeResource SystemChromeMediumColor}" FallbackColor="{ThemeResource SystemChromeMediumColor}"/>
+            </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:FieldModifier="private" x:Name="PART_TitleBar_LeftPaddingColumn" Width="0"/>
+                <ColumnDefinition/>
+                <ColumnDefinition x:FieldModifier="private" x:Name="PART_TitleBar_RightPaddingColumn" Width="0"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock 
+                Text="{Binding Title}" 
+                Grid.Column="1" 
+                Style="{StaticResource CaptionTextBlockStyle}" 
+                VerticalAlignment="Center"
+                Margin="12,0"
+                />
+        </Grid>
+        <SplitView
+            x:FieldModifier="private" x:Name="PART_SplitView" Grid.Row="2"
+            DisplayMode ="CompactOverlay"
+            CompactPaneLength="48"
+            IsTabStop="False">
+            <SplitView.Background>
+                <AcrylicBrush BackgroundSource="HostBackdrop" TintOpacity="0.3" TintColor="{ThemeResource SystemAltHighColor}" FallbackColor="{ThemeResource SystemAltHighColor}"/>
+            </SplitView.Background>
+            <SplitView.PaneBackground>
+                <AcrylicBrush BackgroundSource="HostBackdrop" TintOpacity="0.85" TintColor="{ThemeResource SystemChromeMediumColor}" FallbackColor="{ThemeResource SystemChromeMediumColor}"/>
+            </SplitView.PaneBackground>
+            <SplitView.Pane>
+                <Grid x:FieldModifier="private" x:Name="PART_SplitViewPane" HorizontalAlignment="Left" SizeChanged="PART_SplitViewPane_SizeChanged">
+                    <Grid.Resources>
+                        <DataTemplate x:Key="SplitViewPaneButtonTemplate">
+                            <controls:MasterDetailMenuButton 
+                                x:Name="Button"
+                                IsSelected="{Binding IsSelected}" 
+                                Command="{Binding ElementName=Root, Path=DataContext.ExecuteMainMenuCommand}" 
+                                CommandParameter="{Binding}">
+                                <controls:MasterDetailMenuButton.IconContent>
+                                    <Viewbox Width="16" Height="16">
+                                        <SymbolIcon Symbol="{Binding Icon}"/>
+                                    </Viewbox>
+                                </controls:MasterDetailMenuButton.IconContent>
+                                <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis"/>
+                            </controls:MasterDetailMenuButton>
+                        </DataTemplate>
+                    </Grid.Resources>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding ElementName=Root, Path=DataContext.SplitViewMenuItems}" ItemTemplate="{StaticResource SplitViewPaneButtonTemplate}" IsTabStop="False">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <Rectangle Grid.Row="1" Height="1">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{ThemeResource SystemBaseLowColor}"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <ItemsControl Grid.Row="2" ItemsSource="{Binding ElementName=Root, Path=DataContext.SplitViewFooterMenuItems}" ItemTemplate="{StaticResource SplitViewPaneButtonTemplate}" IsTabStop="False">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </Grid>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Grid x:FieldModifier="private" x:Name="PART_Content">
+                    <Grid.Background>
+                        <SolidColorBrush Color="{ThemeResource SystemAltMediumHighColor}"/>
+                    </Grid.Background>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Viewbox Grid.ColumnSpan="2" Opacity="0.1" Margin="40">
+                        <Canvas Width="1240" Height="1240">
+                            <Path Width="1240" Height="1119.4" Canvas.Left="0.430322" Canvas.Top="60.2981" Stretch="Fill" Opacity="0.7" Fill="{ThemeResource SystemControlBackgroundBaseHighBrush}" Data="F1 M 1240.43,619.57C 1240.43,710.881 1166.41,784.903 1075.1,784.903C 990.755,784.903 921.163,721.748 911.032,640.149L 971.764,640.149L 971.764,671.149L 1075.1,619.482L 971.764,567.815L 971.764,598.815L 911.054,598.815C 921.263,517.301 990.815,454.236 1075.1,454.236C 1166.41,454.236 1240.43,528.258 1240.43,619.57 Z M 929.841,82.4762C 1008.92,128.132 1036.01,229.248 990.358,308.326C 948.289,381.191 859.13,409.92 783.515,378.265L 814.034,325.404L 840.881,340.904L 847.803,225.582L 751.391,289.238L 778.238,304.738L 747.656,357.707C 681.787,308.193 661.749,216.159 703.992,142.992C 749.648,63.9147 850.764,36.8207 929.841,82.4762 Z M 309.411,82.9067C 388.489,37.2512 489.605,64.3453 535.261,143.423C 577.289,216.218 557.668,307.69 492.597,357.38L 462.475,305.208L 489.322,289.708L 392.911,226.052L 399.833,341.375L 426.679,325.875L 456.893,378.206C 381.033,410.642 291.179,381.993 248.895,308.756C 203.24,229.678 230.334,128.562 309.411,82.9067 Z M 930.587,1157.09C 851.51,1202.75 750.393,1175.65 704.738,1096.58C 662.529,1023.47 682.501,931.522 748.244,881.981L 778.385,934.186L 751.539,949.686L 847.95,1013.34L 841.028,898.019L 814.181,913.519L 784.079,861.381C 859.733,829.603 949,858.319 991.103,931.243C 1036.76,1010.32 1009.66,1111.44 930.587,1157.09 Z M 310.157,1157.52C 231.079,1111.87 203.985,1010.75 249.641,931.674C 291.798,858.656 381.242,829.96 456.959,861.935L 427.052,913.735L 400.206,898.235L 393.284,1013.56L 489.695,949.901L 462.848,934.401L 492.754,882.603C 558.295,932.19 578.161,1023.99 536.006,1097.01C 490.351,1176.08 389.235,1203.18 310.157,1157.52 Z M 165.764,784.903C 74.4525,784.903 0.430322,710.88 0.430322,619.569C 0.430322,528.258 74.4525,454.236 165.764,454.236C 250.046,454.236 319.598,517.3 329.807,598.815L 269.097,598.815L 269.097,567.815L 165.764,619.482L 269.097,671.148L 269.097,640.148L 329.829,640.148C 319.698,721.748 250.106,784.903 165.764,784.903 Z "/>
+                            <Path Width="733.845" Height="785.334" Canvas.Left="253.508" Canvas.Top="226.903" Stretch="Fill" Opacity="0.4" Fill="{ThemeResource SystemControlBackgroundBaseHighBrush}" Data="F1 M 620.43,1012.24C 599.193,1012.24 578.35,1010.55 558.027,1007.31C 555.93,959.261 532.929,913.03 492.781,882.643L 566.181,755.511L 593.028,771.011L 599.95,655.688L 503.539,719.344L 530.385,734.844L 456.991,861.967C 410.53,842.336 358.898,845.551 316.191,867.835C 289.9,835.654 268.614,799.226 253.519,759.736C 294.601,733.957 323.544,690.615 329.82,640.236L 475.763,640.236L 475.763,671.236L 579.097,619.569L 475.763,567.903L 475.763,598.903L 329.815,598.903C 323.529,548.535 294.586,505.205 253.508,479.434C 268.415,440.425 289.364,404.402 315.211,372.51C 358.152,395.004 410.157,398.197 456.861,378.239L 530.012,504.94L 503.166,520.44L 599.577,584.096L 592.655,468.774L 565.808,484.274L 492.569,357.42C 532.724,326.77 555.579,280.213 557.33,231.947C 577.873,228.628 598.951,226.903 620.43,226.903C 641.352,226.903 661.892,228.54 681.929,231.691C 683.744,280.294 706.957,327.146 747.684,357.747L 674.905,483.804L 648.058,468.304L 641.136,583.626L 737.547,519.97L 710.701,504.47L 783.547,378.297C 830.273,397.846 882.166,394.341 924.922,371.615C 951.104,403.727 972.306,440.059 987.353,479.433C 946.275,505.205 917.332,548.535 911.045,598.903L 765.097,598.903L 765.097,567.903L 661.764,619.57L 765.097,671.236L 765.097,640.236L 911.04,640.236C 917.317,690.616 946.259,733.958 987.342,759.736C 972.288,799.12 951.075,835.459 924.881,867.576C 882.201,845.184 830.55,841.869 784.047,861.413L 710.848,734.629L 737.694,719.129L 641.283,655.473L 648.205,770.795L 675.052,755.295L 748.217,882.02C 707.786,912.5 684.674,959.02 682.698,1007.33C 662.418,1010.56 641.62,1012.24 620.43,1012.24 Z "/>
+                        </Canvas>
+                    </Viewbox>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <controls:FloatingPanelPresentor IsTabStop="False">
+                            <Frame x:FieldModifier="private" x:Name="PART_AppFrame"/>
+                        </controls:FloatingPanelPresentor>
+                        <!--<ad:AdControl
+                            x:FieldModifier="private" x:Name="PART_AdControl_Mobile"
+                            Background="White"
+                            Visibility="Collapsed"
+                            Grid.Row="1"
+                            ApplicationId="3f83fe91-d6be-434d-a0ae-7351c5a997f1"
+                            AdUnitId="10865270"
+                            Width="320" Height="50" VerticalAlignment="Bottom"/>-->
+                        <!--<Border Grid.Row="1" Background="White" Width="728" Height="90" Margin="6">
+                            <TextBlock Text="광고 표시 영역" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="32"/>
+                        </Border>-->
+                    </Grid>
+                </Grid>
+            </SplitView.Content>
+        </SplitView>
+        <Rectangle Grid.Row="1" Fill="{ThemeResource DefaultMasterDetailShellPageAppBarBackground}"/>
+        <controls:OpenDownCommandBar
+            x:FieldModifier="private" x:Name="PART_CommandBar" Grid.Row="1"
+            DefaultLabelPosition="Right"
+            DataContext="{Binding Content.Content.DataContext, ElementName=PART_AppFrame}"
+            Background="{ThemeResource DefaultMasterDetailShellPageAppBarLinearGradientBrush}">
+            <CommandBar.Content>
+                <Grid x:FieldModifier="private" x:Name="PART_CommandBarContent" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+                    <AppBarButton 
+                        x:FieldModifier="private" x:Name="PART_SplitMenuToggleButton" 
+                        Width="{Binding ElementName=PART_SplitView, Path=CompactPaneLength}" 
+                        Click="{x:Bind OpenSplitMenu}" LabelPosition="Collapsed" VerticalAlignment="Stretch">
+                        <AppBarButton.Icon>
+                            <FontIcon Glyph="&#xE700;"/>
+                        </AppBarButton.Icon>
+                    </AppBarButton>
+                    <Grid Grid.Column="1" Width="10"></Grid>
+                    <TextBlock Grid.Column="2" Text="{Binding ElementName=PART_AppFrame, Path=Content.DataContext.Title}" VerticalAlignment="Center" FontSize="15" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
+                </Grid>
+            </CommandBar.Content>
+        </controls:OpenDownCommandBar>
+    </Grid>
+</Page>

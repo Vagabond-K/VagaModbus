@@ -1,0 +1,207 @@
+﻿<UserControl
+    x:Class="VagaModbusAnalyzer.Views.ModbusChannelsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:VagaModbusAnalyzer.Infrastructures"
+    xmlns:controls="using:VagaModbusAnalyzer.Controls"
+    xmlns:converters="using:VagaModbusAnalyzer.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <controls:ViewHostPage.ViewCommands>
+        <controls:ViewCommands>
+            <controls:ViewCommands.PrimaryCommands>
+                <AppBarButton x:Uid="ModbusChannelsView_AppBarButton_AddChannel" Icon="Add" Command="{Binding AddChannelCommand}"/>
+            </controls:ViewCommands.PrimaryCommands>
+        </controls:ViewCommands>
+    </controls:ViewHostPage.ViewCommands>
+    <FrameworkElement.Resources>
+        <local:ItemWidthCalculator x:Key="ItemWidthCalculator"/>
+        <converters:SerialStopBitCountToStringConverter x:Key="SerialStopBitCountToStringConverter"/>
+        <converters:SerialHandshakeToStringConverter x:Key="SerialHandshakeToStringConverter"/>
+        <converters:BooleanToObjectConverter x:Key="BooleanToOnOffConverter" TrueValue="On" FalseValue="Off"/>
+        <DataTemplate x:Key="DataTemplate_ChannelSettingTcpClient">
+            <StackPanel>
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="6"/>
+                        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock>
+                    <Run x:Uid="ModbusChannelsView_ChannelSettingTcpClient_Host" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                    <Run Text="{Binding Host, TargetNullValue=None}"/>
+                </TextBlock>
+                <TextBlock>
+                    <Run x:Uid="ModbusChannelsView_ChannelSettingTcpClient_Port" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                    <Run Text="{Binding Port}"/>
+                </TextBlock>
+                <TextBlock>
+                    <Run x:Uid="ModbusChannelsView_ChannelSettingTcpClient_ConnectTimeout" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                    <Run Text="{Binding ConnectTimeout}"/><Run Text="ms" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_ChannelSettingTcpServer">
+            <StackPanel>
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="6"/>
+                        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock>
+                    <Run x:Uid="ModbusChannelsView_ChannelSettingTcpServer_Port" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                    <Run Text="{Binding Port}"/>
+                </TextBlock>
+                <TextBlock TextWrapping="WrapWholeWords">
+                    <Run x:Uid="ModbusChannelsView_ChannelSettingTcpServer_Description" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><LineBreak/>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_ChannelSettingUdpSocket">
+            <StackPanel>
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="6"/>
+                        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock>
+                    <Run x:Uid="ModbusChannelsView_ChannelSettingUdpSocket_Host" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                    <Run Text="{Binding Host, TargetNullValue=None}"/>
+                </TextBlock>
+                <TextBlock>
+                    <Run x:Uid="ModbusChannelsView_ChannelSettingUdpSocket_RemotePort" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                    <Run Text="{Binding RemotePort}"/>
+                </TextBlock>
+                <TextBlock>
+                    <Run x:Uid="ModbusChannelsView_ChannelSettingUdpSocket_LocalPort" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                    <Run Text="{Binding LocalPort, TargetNullValue=None}"/>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_ChannelSettingSerialPort">
+            <StackPanel>
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="6"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock>
+                    <Run x:Uid="ModbusChannelsView_ChannelSettingSerialPort_Description" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                    <Run Text="{Binding PortName, TargetNullValue=None}"/><Run Text="," Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                    <Run Text="{Binding BaudRate}"/><Run Text="bps," Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                    <Run Text="{Binding DataBits}"/><Run Text="bit," Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                    <Run Text="{Binding StopBitCount, Converter={StaticResource SerialStopBitCountToStringConverter}}"/><Run Text="bit" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                </TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>
+                        <Run x:Uid="ModbusChannelsView_ChannelSettingSerialPort_Parity" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                        <Run Text="{Binding Parity}"/>
+                    </TextBlock>
+                    <TextBlock>
+                        <Run x:Uid="ModbusChannelsView_ChannelSettingSerialPort_Handshake" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                        <Run Text="{Binding Handshake, Converter={StaticResource SerialHandshakeToStringConverter}}"/>
+                    </TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>
+                        <Run x:Uid="ModbusChannelsView_ChannelSettingSerialPort_DTR" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                        <Run Text="{Binding DtrEnable, Converter={StaticResource BooleanToOnOffConverter}}"/>
+                    </TextBlock>
+                    <TextBlock>
+                        <Run x:Uid="ModbusChannelsView_ChannelSettingSerialPort_RTS" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                        <Run Text="{Binding RtsEnable, Converter={StaticResource BooleanToOnOffConverter}}"/>
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+        <local:ChannelSettingEditTemplateSelector
+            x:Key="ChannelSettingEditTemplateSelector"
+            TcpClientDataTemplate="{StaticResource DataTemplate_ChannelSettingTcpClient}"
+            TcpServerDataTemplate="{StaticResource DataTemplate_ChannelSettingTcpServer}"
+            UdpSocketDataTemplate="{StaticResource DataTemplate_ChannelSettingUdpSocket}"
+            SerialPortDataTemplate="{StaticResource DataTemplate_ChannelSettingSerialPort}"/>
+    </FrameworkElement.Resources>
+    <Grid>
+        <GridView
+            x:Name="PART_GridView" 
+            ItemsSource="{Binding Path=Channels}" 
+            SelectedItem="{Binding Path=SelectedChannel, Mode=TwoWay}"
+            Padding="15">
+            <!--<GridView.ItemContainerTransitions>
+                <TransitionCollection>
+                    <RepositionThemeTransition/>
+                </TransitionCollection>
+            </GridView.ItemContainerTransitions>-->
+            <GridView.ItemContainerStyle>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundBaseLowBrush}"/>
+                    <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundAltMediumBrush}"/>
+                </Style>
+            </GridView.ItemContainerStyle>
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="6,6,6,10" Width="{Binding ItemWidth, Source={StaticResource ItemWidthCalculator}}">
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Margin" Value="6"/>
+                                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Name}" 
+                                       FontSize="{ThemeResource TextStyleExtraLargeFontSize}" 
+                                       ToolTipService.ToolTip="{Binding Name}"
+                                   VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
+                            <controls:SelectorItemButton Content="&#xE70F;" Command="{Binding ElementName=PART_GridView, Path=DataContext.EditChannelCommand}" CommandParameter="{Binding}">
+                                <ToolTipService.ToolTip>
+                                    <TextBlock x:Uid="ItemEditButton"/>
+                                </ToolTipService.ToolTip>
+                            </controls:SelectorItemButton>
+                            <controls:SelectorItemButton Content="&#xE74D;" Command="{Binding ElementName=PART_GridView, Path=DataContext.DeleteChannelCommand}" CommandParameter="{Binding}">
+                                <ToolTipService.ToolTip>
+                                    <TextBlock x:Uid="ItemDeleteButton"/>
+                                </ToolTipService.ToolTip>
+                            </controls:SelectorItemButton>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
+                            <TextBlock>
+                                <Run x:Uid="ModbusChannelsView_ChannelSetting_ModbusType" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                                <Run Text="Modbus"/>
+                                <Run Text="{Binding ModbusType}"/>
+                            </TextBlock>
+                            <TextBlock>
+                                <Run x:Uid="EditModbusChannelView_ScanInterval" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                                <Run Text="{Binding ScanInterval}"/><Run Text="ms" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                            </TextBlock>
+                            <ContentControl 
+                                Content="{Binding ChannelSetting}" 
+                                ContentTemplateSelector="{StaticResource ChannelSettingEditTemplateSelector}"
+                                HorizontalContentAlignment="Stretch"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+        <Button x:Uid="ModbusChannelsView_AddChannel"
+                Command="{Binding AddChannelCommand}"
+                Visibility="{Binding Channels.Count, Converter={converters:ObjectEqualsToVisibilityConverter}, ConverterParameter={local:ToInt32 Value=0}}"
+                Style="{StaticResource AddNewItemButtonStyle}"/>
+
+    </Grid>
+</UserControl>

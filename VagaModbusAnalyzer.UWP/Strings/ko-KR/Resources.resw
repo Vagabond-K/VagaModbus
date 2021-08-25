@@ -1,0 +1,576 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ModbusChannelsView_AddChannel.Content" xml:space="preserve">
+    <value>채널 추가</value>
+  </data>
+  <data name="ModbusChannelsView_AppBarButton_AddChannel.Label" xml:space="preserve">
+    <value>채널 추가</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingSerialPort_DTR.Text" xml:space="preserve">
+    <value>DTR:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingSerialPort_Handshake.Text" xml:space="preserve">
+    <value>흐름 제어:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingSerialPort_Parity.Text" xml:space="preserve">
+    <value>패리티:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingSerialPort_RTS.Text" xml:space="preserve">
+    <value>RTS:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingSerialPort_Description.Text" xml:space="preserve">
+    <value>시리얼 포트:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingTcpClient_ConnectTimeout.Text" xml:space="preserve">
+    <value>연결 제한 시간:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingTcpClient_Host.Text" xml:space="preserve">
+    <value>호스트:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingTcpClient_Port.Text" xml:space="preserve">
+    <value>TCP 포트:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingTcpServer_Port.Text" xml:space="preserve">
+    <value>TCP 서버 수신 포트:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingTcpServer_Description.Text" xml:space="preserve">
+    <value>본 채널은 TCP 소켓으로 연결을 수신하여 동작합니다.</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingUdpSocket_RemotePort.Text" xml:space="preserve">
+    <value>원격 UDP 포트:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingUdpSocket_Host.Text" xml:space="preserve">
+    <value>호스트:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSettingUdpSocket_LocalPort.Text" xml:space="preserve">
+    <value>로컬 UDP 포트:</value>
+  </data>
+  <data name="ModbusChannelsView_ChannelSetting_ModbusType.Text" xml:space="preserve">
+    <value>프로토콜 버전:</value>
+  </data>
+  <data name="EditModbusChannelView_AddChannel.Title" xml:space="preserve">
+    <value>채널 추가</value>
+  </data>
+  <data name="EditModbusChannelView_AppBarButton_Save.Label" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="EditModbusChannelView_EditChannel.Title" xml:space="preserve">
+    <value>채널 편집</value>
+  </data>
+  <data name="EditModbusScanView.PrimaryButtonText" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="EditModbusScanView.SecondaryButtonText" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="ItemDeleteButton.Text" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="ItemEditButton.Text" xml:space="preserve">
+    <value>편집</value>
+  </data>
+  <data name="MasterDetailMenuButton_ModbusChannels.Content" xml:space="preserve">
+    <value>채널 관리</value>
+  </data>
+  <data name="MasterDetailMenuButton_Logs.Content" xml:space="preserve">
+    <value>통신 로그 조회</value>
+  </data>
+  <data name="MasterDetailMenuButton_ReadData.Content" xml:space="preserve">
+    <value>데이터 읽기</value>
+  </data>
+  <data name="MasterDetailMenuButton_Settings.Content" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="NewChannelName" xml:space="preserve">
+    <value>새 채널</value>
+  </data>
+  <data name="NotSupportedAccentColorText.Text" xml:space="preserve">
+    <value>이 색은 지원되지 않습니다.</value>
+  </data>
+  <data name="ReadDataView_AddScan.Content" xml:space="preserve">
+    <value>스캔 추가</value>
+  </data>
+  <data name="ReadDataView_AppBarButton_AddScan.Label" xml:space="preserve">
+    <value>스캔 추가</value>
+  </data>
+  <data name="Settings_About.Header" xml:space="preserve">
+    <value>정보</value>
+  </data>
+  <data name="Settings_About_ModbusOrg.Content" xml:space="preserve">
+    <value>Modbus Organization 사이트</value>
+  </data>
+  <data name="Settings_About_ModbusWiki.Content" xml:space="preserve">
+    <value>Modbus 프로토콜 (Wikipedia)</value>
+  </data>
+  <data name="Settings_General.Header" xml:space="preserve">
+    <value>일반</value>
+  </data>
+  <data name="Settings_General_ThemeSelect.Text" xml:space="preserve">
+    <value>모드 선택</value>
+  </data>
+  <data name="Settings_General_ThemeSelect_CustomAccent.Text" xml:space="preserve">
+    <value>사용자 지정 색</value>
+  </data>
+  <data name="Settings_General_ThemeSelect_Dark.Content" xml:space="preserve">
+    <value>어둡게</value>
+  </data>
+  <data name="Settings_General_ThemeSelect_Default.Content" xml:space="preserve">
+    <value>Windows 기본값</value>
+  </data>
+  <data name="Settings_General_ThemeSelect_DefaultAccent.Text" xml:space="preserve">
+    <value>Windows 기본 테마 컬러 사용</value>
+  </data>
+  <data name="Settings_General_ThemeSelect_Light.Content" xml:space="preserve">
+    <value>밝게</value>
+  </data>
+  <data name="Settings_General_ThemeSelect_Windows.Content" xml:space="preserve">
+    <value>Windows 색 설정</value>
+  </data>
+  <data name="Text_DataAddress.Text" xml:space="preserve">
+    <value>데이터 어드레스</value>
+  </data>
+  <data name="Text_DataType.Text" xml:space="preserve">
+    <value>데이터 형식</value>
+  </data>
+  <data name="Text_NumOfData.Text" xml:space="preserve">
+    <value>데이터 개수</value>
+  </data>
+  <data name="Text_SlaveAddress.Text" xml:space="preserve">
+    <value>슬레이브 어드레스</value>
+  </data>
+  <data name="ThemeColorPickerPopupView.PrimaryButtonText" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="ThemeColorPickerPopupView.SecondaryButtonText" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="ThemeColorPickerPopupView.Title" xml:space="preserve">
+    <value>사용자 지정 색 선택</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.IllegalDataAddress" xml:space="preserve">
+    <value>Illegal Data Address</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.NotDefined" xml:space="preserve">
+    <value>Not defined</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.IllegalFunction" xml:space="preserve">
+    <value>Illegal Function</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.IllegalDataValue" xml:space="preserve">
+    <value>Illegal Data Value</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.SlaveDeviceFailure" xml:space="preserve">
+    <value>Slave Device Failure</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.Acknowledge" xml:space="preserve">
+    <value>Acknowledge</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.SlaveDeviceBusy" xml:space="preserve">
+    <value>Slave Device Busy</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.NegativeAcknowledge" xml:space="preserve">
+    <value>Negative Acknowledge</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.MemoryParityError" xml:space="preserve">
+    <value>Memory Parity Error</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.GatewayPathUnavailable" xml:space="preserve">
+    <value>Gateway Path Unavailable</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusExceptionCode.GatewayTargetDeviceFailedToRespond" xml:space="preserve">
+    <value>Gateway Target Device Failed to Respond</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusFunction.ReadCoils" xml:space="preserve">
+    <value>Read Coils</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusFunction.ReadDiscreteInputs" xml:space="preserve">
+    <value>Read Discrete Inputs</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusFunction.ReadHoldingRegisters" xml:space="preserve">
+    <value>Read Holding Registers</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusFunction.ReadInputRegisters" xml:space="preserve">
+    <value>Read Input Registers</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusFunction.WriteMultipleCoils" xml:space="preserve">
+    <value>Write Multiple Coils</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusFunction.WriteMultipleHoldingRegisters" xml:space="preserve">
+    <value>Write Multiple Holding Registers</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusFunction.WriteSingleCoil" xml:space="preserve">
+    <value>Write Single Coil</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusFunction.WriteSingleHoldingRegister" xml:space="preserve">
+    <value>Write Single Holding Register</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusObjectType.Coil" xml:space="preserve">
+    <value>Coil</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusObjectType.DiscreteInput" xml:space="preserve">
+    <value>Discrete Input</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusObjectType.HoldingRegister" xml:space="preserve">
+    <value>Holding Register</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusObjectType.InputRegister" xml:space="preserve">
+    <value>Input Register</value>
+  </data>
+  <data name="EditModbusScanView_AddScan.Title" xml:space="preserve">
+    <value>스캔 추가</value>
+  </data>
+  <data name="EditModbusScanView_EditScan.Title" xml:space="preserve">
+    <value>스캔 편집</value>
+  </data>
+  <data name="Text_ResponseTimeout.Text" xml:space="preserve">
+    <value>응답 제한 시간</value>
+  </data>
+  <data name="EditModbusChannelView_ChannelName.Header" xml:space="preserve">
+    <value>채널 이름</value>
+  </data>
+  <data name="EditModbusChannelView_ChannelType.Text" xml:space="preserve">
+    <value>채널 타입</value>
+  </data>
+  <data name="EditModbusChannelView_ChannelType_SerialPort.Content" xml:space="preserve">
+    <value>시리얼 포트</value>
+  </data>
+  <data name="EditModbusChannelView_ChannelType_TcpClient.Content" xml:space="preserve">
+    <value>TCP 클라이언트</value>
+  </data>
+  <data name="EditModbusChannelView_ChannelType_TcpServer.Content" xml:space="preserve">
+    <value>TCP 서버</value>
+  </data>
+  <data name="EditModbusChannelView_ChannelType_UdpSocket.Content" xml:space="preserve">
+    <value>UDP 소켓</value>
+  </data>
+  <data name="EditModbusChannelView_ProtocolVersion.Text" xml:space="preserve">
+    <value>프로토콜 버전</value>
+  </data>
+  <data name="EditModbusChannelView_ScanInterval.Text" xml:space="preserve">
+    <value>스캔 간격</value>
+  </data>
+  <data name="EditModbusChannelView_SerialPort_BaudRate.Header" xml:space="preserve">
+    <value>통신 속도</value>
+  </data>
+  <data name="EditModbusChannelView_SerialPort_DataBits.Header" xml:space="preserve">
+    <value>데이터 비트</value>
+  </data>
+  <data name="EditModbusChannelView_SerialPort_Handshake.Header" xml:space="preserve">
+    <value>흐름 제어</value>
+  </data>
+  <data name="EditModbusChannelView_SerialPort_Parity.Header" xml:space="preserve">
+    <value>패리티</value>
+  </data>
+  <data name="EditModbusChannelView_SerialPort_PortName.Header" xml:space="preserve">
+    <value>시리얼 포트 명</value>
+  </data>
+  <data name="EditModbusChannelView_SerialPort_StopBits.Header" xml:space="preserve">
+    <value>정지 비트</value>
+  </data>
+  <data name="EditModbusChannelView_TcpClient_ConnectTimeout.Text" xml:space="preserve">
+    <value>연결 제한 시간</value>
+  </data>
+  <data name="EditModbusChannelView_TcpClient_HostName.Header" xml:space="preserve">
+    <value>호스트 명</value>
+  </data>
+  <data name="EditModbusChannelView_TcpClient_Port.Header" xml:space="preserve">
+    <value>포트</value>
+  </data>
+  <data name="EditModbusChannelView_TcpServer_Port.Header" xml:space="preserve">
+    <value>포트</value>
+  </data>
+  <data name="EditModbusChannelView_UdpSocket_HostName.Header" xml:space="preserve">
+    <value>호스트 명</value>
+  </data>
+  <data name="EditModbusChannelView_UdpSocket_RemotePort.Header" xml:space="preserve">
+    <value>원격 포트</value>
+  </data>
+  <data name="EditModbusChannelView_UdpSocket_LocalPort.Header" xml:space="preserve">
+    <value>로컬 포트</value>
+  </data>
+  <data name="Text_CommNormal.Text" xml:space="preserve">
+    <value>정상 통신 진행 중</value>
+  </data>
+  <data name="Text_LastUpdated.Text" xml:space="preserve">
+    <value>마지막 업데이트</value>
+  </data>
+  <data name="Text_ScanOff.Text" xml:space="preserve">
+    <value>N/A (스캔이 시작되지 않았습니다.)</value>
+  </data>
+  <data name="Text_Status.Text" xml:space="preserve">
+    <value>상태</value>
+  </data>
+  <data name="Text_Hexadecimal.Text" xml:space="preserve">
+    <value>16진수</value>
+  </data>
+  <data name="Text_LogicalValue.Text" xml:space="preserve">
+    <value>논리 값</value>
+  </data>
+  <data name="Text_DoubleValue.Text" xml:space="preserve">
+    <value>배정밀도 소수</value>
+  </data>
+  <data name="Text_FloatValue.Text" xml:space="preserve">
+    <value>단정밀도 소수</value>
+  </data>
+  <data name="Text_DataAddresses.Text" xml:space="preserve">
+    <value>데이터 어드레스</value>
+  </data>
+  <data name="Text_SignedInteger.Text" xml:space="preserve">
+    <value>부호 있는 정수</value>
+  </data>
+  <data name="Text_UnsignedInteger.Text" xml:space="preserve">
+    <value>부호 없는 정수</value>
+  </data>
+  <data name="Text_Binary.Text" xml:space="preserve">
+    <value>이진법</value>
+  </data>
+  <data name="Text_Big_endian.Text" xml:space="preserve">
+    <value>빅 엔디언</value>
+  </data>
+  <data name="Text_Little_endian.Text" xml:space="preserve">
+    <value>리틀 엔디언</value>
+  </data>
+  <data name="Text_Bytes.Text" xml:space="preserve">
+    <value>바이트</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ErrorCRC" xml:space="preserve">
+    <value>CRC 오류</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ErrorLRC" xml:space="preserve">
+    <value>LRC 오류</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ModbusTcpSymbolError" xml:space="preserve">
+    <value>Modbus TCP 프로토콜 아이디가 0이 아님.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.NotDefined" xml:space="preserve">
+    <value>Not defined</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.NotDefinedModbusSerializer" xml:space="preserve">
+    <value>Modbus 직렬화 형식이 정의되지 않았음.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseAddressDoNotMatch" xml:space="preserve">
+    <value>요청과 응답의 Address가 일치하지 않음.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseAsciiEndError" xml:space="preserve">
+    <value>Modbus ASCII의 종결 문자(CR LF)를 찾을 수 없음.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseAsciiStartError" xml:space="preserve">
+    <value>Modbus ASCII의 시작 문자(:)를 찾을 수 없음.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseFunctionDoNotMatch" xml:space="preserve">
+    <value>요청과 응답의 Function 코드가 일치하지 않음.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseLengthDoNotMatch" xml:space="preserve">
+    <value>요청과 응답의 데이터 길이가 일치하지 않음.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseSlaveAddressDoNotMatch" xml:space="preserve">
+    <value>요청과 응답의 Slave Address가 일치하지 않음.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseTcpLengthDoNotMatch" xml:space="preserve">
+    <value>Modbus TCP 헤더에 표시된 길이와 Modbus 메시지의 길이가 일치하지 않음.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseTimeout" xml:space="preserve">
+    <value>응답 타임아웃</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseWritedLengthDoNotMatch" xml:space="preserve">
+    <value>요청과 응답의 다중 쓰기 길이가 일치하지 않음.</value>
+  </data>
+  <data name="VagabondK.Protocols.Modbus.ModbusCommErrorCode.ResponseWritedValueDoNotMatch" xml:space="preserve">
+    <value>요청과 응답의 쓰기 값이 일치하지 않음.</value>
+  </data>
+  <data name="Text_UnrecognizedError.Text" xml:space="preserve">
+    <value>인식할 수 없는 메시지를 수신함</value>
+  </data>
+  <data name="Text_ChannelCloseMessage.Text" xml:space="preserve">
+    <value>통신 채널이 닫혔습니다.</value>
+  </data>
+  <data name="Text_ChannelOpenMessage.Text" xml:space="preserve">
+    <value>통신 채널이 열렸습니다.</value>
+  </data>
+  <data name="ModbusExceptionDetails.Acknowledge" xml:space="preserve">
+    <value>슬레이브 디바이스가 요청을 수락하고 처리 중이지만 오랜 시간이 필요합니다. 마스터에서 시간 초과 오류가 발생하지 않도록 이 응답이 반환됩니다. 클라이언트는 다음으로 Poll Program Complete 메시지를 발행하여 처리가 완료되었는지 여부를 결정할 수 있습니다.</value>
+  </data>
+  <data name="ModbusExceptionDetails.GatewayPathUnavailable" xml:space="preserve">
+    <value>Modbus 게이트웨이인 경우, 잘못 구성된 게이트웨이일 수 있습니다.</value>
+  </data>
+  <data name="ModbusExceptionDetails.GatewayTargetDeviceFailedToRespond" xml:space="preserve">
+    <value>Modbus 게이트웨이인 경우, 슬레이브 디바이스가 응답하지 않는 상황입니다.</value>
+  </data>
+  <data name="ModbusExceptionDetails.IllegalDataAddress" xml:space="preserve">
+    <value>일부 또는 모든 필수 엔터티의 데이터 주소가 허용되지 않거나 슬레이브 디바이스에 존재하지 않습니다.</value>
+  </data>
+  <data name="ModbusExceptionDetails.IllegalDataValue" xml:space="preserve">
+    <value>슬레이브 디바이스에서 허용되지 않는 값입니다.</value>
+  </data>
+  <data name="ModbusExceptionDetails.IllegalFunction" xml:space="preserve">
+    <value>요청한 Function 코드는 슬레이브 디바이스에서 인식할 수 없거나 허용하지 않습니다.</value>
+  </data>
+  <data name="ModbusExceptionDetails.MemoryParityError" xml:space="preserve">
+    <value>슬레이브 디바이스가 메모리에서 패리티 오류를 감지했습니다. 마스터에서 요청을 다시 시도할 수 있지만 슬레이브 디바이스에서 처리가 필요할 수 있습니다.</value>
+  </data>
+  <data name="ModbusExceptionDetails.NegativeAcknowledge" xml:space="preserve">
+    <value>슬레이브 디바이스는 프로그래밍 기능을 수행할 수 없습니다. 마스터는 슬레이브 디바이스에 진단 또는 오류 정보를 요청해야 합니다.</value>
+  </data>
+  <data name="ModbusExceptionDetails.NotDefined" xml:space="preserve">
+    <value>없음</value>
+  </data>
+  <data name="ModbusExceptionDetails.SlaveDeviceBusy" xml:space="preserve">
+    <value>슬레이브 디바이스가 장기 명령을 처리하고 있습니다. 마스터는 나중에 다시 시도해야 합니다.</value>
+  </data>
+  <data name="ModbusExceptionDetails.SlaveDeviceFailure" xml:space="preserve">
+    <value>슬레이브 디바이스가 요청된 작업을 수행하는 동안 복구할 수 없는 오류가 발생했습니다.</value>
+  </data>
+  <data name="Text_Channel.Text" xml:space="preserve">
+    <value>채널</value>
+  </data>
+  <data name="Text_Code.Text" xml:space="preserve">
+    <value>코드</value>
+  </data>
+  <data name="Text_RawData.Text" xml:space="preserve">
+    <value>원본 데이터</value>
+  </data>
+  <data name="Text_Description.Text" xml:space="preserve">
+    <value>내용</value>
+  </data>
+  <data name="Text_Details.Text" xml:space="preserve">
+    <value>상세 설명</value>
+  </data>
+  <data name="Text_ReceivedException.Text" xml:space="preserve">
+    <value>오류 발생 메시지를 수신했습니다.</value>
+  </data>
+  <data name="Text_Text.Text" xml:space="preserve">
+    <value>텍스트</value>
+  </data>
+  <data name="Text_TimeStamp.Text" xml:space="preserve">
+    <value>일시</value>
+  </data>
+  <data name="Text_FunctionCode.Text" xml:space="preserve">
+    <value>Function 코드</value>
+  </data>
+  <data name="Text_Request.Text" xml:space="preserve">
+    <value>요청</value>
+  </data>
+  <data name="Text_Response.Text" xml:space="preserve">
+    <value>응답</value>
+  </data>
+  <data name="Settings_About_ReferenceSites.Text" xml:space="preserve">
+    <value>참조 사이트</value>
+  </data>
+</root>
