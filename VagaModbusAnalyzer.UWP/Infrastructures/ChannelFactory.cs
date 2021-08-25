@@ -31,7 +31,7 @@ namespace VagaModbusAnalyzer.Infrastructures
             return null;
         }
 
-        public TcpChannel CreateChannel(TcpClientChannelSetting channelSetting) => new TcpChannel(channelSetting.Host, channelSetting.Port);
+        public TcpChannel CreateChannel(TcpClientChannelSetting channelSetting) => new TcpChannel(channelSetting.Host, channelSetting.Port, channelSetting.ConnectTimeout);
 
         public TcpChannelProvider CreateChannel(TcpServerChannelSetting channelSetting) => new TcpChannelProvider(channelSetting.Port);
 
