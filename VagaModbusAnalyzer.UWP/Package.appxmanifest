@@ -9,7 +9,7 @@
   <Identity
     Name="60179VagabondK.VagaModbusAnalyzer"
     Publisher="CN=9DAE6A1B-ADF6-42DC-9DC7-F6228C60E98C"
-    Version="1.0.0.0" />
+    Version="1.0.1.0" />
 
   <mp:PhoneIdentity PhoneProductId="11693310-6566-45b2-b655-d1ec1ef55ccc" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
