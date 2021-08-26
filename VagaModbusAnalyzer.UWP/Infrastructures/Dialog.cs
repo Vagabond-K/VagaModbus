@@ -41,6 +41,7 @@ namespace VagaModbusAnalyzer.Infrastructures
             using (var pageScope = serviceProvider.CreatePageScope(viewModelType, viewType, title))
             {
                 var pageContext = pageScope.ServiceProvider.GetRequiredService<PageContext>();
+                
                 initializer?.Invoke(pageContext.ViewModel, pageContext.View);
 
                 if (!(pageContext.View is ContentDialog dialog))
@@ -59,6 +60,10 @@ namespace VagaModbusAnalyzer.Infrastructures
                     dialog.DataContext = pageContext.ViewModel;
                     dialog.SetBinding(ContentDialog.TitleProperty, new Binding() { Path = new PropertyPath(nameof(pageContext.Title)), Source = pageContext });
                 }
+
+                var themeManager = pageScope.ServiceProvider.GetService<ThemeManager>();
+                if (themeManager != null)
+                    dialog.RequestedTheme = themeManager.AppTheme;
 
                 pageContext.Result = null;
 

@@ -30,7 +30,7 @@ namespace VagaModbusAnalyzer
 
             if (!ApplicationData.Current.RoamingSettings.Values.ContainsKey(nameof(IsPaneOpen)))
             {
-                ApplicationData.Current.RoamingSettings.Values[nameof(IsPaneOpen)] = false;
+                ApplicationData.Current.RoamingSettings.Values[nameof(IsPaneOpen)] = true;
             }
             isPaneOpen = (bool)ApplicationData.Current.RoamingSettings.Values[nameof(IsPaneOpen)];
             ApplicationData.Current.DataChanged += OnApplicationDataChanged;
@@ -146,6 +146,7 @@ namespace VagaModbusAnalyzer
 
         private void OnNavigating(object sender, Windows.UI.Xaml.Navigation.NavigatingCancelEventArgs e)
         {
+            MainPage.PageFrame.Focus(FocusState.Programmatic);
         }
 
         private void OnNavigated(object sender, Windows.UI.Xaml.Navigation.NavigationEventArgs e)

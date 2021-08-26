@@ -39,7 +39,7 @@ namespace VagaModbusAnalyzer.Infrastructures
             ApplicationData.Current.DataChanged += ApplicationDataChanged;
         }
 
-        private static readonly ElementTheme DefaultAppTheme = ElementTheme.Default;
+        private static readonly ElementTheme DefaultAppTheme = ElementTheme.Dark;
         private static readonly Color DefaultAccentColor = Colors.Orange;
         private static readonly bool DefaultUseWindowsDefaultAccentColor = false;
 
