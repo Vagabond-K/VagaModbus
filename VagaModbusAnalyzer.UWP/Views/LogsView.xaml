@@ -37,6 +37,7 @@
 
     <UserControl.Resources>
         <converters:TimeStampStringConverter x:Key="TimeStampStringConverter"/>
+        <converters:ObjectEqualsToVisibilityConverter x:Key="ObjectNotEqualsToVisibilityConverter" Inverse="True"/>
         <converters:IsTypeToVisibilityConverter x:Key="IsTypeToVisibilityConverter"/>
         <converters:EnumToLocalizedStringConverter x:Key="EnumToLocalizedStringConverter"/>
         <converters:HexConverter x:Key="HexConverter"/>
@@ -326,7 +327,7 @@
             <local:ChannelLogTemplateSelector.ChannelOpenTemplate>
                 <DataTemplate>
                     <Grid VerticalAlignment="Top" Margin="6"
-                        Visibility="{Binding FallbackValue=Collapsed, Converter={converters:ObjectEqualsToVisibilityConverter Inverse=True}, ConverterParameter={x:Null}}">
+                        Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource ObjectNotEqualsToVisibilityConverter}, ConverterParameter={x:Null}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
@@ -348,7 +349,7 @@
             <local:ChannelLogTemplateSelector.ChannelCloseTemplate>
                 <DataTemplate>
                     <Grid VerticalAlignment="Top" Margin="6"
-                        Visibility="{Binding FallbackValue=Collapsed, Converter={converters:ObjectEqualsToVisibilityConverter Inverse=True}, ConverterParameter={x:Null}}">
+                        Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource ObjectNotEqualsToVisibilityConverter}, ConverterParameter={x:Null}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
@@ -370,7 +371,7 @@
             <local:ChannelLogTemplateSelector.ModbusExceptionTemplate>
                 <DataTemplate>
                     <Grid VerticalAlignment="Top" Margin="6"
-                        Visibility="{Binding FallbackValue=Collapsed, Converter={converters:ObjectEqualsToVisibilityConverter Inverse=True}, ConverterParameter={x:Null}}">
+                        Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource ObjectNotEqualsToVisibilityConverter}, ConverterParameter={x:Null}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
@@ -404,7 +405,7 @@
             <local:ChannelLogTemplateSelector.ChannelRequestTemplate>
                 <DataTemplate>
                     <Grid VerticalAlignment="Top" Margin="6"
-                        Visibility="{Binding FallbackValue=Collapsed, Converter={converters:ObjectEqualsToVisibilityConverter Inverse=True}, ConverterParameter={x:Null}}">
+                        Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource ObjectNotEqualsToVisibilityConverter}, ConverterParameter={x:Null}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
@@ -439,7 +440,7 @@
             <local:ChannelLogTemplateSelector.ChannelResponseTemplate>
                 <DataTemplate>
                     <Grid VerticalAlignment="Top" Margin="6"
-                        Visibility="{Binding FallbackValue=Collapsed, Converter={converters:ObjectEqualsToVisibilityConverter Inverse=True}, ConverterParameter={x:Null}}">
+                        Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource ObjectNotEqualsToVisibilityConverter}, ConverterParameter={x:Null}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
@@ -477,7 +478,7 @@
             <local:ChannelLogTemplateSelector.UnrecognizedErrorTemplate>
                 <DataTemplate>
                     <Grid VerticalAlignment="Top" Margin="6"
-                        Visibility="{Binding FallbackValue=Collapsed, Converter={converters:ObjectEqualsToVisibilityConverter Inverse=True}, ConverterParameter={x:Null}}">
+                        Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource ObjectNotEqualsToVisibilityConverter}, ConverterParameter={x:Null}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
@@ -502,7 +503,7 @@
             <local:ChannelLogTemplateSelector.ErrorCodeTemplate>
                 <DataTemplate>
                     <Grid VerticalAlignment="Top" Margin="6"
-                        Visibility="{Binding FallbackValue=Collapsed, Converter={converters:ObjectEqualsToVisibilityConverter Inverse=True}, ConverterParameter={x:Null}}">
+                        Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource ObjectNotEqualsToVisibilityConverter}, ConverterParameter={x:Null}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
@@ -512,8 +513,8 @@
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Column="0" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_Channel"/>:</TextBlock>
-                        <TextBlock Grid.Column="1" Text="{Binding ChannelDescription}" Style="{StaticResource ValueStyle}"/>
+                        <TextBlock Grid.Column="0" Style="{StaticResource LabelStyle}" Visibility="{Binding ChannelDescription, Converter={StaticResource ObjectNotEqualsToVisibilityConverter}, ConverterParameter={x:Null}}"><Run x:Uid="Text_Channel"/>:</TextBlock>
+                        <TextBlock Grid.Column="1" Text="{Binding ChannelDescription}" Visibility="{Binding ChannelDescription, Converter={StaticResource ObjectNotEqualsToVisibilityConverter}, ConverterParameter={x:Null}}" Style="{StaticResource ValueStyle}"/>
                         <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_TimeStamp"/>:</TextBlock>
                         <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding TimeStamp, Converter={StaticResource TimeStampStringConverter}}" Style="{StaticResource ValueStyle}"/>
                         <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_Description"/>:</TextBlock>
@@ -524,18 +525,18 @@
             <local:ChannelLogTemplateSelector.ErrorMessageTemplate>
                 <DataTemplate>
                     <Grid VerticalAlignment="Top" Margin="6"
-                        Visibility="{Binding FallbackValue=Collapsed, Converter={converters:ObjectEqualsToVisibilityConverter Inverse=True}, ConverterParameter={x:Null}}">
+                        Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource ObjectNotEqualsToVisibilityConverter}, ConverterParameter={x:Null}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Column="0" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_Channel"/>:</TextBlock>
-                        <TextBlock Grid.Column="1" Text="{Binding ChannelDescription}" Style="{StaticResource ValueStyle}"/>
+                        <TextBlock Grid.Column="0" Style="{StaticResource LabelStyle}" Visibility="{Binding ChannelDescription, Converter={StaticResource ObjectNotEqualsToVisibilityConverter}, ConverterParameter={x:Null}}"><Run x:Uid="Text_Channel"/>:</TextBlock>
+                        <TextBlock Grid.Column="1" Text="{Binding ChannelDescription}" Visibility="{Binding ChannelDescription, Converter={StaticResource ObjectNotEqualsToVisibilityConverter}, ConverterParameter={x:Null}}" Style="{StaticResource ValueStyle}"/>
                         <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_TimeStamp"/>:</TextBlock>
                         <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding TimeStamp, Converter={StaticResource TimeStampStringConverter}}" Style="{StaticResource ValueStyle}"/>
                         <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_Description"/>:</TextBlock>
@@ -592,85 +593,6 @@
             UnrecognizedErrorStyle="{StaticResource DetailPnaelRedStyle}"
             />
 
-
-
-        <DataTemplate x:Key="ModbusScanRegisterDataItemsTemplate">
-            <muxc:ItemsRepeater ItemsSource="{Binding}" Margin="6">
-                <muxc:ItemsRepeater.Layout>
-                    <muxc:UniformGridLayout/>
-                </muxc:ItemsRepeater.Layout>
-                <muxc:ItemsRepeater.ItemTemplate>
-                    <DataTemplate>
-                        <controls:ModbusScanRegisterDataItemView/>
-                    </DataTemplate>
-                </muxc:ItemsRepeater.ItemTemplate>
-            </muxc:ItemsRepeater>
-        </DataTemplate>
-        <DataTemplate x:Key="ModbusScanBitDataItemsTemplate">
-            <muxc:ItemsRepeater ItemsSource="{Binding}" Margin="6">
-                <muxc:ItemsRepeater.Layout>
-                    <muxc:UniformGridLayout/>
-                </muxc:ItemsRepeater.Layout>
-                <muxc:ItemsRepeater.ItemTemplate>
-                    <DataTemplate>
-                        <controls:ModbusScanBitDataItemView/>
-                    </DataTemplate>
-                </muxc:ItemsRepeater.ItemTemplate>
-            </muxc:ItemsRepeater>
-        </DataTemplate>
-
-        <local:ModbusScanDataTemplateSelector 
-            x:Key="ModbusScanDataTemplateSelector"
-            RegisterDataTemplate="{StaticResource ModbusScanRegisterDataItemsTemplate}"
-            BitDataTemplate="{StaticResource ModbusScanBitDataItemsTemplate}"/>
-
-
-
-        <!--<views:MessageToValuesTemplateSelector
-            x:Key="MessageToValuesTemplateSelector">
-            <views:MessageToValuesTemplateSelector.EmptyTemplate>
-                <DataTemplate/>
-            </views:MessageToValuesTemplateSelector.EmptyTemplate>
-            <views:MessageToValuesTemplateSelector.MultiBitDataTemplate>
-                <DataTemplate>
-                    <muxc:ItemsRepeater ItemsSource="{Binding}" Margin="1">
-                        <muxc:ItemsRepeater.Layout>
-                            <muxc:UniformGridLayout/>
-                        </muxc:ItemsRepeater.Layout>
-                        <muxc:ItemsRepeater.ItemTemplate>
-                            <DataTemplate>
-                                <controls:ModbusScanBitDataItemView/>
-                            </DataTemplate>
-                        </muxc:ItemsRepeater.ItemTemplate>
-                    </muxc:ItemsRepeater>
-                </DataTemplate>
-            </views:MessageToValuesTemplateSelector.MultiBitDataTemplate>
-            <views:MessageToValuesTemplateSelector.MultiRegisterDataTemplate>
-                <DataTemplate>
-                    <muxc:ItemsRepeater ItemsSource="{Binding}" Margin="1">
-                        <muxc:ItemsRepeater.Layout>
-                            <muxc:UniformGridLayout/>
-                        </muxc:ItemsRepeater.Layout>
-                        <muxc:ItemsRepeater.ItemTemplate>
-                            <DataTemplate>
-                                <controls:ModbusScanRegisterDataItemView/>
-                            </DataTemplate>
-                        </muxc:ItemsRepeater.ItemTemplate>
-                    </muxc:ItemsRepeater>
-                </DataTemplate>
-            </views:MessageToValuesTemplateSelector.MultiRegisterDataTemplate>
-            <views:MessageToValuesTemplateSelector.SingleBitDataTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding}"/>
-                </DataTemplate>
-            </views:MessageToValuesTemplateSelector.SingleBitDataTemplate>
-            <views:MessageToValuesTemplateSelector.SingleRegisterDataTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding}"/>
-                </DataTemplate>
-            </views:MessageToValuesTemplateSelector.SingleRegisterDataTemplate>
-        </views:MessageToValuesTemplateSelector>-->
-
     </UserControl.Resources>
 
     <VisualStateManager.VisualStateGroups>
@@ -694,63 +616,6 @@
                             </DataTemplate>
                         </Setter.Value>
                     </Setter>
-                    <!--<Setter Target="FunctionCodeLabel.(Grid.Row)" Value="1"/>
-                    <Setter Target="FunctionCodeLabel.(Grid.Column)" Value="2"/>
-                    <Setter Target="FunctionCodeValue1.(Grid.Row)" Value="1"/>
-                    <Setter Target="FunctionCodeValue1.(Grid.Column)" Value="3"/>
-                    <Setter Target="FunctionCodeValue2.(Grid.Row)" Value="1"/>
-                    <Setter Target="FunctionCodeValue2.(Grid.Column)" Value="3"/>
-                    <Setter Target="AddressLengthLabel.(Grid.Row)" Value="3"/>
-                    <Setter Target="AddressLengthLabel.(Grid.Column)" Value="2"/>
-                    <Setter Target="AddressLengthValue1.(Grid.Row)" Value="3"/>
-                    <Setter Target="AddressLengthValue1.(Grid.Column)" Value="3"/>
-                    <Setter Target="AddressLengthValue2.(Grid.Row)" Value="3"/>
-                    <Setter Target="AddressLengthValue2.(Grid.Column)" Value="3"/>
-                    <Setter Target="RequestMessageLabel1.(Grid.ColumnSpan)" Value="1"/>
-                    <Setter Target="RequestMessageLabel1.HorizontalAlignment" Value="Right"/>
-                    <Setter Target="RequestMessageLabel2.(Grid.ColumnSpan)" Value="1"/>
-                    <Setter Target="RequestMessageLabel2.HorizontalAlignment" Value="Right"/>
-                    <Setter Target="RequestMessageValue1.(Grid.Row)" Value="7"/>
-                    <Setter Target="RequestMessageValue1.(Grid.Column)" Value="1"/>
-                    <Setter Target="RequestMessageValue1.(Grid.ColumnSpan)" Value="4"/>
-
-                    <Setter Target="ResponseMessageLabel1.(Grid.ColumnSpan)" Value="1"/>
-                    <Setter Target="ResponseMessageLabel1.HorizontalAlignment" Value="Right"/>
-                    <Setter Target="ResponseMessageLabel2.(Grid.ColumnSpan)" Value="1"/>
-                    <Setter Target="ResponseMessageLabel2.HorizontalAlignment" Value="Right"/>
-                    <Setter Target="ResponseMessageValue.(Grid.Row)" Value="9"/>
-                    <Setter Target="ResponseMessageValue.(Grid.Column)" Value="1"/>
-                    <Setter Target="ResponseMessageValue.(Grid.ColumnSpan)" Value="4"/>
-
-                    <Setter Target="RegisterValuesLabel1.(Grid.ColumnSpan)" Value="1"/>
-                    <Setter Target="RegisterValuesLabel1.HorizontalAlignment" Value="Right"/>
-                    <Setter Target="RegisterValuesLabel2.(Grid.ColumnSpan)" Value="1"/>
-                    <Setter Target="RegisterValuesLabel2.HorizontalAlignment" Value="Right"/>
-
-                    <Setter Target="BitValuesLabel1.(Grid.ColumnSpan)" Value="1"/>
-                    <Setter Target="BitValuesLabel1.HorizontalAlignment" Value="Right"/>
-                    <Setter Target="BitValuesLabel2.(Grid.ColumnSpan)" Value="1"/>
-                    <Setter Target="BitValuesLabel2.HorizontalAlignment" Value="Right"/>
-
-                    <Setter Target="WrittenValuesLabel1.(Grid.ColumnSpan)" Value="1"/>
-                    <Setter Target="WrittenValuesLabel1.HorizontalAlignment" Value="Right"/>
-                    <Setter Target="WrittenValuesLabel2.(Grid.ColumnSpan)" Value="1"/>
-                    <Setter Target="WrittenValuesLabel2.HorizontalAlignment" Value="Right"/>
-
-                    <Setter Target="BitValuesToWriteLabel1.(Grid.ColumnSpan)" Value="1"/>
-                    <Setter Target="BitValuesToWriteLabel1.HorizontalAlignment" Value="Right"/>
-                    <Setter Target="BitValuesToWriteLabel2.(Grid.ColumnSpan)" Value="1"/>
-                    <Setter Target="BitValuesToWriteLabel2.HorizontalAlignment" Value="Right"/>
-
-                    <Setter Target="RegisterValuesToWriteLabel1.(Grid.ColumnSpan)" Value="1"/>
-                    <Setter Target="RegisterValuesToWriteLabel1.HorizontalAlignment" Value="Right"/>
-                    <Setter Target="RegisterValuesToWriteLabel2.(Grid.ColumnSpan)" Value="1"/>
-                    <Setter Target="RegisterValuesToWriteLabel2.HorizontalAlignment" Value="Right"/>
-
-                    <Setter Target="Values.(Grid.Row)" Value="11"/>
-                    <Setter Target="Values.(Grid.Column)" Value="1"/>
-                    <Setter Target="Values.(Grid.ColumnSpan)" Value="4"/>-->
-
                 </VisualState.Setters>
             </VisualState>
         </VisualStateGroup>
@@ -793,91 +658,6 @@
                         <GradientStop Color="Transparent" Offset="1"/>
                     </LinearGradientBrush>
                 </ScrollViewer.Background>
-                <!--<Grid VerticalAlignment="Top" Margin="6"
-                        Visibility="{Binding FallbackValue=Collapsed, Converter={converters:ObjectEqualsToVisibilityConverter Inverse=True}, ConverterParameter={x:Null}}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Error Message" Style="{StaticResource LabelStyle}" Opacity="0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Exception" Style="{StaticResource LabelStyle}" Opacity="0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Function Code" Style="{StaticResource LabelStyle}" Opacity="0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Start Address" Style="{StaticResource LabelStyle}" Opacity="0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Scan Length" Style="{StaticResource LabelStyle}" Opacity="0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Request Time" Style="{StaticResource LabelStyle}" Opacity="0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Response Time" Style="{StaticResource LabelStyle}" Opacity="0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" x:Name="RequestMessageLabel2" Grid.ColumnSpan="5" HorizontalAlignment="Left" Text="Request Message" Style="{StaticResource LabelStyle}" Opacity="0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" x:Name="ResponseMessageLabel2" Grid.ColumnSpan="5" HorizontalAlignment="Left" Text="Response Message" Style="{StaticResource LabelStyle}" Opacity="0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" x:Name="RegisterValuesLabel2" Grid.ColumnSpan="5" HorizontalAlignment="Left" Text="Register Values" Style="{StaticResource LabelStyle}" Opacity="0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" x:Name="BitValuesLabel2" Grid.ColumnSpan="5" HorizontalAlignment="Left" Text="Bit Values" Style="{StaticResource LabelStyle}" Opacity="0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" x:Name="WrittenValuesLabel2" Grid.ColumnSpan="5" HorizontalAlignment="Left" Text="Written Values" Style="{StaticResource LabelStyle}" Opacity="0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" x:Name="BitValuesToWriteLabel2" Grid.ColumnSpan="5" HorizontalAlignment="Left" Text="Bit Values to Write" Style="{StaticResource LabelStyle}" Opacity="0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" x:Name="RegisterValuesToWriteLabel2" Grid.ColumnSpan="5" HorizontalAlignment="Left" Text="Register Values ​​to Write" Style="{StaticResource LabelStyle}" Opacity="0"/>
-
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Error Message" Style="{StaticResource LabelStyle}" Visibility="{Binding Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Logging.ChannelErrorLog\, VagabondK.Protocols.Abstractions}"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" Text="{Binding Exception.Message}" Style="{StaticResource ValueStyle}" FontFamily="Segoe UI" FontSize="12" Visibility="{Binding Exception.Message, FallbackValue=Collapsed, Converter={converters:ObjectEqualsToVisibilityConverter Inverse=True}, ConverterParameter={x:Null}}"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" Text="{Binding Exception.Code, Converter={StaticResource EnumToLocalizedStringConverter}}" Style="{StaticResource ValueStyle}" FontFamily="Segoe UI" FontSize="12" Visibility="{Binding Exception.Message, FallbackValue=Collapsed, Converter={converters:ObjectEqualsToVisibilityConverter}, ConverterParameter={x:Null}}"/>
-
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Exception" Style="{StaticResource LabelStyle}" Visibility="{Binding Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Logging.ModbusExceptionLog\, VagabondK.Protocols.Modbus}"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" Text="{Binding ExceptionCode, Converter={StaticResource EnumToLocalizedStringConverter}}" Style="{StaticResource ValueStyle}" FontFamily="Segoe UI" FontSize="12" Visibility="{Binding Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Logging.ModbusExceptionLog\, VagabondK.Protocols.Modbus}"/>
-
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Slave Address" Style="{StaticResource LabelStyle}"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Message.SlaveAddress}" Style="{StaticResource ValueStyle}" Margin="4,2,16,2" Width="40" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Logging.ChannelRequestLog\, VagabondK.Protocols.Abstractions}"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Message.Request.SlaveAddress}" Style="{StaticResource ValueStyle}" Margin="4,2,16,2" Width="40" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Logging.ChannelResponseLog\, VagabondK.Protocols.Abstractions}"/>
-
-                    <TextBlock Grid.Row="2" Grid.Column="0" x:Name="FunctionCodeLabel" Text="Function Code" Style="{StaticResource LabelStyle}"/>
-                    <TextBlock Grid.Row="2" Grid.Column="1" x:Name="FunctionCodeValue1" Text="{Binding Message.Function, Converter={StaticResource EnumToLocalizedStringConverter}}" Style="{StaticResource ValueStyle}" FontFamily="Segoe UI" FontSize="12" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Logging.ChannelRequestLog\, VagabondK.Protocols.Abstractions}"/>
-                    <TextBlock Grid.Row="2" Grid.Column="1" x:Name="FunctionCodeValue2" Text="{Binding Message.Request.Function, Converter={StaticResource EnumToLocalizedStringConverter}}" Style="{StaticResource ValueStyle}" FontFamily="Segoe UI" FontSize="12" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Logging.ChannelResponseLog\, VagabondK.Protocols.Abstractions}"/>
-
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Start Address" Style="{StaticResource LabelStyle}"/>
-                    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Message.Address}" Style="{StaticResource ValueStyle}" Margin="4,2,16,2" Width="40" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Logging.ChannelRequestLog\, VagabondK.Protocols.Abstractions}"/>
-                    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Message.Request.Address}" Style="{StaticResource ValueStyle}" Margin="4,2,16,2" Width="40" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Logging.ChannelResponseLog\, VagabondK.Protocols.Abstractions}"/>
-
-                    <TextBlock Grid.Row="4" Grid.Column="0" x:Name="AddressLengthLabel" Text="Address Length" Style="{StaticResource LabelStyle}"/>
-                    <TextBlock Grid.Row="4" Grid.Column="1" x:Name="AddressLengthValue1" Text="{Binding Message.Length}" Style="{StaticResource ValueStyle}" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Logging.ChannelRequestLog\, VagabondK.Protocols.Abstractions}"/>
-                    <TextBlock Grid.Row="4" Grid.Column="1" x:Name="AddressLengthValue2" Text="{Binding Message.Request.Length}" Style="{StaticResource ValueStyle}" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Logging.ChannelResponseLog\, VagabondK.Protocols.Abstractions}"/>
-
-                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Request Time" Style="{StaticResource LabelStyle}"/>
-                    <TextBlock Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="4" Text="{Binding TimeStamp, Converter={StaticResource TimeStampStringConverter}}" Style="{StaticResource ValueStyle}" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Logging.ChannelRequestLog\, VagabondK.Protocols.Abstractions}"/>
-                    <TextBlock Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="4" Text="{Binding Message.Request.TimeStamp, Converter={StaticResource TimeStampStringConverter}}" Style="{StaticResource ValueStyle}" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Logging.ChannelResponseLog\, VagabondK.Protocols.Abstractions}"/>
-
-                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Response Time" Style="{StaticResource LabelStyle}" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Modbus.ModbusOkResponse\, VagabondK.Protocols.Modbus}"/>
-                    <TextBlock Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="4" Text="{Binding TimeStamp, Converter={StaticResource TimeStampStringConverter}}" Style="{StaticResource ValueStyle}" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Modbus.ModbusOkResponse\, VagabondK.Protocols.Modbus}"/>
-
-                    <TextBlock Grid.Row="7" Grid.Column="0" x:Name="RequestMessageLabel1" Grid.ColumnSpan="5" HorizontalAlignment="Left" Text="Request Message" Style="{StaticResource LabelStyle}"/>
-                    <TextBlock Grid.Row="8" Grid.Column="0" x:Name="RequestMessageValue1" Grid.ColumnSpan="5" Text="{Binding RawMessage, Converter={StaticResource HexConverter}}" Style="{StaticResource ValueStyle}" MaxWidth="380" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Logging.ChannelRequestLog\, VagabondK.Protocols.Abstractions}"/>
-                    <TextBlock Grid.Row="8" Grid.Column="0" x:Name="RequestMessageValue2" Grid.ColumnSpan="5" Text="{Binding Message.Request.RawMessage, Converter={StaticResource HexConverter}}" Style="{StaticResource ValueStyle}" MaxWidth="380" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Logging.ChannelResponseLog\, VagabondK.Protocols.Abstractions}"/>
-
-                    <TextBlock Grid.Row="9" Grid.Column="0" x:Name="ResponseMessageLabel1" Grid.ColumnSpan="5" HorizontalAlignment="Left" Text="Response Message" Style="{StaticResource LabelStyle}" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Modbus.ModbusOkResponse\, VagabondK.Protocols.Modbus}"/>
-                    <TextBlock Grid.Row="10" Grid.Column="0" x:Name="ResponseMessageValue" Grid.ColumnSpan="5" IsTextSelectionEnabled="True" Text="{Binding RawMessage, Converter={StaticResource HexConverter}}" Style="{StaticResource ValueStyle}" MaxWidth="380" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Modbus.ModbusOkResponse\, VagabondK.Protocols.Modbus}"/>
-
-                    <TextBlock Grid.Row="11" Grid.Column="0" x:Name="RegisterValuesLabel1" Grid.ColumnSpan="5" HorizontalAlignment="Left" Text="Register Values" Style="{StaticResource LabelStyle}" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Modbus.ModbusReadRegisterResponse\, VagabondK.Protocols.Modbus}"/>
-                    <TextBlock Grid.Row="11" Grid.Column="0" x:Name="BitValuesLabel1" Grid.ColumnSpan="5" HorizontalAlignment="Left" Text="Bit Values" Style="{StaticResource LabelStyle}" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Modbus.ModbusReadBooleanResponse\, VagabondK.Protocols.Modbus}"/>
-                    <TextBlock Grid.Row="11" Grid.Column="0" x:Name="WrittenValuesLabel1" Grid.ColumnSpan="5" HorizontalAlignment="Left" Text="Written Values" Style="{StaticResource LabelStyle}" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Modbus.ModbusWriteResponse\, VagabondK.Protocols.Modbus}"/>
-                    <TextBlock Grid.Row="11" Grid.Column="0" x:Name="BitValuesToWriteLabel1" Grid.ColumnSpan="5" HorizontalAlignment="Left" Text="Bit Values to Write" Style="{StaticResource LabelStyle}" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Modbus.ModbusWriteCoilRequest\, VagabondK.Protocols.Modbus}"/>
-                    <TextBlock Grid.Row="11" Grid.Column="0" x:Name="RegisterValuesToWriteLabel1" Grid.ColumnSpan="5" HorizontalAlignment="Left" Text="Register Values ​​to Write" Style="{StaticResource LabelStyle}" Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource IsTypeToVisibilityConverter}, ConverterParameter=VagabondK.Protocols.Modbus.ModbusWriteHoldingRegisterRequest\, VagabondK.Protocols.Modbus}"/>
-                    <ContentControl Grid.Row="12" Grid.ColumnSpan="5" x:Name="Values" Content="{Binding Message, Converter={StaticResource MessageToValuesConverter}}" 
-                                    ContentTemplateSelector="{StaticResource MessageToValuesTemplateSelector}"/>
-                </Grid>-->
             </ScrollViewer>
         </Border>
         <mtuuc:GridSplitter
