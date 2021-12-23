@@ -31,7 +31,6 @@ namespace VagaModbusAnalyzer
     {
         public App()
         {
-            VagabondK.Protocols.Channels.SerialPortChannel.StartSerialPortWatcher();
             new UISettings().ColorValuesChanged += UISettings_ColorValuesChanged;
 
             this.InitializeComponent();

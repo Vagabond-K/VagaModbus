@@ -14,6 +14,7 @@ namespace VagaModbusAnalyzer.Infrastructures
         public DataTemplate ChannelRequestTemplate { get; set; }
         public DataTemplate ChannelResponseTemplate { get; set; }
         public DataTemplate UnrecognizedErrorTemplate { get; set; }
+        public DataTemplate RequestErrorTemplate { get; set; }
         public DataTemplate ErrorCodeTemplate { get; set; }
         public DataTemplate ErrorMessageTemplate { get; set; }
 
@@ -32,7 +33,9 @@ namespace VagaModbusAnalyzer.Infrastructures
             else if (item is UnrecognizedErrorLog)
                 return UnrecognizedErrorTemplate ?? base.SelectTemplateCore(item, container);
             else if (item is ChannelErrorLog channelErrorLog)
-                if (channelErrorLog.Exception is ErrorCodeException<ModbusCommErrorCode>)
+                if (channelErrorLog.Exception is RequestException<ModbusCommErrorCode> requestException && requestException.ReceivedBytes != null && requestException.ReceivedBytes.Count > 0)
+                    return RequestErrorTemplate ?? ErrorCodeTemplate ?? base.SelectTemplateCore(item, container);
+                else if (channelErrorLog.Exception is ErrorCodeException<ModbusCommErrorCode>)
                     return ErrorCodeTemplate ?? base.SelectTemplateCore(item, container);
                 else
                     return ErrorMessageTemplate ?? base.SelectTemplateCore(item, container);

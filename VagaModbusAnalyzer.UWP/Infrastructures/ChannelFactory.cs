@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO.Ports;
 using VagabondK.Protocols.Channels;
 using VagaModbusAnalyzer.ChannelSetting;
-using Windows.Devices.SerialCommunication;
 
 namespace VagaModbusAnalyzer.Infrastructures
 {
@@ -42,49 +38,54 @@ namespace VagaModbusAnalyzer.Infrastructures
 
         public SerialPortChannel CreateChannel(SerialPortChannelSetting channelSetting)
         {
-            SerialStopBitCount stopBitCount = SerialStopBitCount.One;
+            StopBits stopBitCount = StopBits.One;
             switch (channelSetting.StopBits)
             {
                 case SerialPortChannelSetting.SerialStopBits.One5:
-                    stopBitCount = SerialStopBitCount.OnePointFive;
+                    stopBitCount = StopBits.OnePointFive;
                     break;
                 case SerialPortChannelSetting.SerialStopBits.Two:
-                    stopBitCount = SerialStopBitCount.Two;
+                    stopBitCount = StopBits.Two;
                     break;
             }
 
-            SerialParity parity = SerialParity.None;
+            Parity parity = Parity.None;
             switch (channelSetting.Parity)
             {
                 case SerialPortChannelSetting.SerialParity.Even:
-                    parity = SerialParity.Even;
+                    parity = Parity.Even;
                     break;
                 case SerialPortChannelSetting.SerialParity.Odd:
-                    parity = SerialParity.Odd;
+                    parity = Parity.Odd;
                     break;
                 case SerialPortChannelSetting.SerialParity.Mark:
-                    parity = SerialParity.Mark;
+                    parity = Parity.Mark;
                     break;
                 case SerialPortChannelSetting.SerialParity.Space:
-                    parity = SerialParity.Space;
+                    parity = Parity.Space;
                     break;
             }
 
-            SerialHandshake handshake = SerialHandshake.None;
+            Handshake handshake = Handshake.None;
             switch (channelSetting.Handshake)
             {
                 case SerialPortChannelSetting.SerialHandshake.XOnXOff:
-                    handshake = SerialHandshake.XOnXOff;
+                    handshake = Handshake.XOnXOff;
                     break;
                 case SerialPortChannelSetting.SerialHandshake.RequestToSend:
-                    handshake = SerialHandshake.RequestToSend;
+                    handshake = Handshake.RequestToSend;
                     break;
                 case SerialPortChannelSetting.SerialHandshake.RequestToSendXOnXOff:
-                    handshake = SerialHandshake.RequestToSendXOnXOff;
+                    handshake = Handshake.RequestToSendXOnXOff;
                     break;
             }
 
-            return new SerialPortChannel(channelSetting.PortName, channelSetting.BaudRate, channelSetting.DataBits, stopBitCount, parity, handshake);
+            return new SerialPortChannel(channelSetting.PortName, channelSetting.BaudRate, channelSetting.DataBits, stopBitCount, parity, handshake)
+            {
+                DtrEnable = channelSetting.DtrEnable,
+                RtsEnable = channelSetting.RtsEnable
+            };
         }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using VagabondK.Protocols.Channels;
+using VagabondK.Protocols.Logging;
 using VagabondK.Protocols.Modbus;
 using VagabondK.Protocols.Modbus.Serialization;
 using VagaModbusAnalyzer.ChannelSetting;
@@ -223,6 +225,12 @@ namespace VagaModbusAnalyzer
                                             }
                                             else if (error != null)
                                             {
+                                                if (error.GetType() == typeof(Exception))
+                                                {
+                                                    error = new MessageException(error.Message);
+                                                    channel.Logger.Log(new ChannelErrorLog(channel, error));
+                                                }
+
                                                 modbusScan.Status = error;
                                             }
                                         });
@@ -238,6 +246,11 @@ namespace VagaModbusAnalyzer
                     }
                 }, scanCancellationTokenSource.Token);
             }
+        }
+
+        public class MessageException : Exception
+        {
+            public MessageException(string exception) : base(exception) { }
         }
 
         public void StopScan()

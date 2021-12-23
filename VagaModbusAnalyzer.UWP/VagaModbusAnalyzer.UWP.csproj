@@ -276,10 +276,10 @@
       <Version>2.1.190606001</Version>
     </PackageReference>
     <PackageReference Include="VagabondK.Protocols.Channels">
-      <Version>1.0.2</Version>
+      <Version>1.0.3</Version>
     </PackageReference>
     <PackageReference Include="VagabondK.Protocols.Channels.SerialPort">
-      <Version>1.0.1</Version>
+      <Version>1.0.6</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

@@ -8,7 +8,7 @@
     <PackageReference Include="Microsoft.Extensions.Localization" Version="5.0.8" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="VagabondK.App" Version="1.0.7" />
-    <PackageReference Include="VagabondK.Protocols.Modbus" Version="1.0.5" />
+    <PackageReference Include="VagabondK.Protocols.Modbus" Version="1.0.10" />
   </ItemGroup>
 
 </Project>

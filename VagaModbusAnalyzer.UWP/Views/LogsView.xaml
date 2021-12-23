@@ -176,8 +176,21 @@
             UnrecognizedErrorStyle="{StaticResource ListViewItemRedStyle}"
             />
 
+        <DataTemplate x:Key="ErrorChannelLogRowHeaderTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Viewbox Width="16" Height="16" VerticalAlignment="Center">
+                    <SymbolIcon Symbol="{local:ToInt32 Value=59961}"/>
+                </Viewbox>
+                <TextBlock Text="ERROR" VerticalAlignment="Center" Margin="6,0" Width="60"/>
+                <TextBlock Text="{Binding TimeStamp, Converter={StaticResource TimeStampStringConverter}}" VerticalAlignment="Center" Width="190"/>
+            </StackPanel>
+        </DataTemplate>
+
         <local:ChannelLogTemplateSelector
-            x:Key="ChannelLogRowHeaderTemplateSelector">
+            x:Key="ChannelLogRowHeaderTemplateSelector"
+            RequestErrorTemplate="{StaticResource ErrorChannelLogRowHeaderTemplate}"
+            ErrorCodeTemplate="{StaticResource ErrorChannelLogRowHeaderTemplate}"
+            ErrorMessageTemplate="{StaticResource ErrorChannelLogRowHeaderTemplate}">
             <local:ChannelLogTemplateSelector.ChannelOpenTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -244,28 +257,6 @@
                     </StackPanel>
                 </DataTemplate>
             </local:ChannelLogTemplateSelector.UnrecognizedErrorTemplate>
-            <local:ChannelLogTemplateSelector.ErrorCodeTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Viewbox Width="16" Height="16" VerticalAlignment="Center">
-                            <SymbolIcon Symbol="{local:ToInt32 Value=59961}"/>
-                        </Viewbox>
-                        <TextBlock Text="ERROR" VerticalAlignment="Center" Margin="6,0" Width="60"/>
-                        <TextBlock Text="{Binding TimeStamp, Converter={StaticResource TimeStampStringConverter}}" VerticalAlignment="Center" Width="190"/>
-                    </StackPanel>
-                </DataTemplate>
-            </local:ChannelLogTemplateSelector.ErrorCodeTemplate>
-            <local:ChannelLogTemplateSelector.ErrorMessageTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Viewbox Width="16" Height="16" VerticalAlignment="Center">
-                            <SymbolIcon Symbol="{local:ToInt32 Value=59961}"/>
-                        </Viewbox>
-                        <TextBlock Text="ERROR" VerticalAlignment="Center" Margin="6,0" Width="60"/>
-                        <TextBlock Text="{Binding TimeStamp, Converter={StaticResource TimeStampStringConverter}}" VerticalAlignment="Center" Width="190"/>
-                    </StackPanel>
-                </DataTemplate>
-            </local:ChannelLogTemplateSelector.ErrorMessageTemplate>
         </local:ChannelLogTemplateSelector>
 
         <local:ChannelLogTemplateSelector
@@ -306,6 +297,14 @@
                     </TextBlock>
                 </DataTemplate>
             </local:ChannelLogTemplateSelector.UnrecognizedErrorTemplate>
+            <local:ChannelLogTemplateSelector.RequestErrorTemplate>
+                <DataTemplate>
+                    <TextBlock TextWrapping="WrapWholeWords">
+                        <Run Text="{Binding Exception.Code, Converter={StaticResource EnumToLocalizedStringConverter}}" FontFamily="Segoe UI" FontSize="12"/>:<LineBreak/>
+                        <Run Text="{Binding Exception.ReceivedBytes, Converter={StaticResource HexConverter}}"/>
+                    </TextBlock>
+                </DataTemplate>
+            </local:ChannelLogTemplateSelector.RequestErrorTemplate>
             <local:ChannelLogTemplateSelector.ErrorCodeTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Exception.Code, Converter={StaticResource EnumToLocalizedStringConverter}}" FontFamily="Segoe UI" FontSize="12" TextWrapping="WrapWholeWords"/>
@@ -500,6 +499,31 @@
                     </Grid>
                 </DataTemplate>
             </local:ChannelLogTemplateSelector.UnrecognizedErrorTemplate>
+            <local:ChannelLogTemplateSelector.RequestErrorTemplate>
+                <DataTemplate>
+                    <Grid VerticalAlignment="Top" Margin="6"
+                        Visibility="{Binding FallbackValue=Collapsed, Converter={StaticResource ObjectNotEqualsToVisibilityConverter}, ConverterParameter={x:Null}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_Channel"/>:</TextBlock>
+                        <TextBlock Grid.Column="1" Text="{Binding ChannelDescription}" Style="{StaticResource ValueStyle}"/>
+                        <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_TimeStamp"/>:</TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding TimeStamp, Converter={StaticResource TimeStampStringConverter}}" Style="{StaticResource ValueStyle}"/>
+                        <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_Description"/>:</TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Exception.Code, Converter={StaticResource EnumToLocalizedStringConverter}}" Style="{StaticResource ValueStyle}"/>
+                        <TextBlock Grid.Column="0" Grid.Row="3" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_RawData"/>:</TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Exception.ReceivedBytes, Converter={StaticResource HexConverter}}" Style="{StaticResource ValueStyle}"/>
+                    </Grid>
+                </DataTemplate>
+            </local:ChannelLogTemplateSelector.RequestErrorTemplate>
             <local:ChannelLogTemplateSelector.ErrorCodeTemplate>
                 <DataTemplate>
                     <Grid VerticalAlignment="Top" Margin="6"

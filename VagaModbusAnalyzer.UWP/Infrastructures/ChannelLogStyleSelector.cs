@@ -14,6 +14,7 @@ namespace VagaModbusAnalyzer.Infrastructures
         public Style ChannelRequestStyle { get; set; }
         public Style ChannelResponseStyle { get; set; }
         public Style UnrecognizedErrorStyle { get; set; }
+        public Style RequestErrorStyle { get; set; }
         public Style ErrorCodeStyle { get; set; }
         public Style ErrorMessageStyle { get; set; }
 
@@ -32,7 +33,9 @@ namespace VagaModbusAnalyzer.Infrastructures
             else if (item is UnrecognizedErrorLog)
                 return UnrecognizedErrorStyle ?? base.SelectStyleCore(item, container);
             else if (item is ChannelErrorLog channelErrorLog)
-                if (channelErrorLog.Exception is ErrorCodeException<ModbusCommErrorCode>)
+                if (channelErrorLog.Exception is RequestException<ModbusCommErrorCode> requestException && requestException.ReceivedBytes != null && requestException.ReceivedBytes.Count > 0)
+                    return RequestErrorStyle ?? ErrorCodeStyle ?? base.SelectStyleCore(item, container);
+                else if (channelErrorLog.Exception is ErrorCodeException<ModbusCommErrorCode>)
                     return ErrorCodeStyle ?? base.SelectStyleCore(item, container);
                 else
                     return ErrorMessageStyle ?? base.SelectStyleCore(item, container);
