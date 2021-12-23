@@ -34,7 +34,11 @@ namespace VagaModbusAnalyzer.Views
 
         private async void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            if (args.ChosenSuggestion != null) return;
+            if (args.ChosenSuggestion != null)
+            {
+                sender.Text = args.ChosenSuggestion as string;
+                return;
+            }
 
             List<string> portNames = new List<string>();
 
