@@ -38,6 +38,9 @@ namespace VagaModbusAnalyzer.Infrastructures
 
         public SerialPortChannel CreateChannel(SerialPortChannelSetting channelSetting)
         {
+            if (string.IsNullOrWhiteSpace(channelSetting.PortName))
+                return null;
+
             StopBits stopBitCount = StopBits.One;
             switch (channelSetting.StopBits)
             {
