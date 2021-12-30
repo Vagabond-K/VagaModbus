@@ -573,4 +573,25 @@
   <data name="Settings_About_ReferenceSites.Text" xml:space="preserve">
     <value>Reference sites</value>
   </data>
+  <data name="LogsView_AppBarButton_AutoScroll.Label" xml:space="preserve">
+    <value>Auto Scroll</value>
+  </data>
+  <data name="LogsView_AppBarButton_Clear.Label" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="MasterDetailMenuButton_WriteData.Content" xml:space="preserve">
+    <value>Write Data</value>
+  </data>
+  <data name="WriteDataView_AddCoilWriter.Content" xml:space="preserve">
+    <value>Add write to coil</value>
+  </data>
+  <data name="WriteDataView_AddHoldingRegisterWriter.Content" xml:space="preserve">
+    <value>Add write to HR</value>
+  </data>
+  <data name="WriteDataView_AppBarButton_AddCoilWriter.Label" xml:space="preserve">
+    <value>Add write to coil</value>
+  </data>
+  <data name="WriteDataView_AppBarButton_AddHoldingRegisterWriter.Label" xml:space="preserve">
+    <value>Add write to holding register</value>
+  </data>
 </root>

@@ -758,91 +758,11 @@
             </DataTemplate>
         </local:ModbusScanDataTemplateSelector.BitDataTemplate>
     </local:ModbusScanDataTemplateSelector>
-    <Style TargetType="controls:ModbusScanView">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="controls:ModbusScanView">
-                    <Grid>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="Selection">
-                                <VisualState x:Name="Selected">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_SelectedBorder" Storyboard.TargetProperty="(Rectangle.Visibility)">
-                                            <DiscreteObjectKeyFrame Value="Visible" KeyTime="0"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Unselected"/>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <Border
-                            Background="{ThemeResource SystemControlBackgroundAltMediumBrush}"
-                            BorderThickness="1" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid Margin="6">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <mtuuc:WrapPanel>
-                                        <TextBlock Margin="5,4"><Run x:Uid="Text_DataType" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
-                                            <Run Text="{Binding ObjectType, Converter={StaticResource EnumToLocalizedStringConverter}}" FontSize="12"/> <Run Text=" " FontFamily="Consolas"/></TextBlock>
-                                        <ToggleSwitch IsOn="{Binding RunScan, Mode=TwoWay}" Width="80" FontSize="12" Margin="8,4" controls:SelectorItem.IsAutoSelectOnClick="True" Template="{StaticResource NoneAnimationToggleSwitch}"/>
-                                        <TextBlock Margin="5,4" TextTrimming="CharacterEllipsis"><Run x:Uid="Text_LastUpdated" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
-                                            <Run Text="{Binding LastUpdated, Converter={StaticResource TimeStampStringConverter}}" FontFamily="Consolas"/></TextBlock>
-                                    </mtuuc:WrapPanel>
-                                    <mtuuc:WrapPanel Grid.Row="1" Grid.ColumnSpan="2">
-                                        <TextBlock Margin="5,4"><Run x:Uid="Text_SlaveAddress" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
-                                            <Run Text="{Binding SlaveAddress}" FontFamily="Consolas"/></TextBlock>
-                                        <TextBlock Margin="5,4"><Run x:Uid="Text_DataAddress" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
-                                            <Run Text="{Binding Address}" FontFamily="Consolas"/></TextBlock>
-                                        <TextBlock Margin="5,4"><Run x:Uid="Text_NumOfData" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
-                                            <Run Text="{Binding Length}" FontFamily="Consolas"/></TextBlock>
-                                    </mtuuc:WrapPanel>
-                                    <StackPanel Grid.Column="1" Grid.RowSpan="2" Orientation="Horizontal" VerticalAlignment="Top">
-                                        <Button Content="&#xE70F;" Command="{TemplateBinding EditCommand}" CommandParameter="{Binding}" Margin="3" Style="{StaticResource SelectorItemButtonStyle}">
-                                            <ToolTipService.ToolTip>
-                                                <TextBlock x:Uid="ItemEditButton"/>
-                                            </ToolTipService.ToolTip>
-                                        </Button>
-                                        <Button Content="&#xE74D;" Command="{TemplateBinding DeleteCommand}" CommandParameter="{Binding}" Margin="3" Style="{StaticResource SelectorItemButtonStyle}">
-                                            <ToolTipService.ToolTip>
-                                                <TextBlock x:Uid="ItemDeleteButton"/>
-                                            </ToolTipService.ToolTip>
-                                        </Button>
-                                    </StackPanel>
-                                    <ContentControl Grid.Row="2" Grid.ColumnSpan="2" Margin="4" Content="{Binding Data}" ContentTemplateSelector="{StaticResource ModbusScanDataTemplateSelector}"/>
-                                </Grid>
-                                <Border Grid.Row="1">
-                                    <Border.Background>
-                                        <SolidColorBrush Color="{Binding Status, Converter={StaticResource ScanStatusColorConverter}}"/>
-                                    </Border.Background>
-                                    <Grid Margin="6">
-                                        <TextBlock Margin="5,2" FontSize="12" TextWrapping="WrapWholeWords"><Run x:Uid="Text_Status" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
-                                            <Run Text="{Binding Status, Converter={StaticResource ScanStatusTextConverter}}"/></TextBlock>
-                                    </Grid>
-                                </Border>
-                            </Grid>
-                        </Border>
-                        <Border x:Name="PART_SelectedBorder" BorderThickness="2" BorderBrush="{ThemeResource SystemControlForegroundAccentBrush}" IsHitTestVisible="False" Visibility="Collapsed"/>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
     <Style TargetType="controls:ModbusScanByteDataItemView">
         <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundChromeMediumBrush}"/>
         <Setter Property="BorderBrush" Value="{ThemeResource ModbusScanDataItemBorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="IsTabStop" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:ModbusScanByteDataItemView">
@@ -901,6 +821,7 @@
         <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundChromeMediumBrush}"/>
         <Setter Property="BorderBrush" Value="{ThemeResource ModbusScanDataItemBorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="IsTabStop" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:ModbusScanBitDataItemView">
@@ -979,6 +900,7 @@
         </Setter>
     </Style>
     <Style TargetType="controls:ModbusScanRegisterDataItemView">
+        <Setter Property="IsTabStop" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:ModbusScanRegisterDataItemView">
@@ -1025,12 +947,11 @@
     </Style>
 
 
-    <Style TargetType="controls:ModbusChannelScanPivot">
+    <Style TargetType="Pivot">
         <Setter Property="Margin" Value="0"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Background" Value="{ThemeResource PivotBackground}"/>
         <Setter Property="IsTabStop" Value="False"/>
-        <Setter Property="SelectedDataItems" Value="{Binding Source={StaticResource SelectedModbusScanDataSummary}, Path=SelectedItems}"/>
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
@@ -1068,7 +989,7 @@
         </Setter>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="controls:ModbusChannelScanPivot">
+                <ControlTemplate TargetType="Pivot">
                     <Grid x:Name="RootElement" Background="{TemplateBinding Background}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
                         <Grid.Resources>
                             <Style x:Key="BaseContentControlStyle" TargetType="ContentControl">

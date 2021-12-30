@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -21,9 +23,9 @@ using Windows.UI.Xaml.Media.Animation;
 
 namespace VagaModbusAnalyzer
 {
-    public class MainViewModel : Shell<MainMenuItem>
+    public class Shell : Shell<MainMenuItem>
     {
-        public MainViewModel(IServiceCollection services) : base(services)
+        public Shell(IServiceCollection services) : base(services)
         {
             ExecuteMainMenuCommand = new InstantCommand<MainMenuItem>(async mainMenuItem => await OpenPage(mainMenuItem), mainMenuItem => mainMenuItem?.CanExecute?.Invoke() ?? true);
 
@@ -87,7 +89,6 @@ namespace VagaModbusAnalyzer
                 catch { }
             });
         }
-
 
         public override Task<PageContext<MainMenuItem>> OpenPage(MainMenuItem pageData)
         {
@@ -160,9 +161,8 @@ namespace VagaModbusAnalyzer
                     oldViewHostPage.Content = null;
                     pageContext.ReloadView();
                 }
-                
+
                 viewHostPage.DataContext = pageContext;
-                viewHostPage.Content = pageContext.View as UIElement;
 
                 if (viewHostPage.Content != null)
                     ViewHostPage.SetViewHostPage(pageContext.View as DependencyObject, viewHostPage);
@@ -209,6 +209,8 @@ namespace VagaModbusAnalyzer
                 ((Frame)sender).CanGoBack ?
                 AppViewBackButtonVisibility.Visible :
                 AppViewBackButtonVisibility.Collapsed;
+
+            GC.Collect();
         }
 
         private void SetElementSourceBindings(ICommandBarElement command, FrameworkElement target)

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using VagabondK.App;
 using VagabondK.Protocols.Channels;
@@ -21,7 +22,7 @@ namespace VagaModbusAnalyzer
         public ObservableCollection<ModbusChannel> Channels { get => Get<ObservableCollection<ModbusChannel>>(); set => Set(value); }
 
         [JsonIgnore]
-        public Shell Shell { get => Get<Shell>(); private set => Set(value); }
+        public ModbusChannel SelectedChannel { get => Get(() => Channels?.FirstOrDefault()); set { if (value != null || Channels == null || Channels.Count == 0) Set(value); } }
 
         public event EventHandler ChannelsCollectionChanged;
 

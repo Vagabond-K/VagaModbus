@@ -16,13 +16,13 @@ namespace VagaModbusAnalyzer.ViewModels
     {
         public ModbusChannels(AppData appData, Shell shell, IStringLocalizer stringLocalizer, IChannelFactory channelFactory)
         {
-            this.appData = appData;
+            AppData = appData;
             this.shell = shell;
             this.stringLocalizer = stringLocalizer;
             ChannelFactory = channelFactory;
         }
 
-        private readonly AppData appData;
+        public AppData AppData { get; }
         private readonly Shell shell;
         private readonly IStringLocalizer stringLocalizer;
 
@@ -31,9 +31,6 @@ namespace VagaModbusAnalyzer.ViewModels
         public InstantCommand<ModbusChannel> EditChannelCommand => GetCommand<ModbusChannel>(EditChannel, channel => channel != null);
         public InstantCommand<ModbusChannel> DeleteChannelCommand => GetCommand<ModbusChannel>(DeleteChannel, channel => channel != null);
 
-        public IReadOnlyList<ModbusChannel> Channels => appData.Channels;
-        public ModbusChannel SelectedChannel { get => Get(() => appData?.Channels?.FirstOrDefault()); set => Set(value); }
-
         public async void AddChannel()
         {
             await shell.OpenPage<AddModbusChannel>($"{stringLocalizer["MasterDetailMenuButton_ModbusChannels/Content"]} > {stringLocalizer["EditModbusChannelView_AddChannel/Title"]}");
@@ -41,7 +38,7 @@ namespace VagaModbusAnalyzer.ViewModels
 
         public async void EditChannel(ModbusChannel channel)
         {
-            SelectedChannel = channel;
+            AppData.SelectedChannel = channel;
             await shell.OpenPage<EditModbusChannel, IEditModbusChannelView>($"{stringLocalizer["MasterDetailMenuButton_ModbusChannels/Content"]} > {stringLocalizer["EditModbusChannelView_EditChannel/Title"]}");
         }
 
@@ -51,15 +48,15 @@ namespace VagaModbusAnalyzer.ViewModels
 
             channel.StopScan();
 
-            int index = appData.Channels.IndexOf(channel);
-            appData.Channels.Remove(channel);
+            int index = AppData.Channels.IndexOf(channel);
+            AppData.Channels.Remove(channel);
 
-            if (index < appData.Channels.Count)
-                SelectedChannel = appData.Channels[index];
-            else if (appData.Channels.Count > 0)
-                SelectedChannel = appData.Channels.Last();
+            if (index < AppData.Channels.Count)
+                AppData.SelectedChannel = AppData.Channels[index];
+            else if (AppData.Channels.Count > 0)
+                AppData.SelectedChannel = AppData.Channels.Last();
             else
-                SelectedChannel = null;
+                AppData.SelectedChannel = null;
         }
     }
 }

@@ -48,11 +48,10 @@ namespace VagaModbusAnalyzer
 
         private readonly ModbusMaster modbusMaster = new ModbusMaster();
         private readonly Dictionary<ChannelType, IChannelSetting> tempChannelSettings = new Dictionary<ChannelType, IChannelSetting>();
-        private readonly object taskRunStopLock = new object();
+        private readonly object channelLock = new object();
         private readonly EventWaitHandle scanOptionEventWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
         private CancellationTokenSource scanCancellationTokenSource = null;
         private Task scanTask = null;
-
 
         public string Name { get => Get<string>(); set => Set(value); }
         public ModbusType ModbusType { get => Get(ModbusType.TCP); set => Set(value); }
@@ -88,6 +87,10 @@ namespace VagaModbusAnalyzer
             }); private set => Set(value);
         }
 
+        public IList<ModbusWriter> ModbusWriters { get => Get(() => new ObservableCollection<ModbusWriter>()); private set => Set(value); }
+
+
+
         private void ModbusScansCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.OldItems != null)
@@ -114,162 +117,164 @@ namespace VagaModbusAnalyzer
 
         public void StartScan(IChannelFactory channelFactory, ICrossThreadDispatcher dispatcher)
         {
-            lock (taskRunStopLock)
+            lock (channelLock)
             {
                 if (scanCancellationTokenSource != null) return;
                 scanCancellationTokenSource = new CancellationTokenSource();
 
                 Logger.dispatcher = dispatcher;
 
-                scanTask = Task.Run(() =>
+                switch (ModbusType)
                 {
-                    switch (ModbusType)
-                    {
-                        case ModbusType.RTU:
-                            modbusMaster.Serializer = new ModbusRtuSerializer();
-                            break;
-                        case ModbusType.TCP:
-                            modbusMaster.Serializer = new ModbusTcpSerializer();
-                            break;
-                        case ModbusType.ASCII:
-                            modbusMaster.Serializer = new ModbusAsciiSerializer();
-                            break;
-                    }
+                    case ModbusType.RTU:
+                        modbusMaster.Serializer = new ModbusRtuSerializer();
+                        break;
+                    case ModbusType.TCP:
+                        modbusMaster.Serializer = new ModbusTcpSerializer();
+                        break;
+                    case ModbusType.ASCII:
+                        modbusMaster.Serializer = new ModbusAsciiSerializer();
+                        break;
+                }
 
+                var channel = channelFactory.CreateChannel(ChannelSetting);
+                if (channel != null)
+                {
+                    channel.Logger = Logger;
+                    modbusMaster.Channel = channel;
+                    (channel as ChannelProvider)?.Start();
 
-                    if (modbusMaster.Channel != null)
+                    scanTask = Task.Run(() =>
                     {
-                        (modbusMaster.Channel as ChannelProvider)?.Stop();
-                        modbusMaster.Channel.Logger = null;
-                    }
-
-                    using (var channel = channelFactory.CreateChannel(ChannelSetting))
-                    {
-                        if (channel != null)
+                        while (scanCancellationTokenSource?.IsCancellationRequested == false)
                         {
-                            channel.Logger = Logger;
-                            modbusMaster.Channel = channel;
-                            (channel as ChannelProvider)?.Start();
-
-                            while (scanCancellationTokenSource?.IsCancellationRequested == false)
+                            var stopwatch = Stopwatch.StartNew();
+                            HashSet<ModbusScan> completedScans = new HashSet<ModbusScan>();
+                            for (int i = 0; i < ModbusScans.Count; i++)
                             {
-                                var stopwatch = Stopwatch.StartNew();
-                                HashSet<ModbusScan> completedScans = new HashSet<ModbusScan>();
-                                for (int i = 0; i < ModbusScans.Count; i++)
+                                ModbusScan modbusScan = null;
+                                lock (ModbusScans)
                                 {
-                                    ModbusScan modbusScan = null;
-                                    lock (ModbusScans)
-                                    {
-                                        if (i < ModbusScans.Count)
-                                            modbusScan = ModbusScans[i];
-                                    }
-
-                                    if (modbusScan != null && modbusScan.RunScan && !completedScans.Contains(modbusScan))
-                                    {
-                                        ModbusResponse response = null;
-                                        Exception error = null;
-                                        lock (modbusScan)
-                                        {
-                                            lock (modbusMaster)
-                                            {
-                                                var request = modbusScan.Request;
-                                                request.TransactionID = null;
-                                                try
-                                                {
-                                                    if (((modbusMaster.Channel as Channel) ?? (modbusMaster.Channel as ChannelProvider)?.PrimaryChannel) != null)
-                                                        response = modbusMaster.Request(request, modbusScan.ResponseTimeout);
-                                                }
-                                                catch (Exception ex)
-                                                {
-                                                    error = ex;
-                                                }
-                                            }
-                                            completedScans.Add(modbusScan);
-
-
-                                            dispatcher?.Invoke(() =>
-                                            {
-                                                if (response != null)
-                                                {
-                                                    switch (modbusScan.ObjectType)
-                                                    {
-                                                        case ModbusObjectType.InputRegister:
-                                                        case ModbusObjectType.HoldingRegister:
-                                                            var bytes = (response as ModbusReadRegisterResponse)?.Bytes;
-                                                            if (bytes != null)
-                                                            {
-                                                                modbusScan.LastUpdated = DateTime.Now;
-                                                                modbusScan.Status = "Text_CommNormal/Text";
-                                                                int index = 0;
-                                                                foreach (var data in modbusScan.Data.Cast<ModbusRegister>())
-                                                                {
-                                                                    data.SetRegisterValue(bytes, index * 2);
-                                                                    index++;
-                                                                }
-                                                            }
-                                                            break;
-                                                        case ModbusObjectType.DiscreteInput:
-                                                        case ModbusObjectType.Coil:
-                                                            var values = (response as ModbusReadBooleanResponse)?.Values;
-                                                            if (values != null)
-                                                            {
-                                                                modbusScan.LastUpdated = DateTime.Now;
-                                                                modbusScan.Status = "Text_CommNormal/Text";
-                                                                int index = 0;
-                                                                foreach (var data in modbusScan.Data.Cast<ModbusBoolean>())
-                                                                {
-                                                                    data.Value = values[index];
-                                                                    index++;
-                                                                }
-                                                            }
-                                                            break;
-                                                    }
-                                                }
-                                                else if (error != null)
-                                                {
-                                                    if (error.GetType() == typeof(Exception))
-                                                    {
-                                                        error = new MessageException(error.Message);
-                                                        channel.Logger.Log(new ChannelErrorLog(channel, error));
-                                                    }
-
-                                                    modbusScan.Status = error;
-                                                }
-                                            });
-                                        }
-                                    }
-
-                                    if (scanCancellationTokenSource?.IsCancellationRequested != false)
-                                        break;
+                                    if (i < ModbusScans.Count)
+                                        modbusScan = ModbusScans[i];
                                 }
 
-                                scanOptionEventWaitHandle.WaitOne((int)Math.Max(0, ScanInterval - stopwatch.ElapsedMilliseconds - 1));
-                            }
-                        }
-                    }
-                }, scanCancellationTokenSource.Token);
-            }
-        }
+                                if (modbusScan != null && modbusScan.RunScan && !completedScans.Contains(modbusScan))
+                                {
+                                    ModbusResponse response = null;
+                                    Exception error = null;
+                                    lock (modbusScan)
+                                    {
+                                        lock (modbusMaster)
+                                        {
+                                            var request = modbusScan.Request;
+                                            request.TransactionID = null;
+                                            try
+                                            {
+                                                if (((modbusMaster.Channel as Channel) ?? (modbusMaster.Channel as ChannelProvider)?.PrimaryChannel) != null)
+                                                    response = modbusMaster.Request(request, modbusScan.ResponseTimeout);
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                error = ex;
+                                            }
+                                        }
+                                        completedScans.Add(modbusScan);
 
-        public class MessageException : Exception
-        {
-            public MessageException(string exception) : base(exception) { }
+
+                                        dispatcher?.Invoke(() =>
+                                        {
+                                            if (response != null)
+                                            {
+                                                switch (modbusScan.ObjectType)
+                                                {
+                                                    case ModbusObjectType.InputRegister:
+                                                    case ModbusObjectType.HoldingRegister:
+                                                        var bytes = (response as ModbusReadRegisterResponse)?.Bytes;
+                                                        if (bytes != null)
+                                                        {
+                                                            modbusScan.LastUpdated = DateTime.Now;
+                                                            modbusScan.Status = "Text_CommNormal/Text";
+                                                            int index = 0;
+                                                            foreach (var data in modbusScan.Data.Cast<ModbusRegister>())
+                                                            {
+                                                                data.SetRegisterValue(bytes, index * 2);
+                                                                index++;
+                                                            }
+                                                        }
+                                                        break;
+                                                    case ModbusObjectType.DiscreteInput:
+                                                    case ModbusObjectType.Coil:
+                                                        var values = (response as ModbusReadBooleanResponse)?.Values;
+                                                        if (values != null)
+                                                        {
+                                                            modbusScan.LastUpdated = DateTime.Now;
+                                                            modbusScan.Status = "Text_CommNormal/Text";
+                                                            int index = 0;
+                                                            foreach (var data in modbusScan.Data.Cast<ModbusBoolean>())
+                                                            {
+                                                                data.Value = values[index];
+                                                                index++;
+                                                            }
+                                                        }
+                                                        break;
+                                                }
+                                            }
+                                            else if (error != null)
+                                            {
+                                                if (error.GetType() == typeof(Exception))
+                                                {
+                                                    error = new MessageException(error.Message);
+                                                    channel.Logger.Log(new ChannelErrorLog(channel, error));
+                                                }
+
+                                                modbusScan.Status = error;
+                                            }
+                                        });
+                                    }
+                                }
+
+                                if (scanCancellationTokenSource?.IsCancellationRequested != false)
+                                    break;
+                            }
+
+                            scanOptionEventWaitHandle.WaitOne((int)Math.Max(0, ScanInterval - stopwatch.ElapsedMilliseconds - 1));
+                        }
+                    }, scanCancellationTokenSource.Token);
+                }
+            }
         }
 
         public void StopScan()
         {
-            lock (taskRunStopLock)
+            lock (channelLock)
             {
-                modbusMaster?.Channel?.Dispose();
                 scanCancellationTokenSource?.Cancel();
                 scanCancellationTokenSource = null;
                 scanOptionEventWaitHandle.Set();
                 scanTask.Wait();
                 scanCancellationTokenSource = null;
+
+                if (modbusMaster.Channel != null)
+                {
+                    (modbusMaster.Channel as ChannelProvider)?.Stop();
+                    modbusMaster.Channel.Logger = null;
+                    modbusMaster.Channel.Dispose();
+                }
             }
         }
 
+        public Task Write(ModbusWriter writer, ICrossThreadDispatcher dispatcher)
+            => Task.Run(() =>
+            {
+                lock (channelLock)
+                {
+                    if (modbusMaster.Channel == null) return;
 
+                    var response = modbusMaster.Request(writer.Request, writer.ResponseTimeout);
+
+                }
+            });
 
         protected override bool OnPropertyChanging(QueryPropertyChangingEventArgs e)
         {
@@ -327,6 +332,5 @@ namespace VagaModbusAnalyzer
                     tempChannelSettings[ChannelSetting.ChannelType] = ChannelSetting;
             }
         }
-
     }
 }

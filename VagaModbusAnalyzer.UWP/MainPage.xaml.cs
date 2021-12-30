@@ -56,7 +56,7 @@ namespace VagaModbusAnalyzer
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (PART_SplitView.DisplayMode == SplitViewDisplayMode.CompactInline && DataContext is MainViewModel mainViewModel)
+            if (PART_SplitView.DisplayMode == SplitViewDisplayMode.CompactInline && DataContext is Shell mainViewModel)
             {
                 PART_SplitView.IsPaneOpen = mainViewModel.IsPaneOpen;
             }
@@ -70,7 +70,7 @@ namespace VagaModbusAnalyzer
                     PART_SplitView.IsPaneOpen = true;
                     break;
                 case SplitViewDisplayMode.CompactInline:
-                    if (DataContext is MainViewModel mainViewModel)
+                    if (DataContext is Shell mainViewModel)
                         mainViewModel.IsPaneOpen = PART_SplitView.IsPaneOpen = !PART_SplitView.IsPaneOpen;
                     break;
             }

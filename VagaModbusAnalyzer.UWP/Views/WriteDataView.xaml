@@ -1,0 +1,65 @@
+﻿<UserControl
+    x:Class="VagaModbusAnalyzer.Views.WriteDataView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:VagaModbusAnalyzer.Controls"
+    xmlns:converters="using:VagaModbusAnalyzer.Converters"
+    xmlns:local="using:VagaModbusAnalyzer.Infrastructures"
+    xmlns:model="using:VagaModbusAnalyzer"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:mtuuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <controls:ViewHostPage.ViewCommands>
+        <controls:ViewCommands>
+            <controls:ViewCommands.PrimaryCommands>
+                <AppBarButton x:Uid="WriteDataView_AppBarButton_AddHoldingRegisterWriter" Icon="Add" Command="{Binding AddHoldingRegisterWriterCommand}"
+                      IsEnabled="{Binding AppData.SelectedChannel, Converter={converters:ObjectEqualsConverter Inverse=True}, ConverterParameter={x:Null}}"/>
+                <AppBarButton x:Uid="WriteDataView_AppBarButton_AddCoilWriter" Icon="Add" Command="{Binding AddCoilWriterCommand}"
+                      IsEnabled="{Binding AppData.SelectedChannel, Converter={converters:ObjectEqualsConverter Inverse=True}, ConverterParameter={x:Null}}"/>
+            </controls:ViewCommands.PrimaryCommands>
+        </controls:ViewCommands>
+    </controls:ViewHostPage.ViewCommands>
+    
+    <Grid x:Name="PART_WriteDataView" Margin="0,15,0,0">
+        <Pivot
+            ItemsSource="{Binding AppData.Channels}" 
+            SelectedItem="{Binding AppData.SelectedChannel, Mode=TwoWay}"
+            >
+            <Pivot.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <ScrollViewer>
+                            <ItemsControl ItemsSource="{Binding ModbusWriters}" Margin="6">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                        <StackPanel 
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Visibility="{Binding ModbusWriters.Count, Converter={converters:ObjectEqualsToVisibilityConverter}, ConverterParameter={local:ToInt32 Value=0}}">
+                            <StackPanel.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource AddNewItemButtonStyle}">
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                    <Setter Property="Margin" Value="0,3"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <Button x:Uid="WriteDataView_AddHoldingRegisterWriter"
+                                Command="{Binding ElementName=PART_WriteDataView, Path=DataContext.AddHoldingRegisterWriterCommand}"/>
+                            <Button x:Uid="WriteDataView_AddCoilWriter"
+                                Command="{Binding ElementName=PART_WriteDataView, Path=DataContext.AddCoilWriterCommand}"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </Pivot.ItemTemplate>
+        </Pivot>
+    </Grid>
+</UserControl>

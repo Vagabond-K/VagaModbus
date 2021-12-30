@@ -17,16 +17,16 @@
         <controls:ViewCommands>
             <controls:ViewCommands.PrimaryCommands>
                 <AppBarElementContainer VerticalContentAlignment="Center" DynamicOverflowOrder="0" AllowFocusOnInteraction="True">
-                    <ComboBox ItemsSource="{Binding Channels}" SelectedItem="{Binding SelectedChannel, Mode=TwoWay}" DisplayMemberPath="Name" Margin="6,0" MinWidth="150"/>
+                    <ComboBox ItemsSource="{Binding AppData.Channels}" SelectedItem="{Binding AppData.SelectedChannel, Mode=TwoWay}" DisplayMemberPath="Name" Margin="6,0" MinWidth="150"/>
                 </AppBarElementContainer>
-                <AppBarButton x:Uid="AppBarButton_Clear" Label="Clear" Icon="Delete" Command="{Binding SelectedChannel.Logger.ClearCommand}"
-                      IsEnabled="{Binding SelectedChannel, Converter={converters:ObjectEqualsConverter Inverse=True}, ConverterParameter={x:Null}}"/>
+                <AppBarButton x:Uid="LogsView_AppBarButton_Clear" Icon="Delete" Command="{Binding AppData.SelectedChannel.Logger.ClearCommand}"
+                      IsEnabled="{Binding AppData.SelectedChannel, Converter={converters:ObjectEqualsConverter Inverse=True}, ConverterParameter={x:Null}}"/>
                 <AppBarElementContainer VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Padding="10,0" 
-                                IsEnabled="{Binding SelectedChannel, Converter={converters:ObjectEqualsConverter Inverse=True}, ConverterParameter={x:Null}}">
-                    <ToggleSwitch IsOn="{Binding SelectedChannel.Logger.IsOn, Mode=TwoWay}" Width="100" Template="{StaticResource NoneAnimationToggleSwitch}"/>
+                                IsEnabled="{Binding AppData.SelectedChannel, Converter={converters:ObjectEqualsConverter Inverse=True}, ConverterParameter={x:Null}}">
+                    <ToggleSwitch IsOn="{Binding AppData.SelectedChannel.Logger.IsOn, Mode=TwoWay}" Width="100" Template="{StaticResource NoneAnimationToggleSwitch}"/>
                 </AppBarElementContainer>
                 <AppBarSeparator Height="40"/>
-                <AppBarToggleButton x:Uid="AppBarButton_AutoScroll" Label="Auto Scroll" IsChecked="{Binding IsAutoScroll, Mode=TwoWay}">
+                <AppBarToggleButton x:Uid="LogsView_AppBarButton_AutoScroll" IsChecked="{Binding IsAutoScroll, Mode=TwoWay}">
                     <AppBarToggleButton.Icon>
                         <FontIcon Glyph="&#xE74B;"/>
                     </AppBarToggleButton.Icon>
@@ -645,7 +645,7 @@
         </VisualStateGroup>
     </VisualStateManager.VisualStateGroups>
 
-    <Grid DataContext="{Binding SelectedChannel.Logger}">
+    <Grid DataContext="{Binding AppData.SelectedChannel.Logger}">
         <Grid.RowDefinitions>
             <RowDefinition MinHeight="20"/>
             <RowDefinition Height="8"/>

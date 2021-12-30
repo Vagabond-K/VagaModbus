@@ -18,7 +18,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace VagaModbusAnalyzer.ViewModels
 {
-    [ServiceDescription(ServiceLifetime.Singleton)]
+    [ViewModel(ServiceLifetime.Singleton)]
     public class Settings : NotifyPropertyChangeObject
     {
         public Settings(ThemeManager themeManager, IDialog dialog)
