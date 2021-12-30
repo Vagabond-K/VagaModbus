@@ -26,7 +26,7 @@ namespace VagaModbusAnalyzer.Controls
         private void PivotSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DeselectAll();
-            SelectedScanView = null;
+            SelectedView = null;
         }
 
         protected override void OnApplyTemplate()
@@ -45,19 +45,19 @@ namespace VagaModbusAnalyzer.Controls
 
 
 
-        public ModbusScanView SelectedScanView
+        public Windows.UI.Xaml.Controls.Primitives.SelectorItem SelectedView
         {
-            get { return (ModbusScanView)GetValue(SelectedScanViewProperty); }
-            set { SetValue(SelectedScanViewProperty, value); }
+            get { return (Windows.UI.Xaml.Controls.Primitives.SelectorItem)GetValue(SelectedViewProperty); }
+            set { SetValue(SelectedViewProperty, value); }
         }
 
-        public static readonly DependencyProperty SelectedScanViewProperty =
-            DependencyProperty.Register("SelectedScanView", typeof(ModbusScanView), typeof(ModbusChannelScanPivot), new PropertyMetadata(null, (d, e) =>
+        public static readonly DependencyProperty SelectedViewProperty =
+            DependencyProperty.Register("SelectedView", typeof(Windows.UI.Xaml.Controls.Primitives.SelectorItem), typeof(ModbusChannelScanPivot), new PropertyMetadata(null, (d, e) =>
             {
                 if (d is ModbusChannelScanPivot modbusChannelScanPivot
-                    && e.OldValue is ModbusScanView oldSelectedScanView)
+                    && e.OldValue is Windows.UI.Xaml.Controls.Primitives.SelectorItem oldSelectedView)
                 {
-                    oldSelectedScanView.IsSelected = false;
+                    oldSelectedView.IsSelected = false;
                     modbusChannelScanPivot.DeselectAll();
                 }
             }));
@@ -171,9 +171,9 @@ namespace VagaModbusAnalyzer.Controls
             Point point = pointerPoint.Position;
             point = new Point(Math.Round(point.X), Math.Round(point.Y));
 
-            if (VisualTreeHelper.FindElementsInHostCoordinates(point, this).Where(u => u is ModbusScanView element).FirstOrDefault() is ModbusScanView modbusScanView)
+            if (VisualTreeHelper.FindElementsInHostCoordinates(point, this).Where(u => u is Windows.UI.Xaml.Controls.Primitives.SelectorItem element).FirstOrDefault() is Windows.UI.Xaml.Controls.Primitives.SelectorItem selectorItem)
             {
-                modbusScanView.IsSelected = true;
+                selectorItem.IsSelected = true;
             }
 
             if (!pointerPoint.Properties.IsLeftButtonPressed) return;

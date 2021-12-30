@@ -17,31 +17,32 @@
         <controls:ViewCommands>
             <controls:ViewCommands.PrimaryCommands>
                 <AppBarButton x:Uid="ReadDataView_AppBarButton_AddScan" Icon="Add" Command="{Binding AddScanCommand}"
-                      IsEnabled="{Binding SelectedChannel, Converter={converters:ObjectEqualsConverter Inverse=True}, ConverterParameter={x:Null}}"/>
+                      IsEnabled="{Binding AppData.SelectedChannel, Converter={converters:ObjectEqualsConverter Inverse=True}, ConverterParameter={x:Null}}"/>
                 <!--<AppBarButton x:Uid="ReadDataView_AppBarButton_AddScan" Icon="Send" Command="{Binding AddScanCommand}"
-                      IsEnabled="{Binding SelectedChannel, Converter={vk:ObjectEqualsConverter Inverse=True}, ConverterParameter={x:Null}}"/>-->
+                      IsEnabled="{Binding AppData.SelectedChannel, Converter={vk:ObjectEqualsConverter Inverse=True}, ConverterParameter={x:Null}}"/>-->
             </controls:ViewCommands.PrimaryCommands>
         </controls:ViewCommands>
     </controls:ViewHostPage.ViewCommands>
     
     <Grid x:Name="PART_ReadDataView" Margin="0,15,0,0">
         <controls:ModbusChannelScanPivot
-            ItemsSource="{Binding Channels}" 
-            SelectedItem="{Binding SelectedChannel, Mode=TwoWay}"
+            ItemsSource="{Binding AppData.Channels}" 
+            SelectedItem="{Binding AppData.SelectedChannel, Mode=TwoWay}"
             ModbusWriteCommand="{Binding ModbusWriteCommand}"
             >
             <controls:ModbusChannelScanPivot.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <ScrollViewer>
-                            <ItemsControl ItemsSource="{Binding ModbusScans}" Margin="6">
+                            <ItemsControl ItemsSource="{Binding ModbusScans}" Margin="6" IsTabStop="False">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate x:DataType="model:ModbusScan">
                                         <controls:ModbusScanView 
                                             Content="{Binding}"
                                             EditCommand="{Binding ElementName=PART_ReadDataView, Path=DataContext.EditScanCommand}"
                                             DeleteCommand="{Binding ElementName=PART_ReadDataView, Path=DataContext.DeleteScanCommand}"
-                                            Margin="6"/>
+                                            Margin="6"
+                                            IsTabStop="False"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>

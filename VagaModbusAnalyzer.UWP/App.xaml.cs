@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using VagaModbusAnalyzer.Infrastructures;
 using VagaModbusAnalyzer.ViewModels;
 using VagaModbusAnalyzer.Views;
@@ -42,49 +43,26 @@ namespace VagaModbusAnalyzer
         {
             PreserveReferencesHandling = PreserveReferencesHandling.Objects,
             TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
+            TypeNameHandling = TypeNameHandling.All
         };
 
-        private MainViewModel mainViewModel;
+        private Shell mainViewModel;
         private ApplicationView applicationView = null;
 
         protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
-
             MainPage mainPage = Window.Current.Content as MainPage;
             if (mainPage == null)
             {
-                AppData appData = null;
-
-                try
-                {
-                    var dataFileInfo = await ApplicationData.Current.LocalFolder.TryGetItemAsync("data");
-
-                    if (dataFileInfo != null)
-                    {
-                        var dataFile = await ApplicationData.Current.LocalFolder.GetFileAsync("data");
-                        using (var stream = await dataFile.OpenStreamForReadAsync())
-                        using (var streamReader = new StreamReader(stream))
-                        using (var jsonReader = new JsonTextReader(streamReader))
-                        {
-                            appData = JsonSerializer.Create(jsonSerializerSettings).Deserialize<AppData>(jsonReader);
-                        }
-                    }
-                }
-                catch
-                {
-
-                }
-
-                if (appData == null)
-                    appData = new AppData();
+                AppData appData = await LoadAppData();
 
                 ServiceCollection services = new ServiceCollection();
                 services.AddSingleton(appData);
                 services.AddServices(typeof(AppData).Assembly);
                 services.AddServices(typeof(App).Assembly);
 
+                mainViewModel = new Shell(services);
 
-                mainViewModel = new MainViewModel(services);
                 var themeManager = mainViewModel.ShellServiceProvider.GetService<ThemeManager>();
 
                 mainPage = mainViewModel.MainPage;
@@ -108,6 +86,14 @@ namespace VagaModbusAnalyzer
                         Title = localizer["MasterDetailMenuButton_ReadData/Content"],
                         ViewModelTypeName = typeof(ReadData).AssemblyQualifiedName,
                         ViewTypeName = typeof(ReadDataView).AssemblyQualifiedName,
+                        CanExecute = () => appData?.Channels?.Count > 0
+                    },
+                    new MainMenuItem()
+                    {
+                        Icon = 0xE929,
+                        Title = localizer["MasterDetailMenuButton_WriteData/Content"],
+                        ViewModelTypeName = typeof(WriteData).AssemblyQualifiedName,
+                        ViewTypeName = typeof(WriteDataView).AssemblyQualifiedName,
                         CanExecute = () => appData?.Channels?.Count > 0
                     },
                     new MainMenuItem()
@@ -147,7 +133,7 @@ namespace VagaModbusAnalyzer
                 channel.StartScan(mainViewModel.ShellServiceProvider.GetService<IChannelFactory>(), mainViewModel.ShellServiceProvider.GetService<ICrossThreadDispatcher>());
             }
 
-            mainViewModel = mainPage.DataContext as MainViewModel;
+            mainViewModel = mainPage.DataContext as Shell;
 
             if (e.PrelaunchActivated == false)
             {
@@ -192,7 +178,43 @@ namespace VagaModbusAnalyzer
         private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
+            await SaveAppData();
 
+            deferral.Complete();
+        }
+
+        private async Task<AppData> LoadAppData()
+        {
+            AppData appData = null;
+
+            try
+            {
+                var dataFileInfo = await ApplicationData.Current.LocalFolder.TryGetItemAsync("data");
+
+                if (dataFileInfo != null)
+                {
+                    var dataFile = await ApplicationData.Current.LocalFolder.GetFileAsync("data");
+                    using (var stream = await dataFile.OpenStreamForReadAsync())
+                    using (var streamReader = new StreamReader(stream))
+                    using (var jsonReader = new JsonTextReader(streamReader))
+                    {
+                        appData = JsonSerializer.Create(jsonSerializerSettings).Deserialize<AppData>(jsonReader);
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+
+            if (appData == null)
+                appData = new AppData();
+
+            return appData;
+        }
+
+        private async Task SaveAppData()
+        {
             try
             {
                 var appData = mainViewModel.ShellServiceProvider.GetService<AppData>();
@@ -210,8 +232,6 @@ namespace VagaModbusAnalyzer
             {
 
             }
-
-            deferral.Complete();
         }
     }
 }

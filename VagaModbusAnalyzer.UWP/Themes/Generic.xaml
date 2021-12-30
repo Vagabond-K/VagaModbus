@@ -820,7 +820,7 @@
                                             </ToolTipService.ToolTip>
                                         </Button>
                                     </StackPanel>
-                                    <ContentControl Grid.Row="2" Grid.ColumnSpan="2" Margin="4" Content="{Binding Data}" ContentTemplateSelector="{StaticResource ModbusScanDataTemplateSelector}"/>
+                                    <ContentControl Grid.Row="2" Grid.ColumnSpan="2" Margin="4" Content="{Binding Data}" ContentTemplateSelector="{StaticResource ModbusScanDataTemplateSelector}" IsTabStop="False"/>
                                 </Grid>
                                 <Border Grid.Row="1">
                                     <Border.Background>
@@ -843,6 +843,7 @@
         <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundChromeMediumBrush}"/>
         <Setter Property="BorderBrush" Value="{ThemeResource ModbusScanDataItemBorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="IsTabStop" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:ModbusScanByteDataItemView">
@@ -901,6 +902,7 @@
         <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundChromeMediumBrush}"/>
         <Setter Property="BorderBrush" Value="{ThemeResource ModbusScanDataItemBorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="IsTabStop" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:ModbusScanBitDataItemView">
@@ -979,6 +981,7 @@
         </Setter>
     </Style>
     <Style TargetType="controls:ModbusScanRegisterDataItemView">
+        <Setter Property="IsTabStop" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:ModbusScanRegisterDataItemView">

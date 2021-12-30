@@ -573,4 +573,25 @@
   <data name="Settings_About_ReferenceSites.Text" xml:space="preserve">
     <value>참조 사이트</value>
   </data>
+  <data name="LogsView_AppBarButton_AutoScroll.Label" xml:space="preserve">
+    <value>자동 스크롤</value>
+  </data>
+  <data name="LogsView_AppBarButton_Clear.Label" xml:space="preserve">
+    <value>모두 지우기</value>
+  </data>
+  <data name="MasterDetailMenuButton_WriteData.Content" xml:space="preserve">
+    <value>데이터 쓰기</value>
+  </data>
+  <data name="WriteDataView_AddCoilWriter.Content" xml:space="preserve">
+    <value>Coil 쓰기 추가</value>
+  </data>
+  <data name="WriteDataView_AddHoldingRegisterWriter.Content" xml:space="preserve">
+    <value>HR 쓰기 추가</value>
+  </data>
+  <data name="WriteDataView_AppBarButton_AddCoilWriter.Label" xml:space="preserve">
+    <value>Coil 쓰기 추가</value>
+  </data>
+  <data name="WriteDataView_AppBarButton_AddHoldingRegisterWriter.Label" xml:space="preserve">
+    <value>Holding Register 쓰기 추가</value>
+  </data>
 </root>

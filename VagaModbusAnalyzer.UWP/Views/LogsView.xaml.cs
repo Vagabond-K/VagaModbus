@@ -41,9 +41,9 @@ namespace VagaModbusAnalyzer.Views
             if (DataContext is Logs logs)
             {
                 logs.PropertyChanged += LogsPropertyChanged;
-                if (!logs.Channels.Contains(logs.SelectedChannel))
+                if (!logs.AppData.Channels.Contains(logs.AppData.SelectedChannel))
                 {
-                    logs.SelectedChannel = logs.Channels.FirstOrDefault();
+                    logs.AppData.SelectedChannel = logs.AppData.Channels.FirstOrDefault();
                 }
             }
 
@@ -64,7 +64,7 @@ namespace VagaModbusAnalyzer.Views
         {
             if (sender is Logs logs && e.PropertyName == nameof(logs.IsAutoScroll) && logs.IsAutoScroll)
             {
-                var message = logs.SelectedChannel?.Logger?.ItemsSource?.LastOrDefault();
+                var message = logs.AppData.SelectedChannel?.Logger?.ItemsSource?.LastOrDefault();
                 if (message != null)
                 {
                     PART_Logger.SelectedItem = message;

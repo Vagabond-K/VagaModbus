@@ -11,13 +11,13 @@ namespace VagaModbusAnalyzer.ViewModels
     {
         public Logs(AppData appData)
         {
-            this.appData = appData;
+            AppData = appData;
         }
 
-        private readonly AppData appData;
+        public AppData AppData { get; }
 
-        public IReadOnlyList<ModbusChannel> Channels => appData.Channels;
-        public ModbusChannel SelectedChannel { get => Get(() => appData?.Channels?.FirstOrDefault()); set => Set(value); }
+        //public IReadOnlyList<ModbusChannel> Channels => AppData.Channels;
+        //public ModbusChannel SelectedChannel { get => AppData?.SelectedChannel; set => AppData.SelectedChannel = value; }
 
         public bool IsAutoScroll { get => Get(false); set => Set(value); }
     }

@@ -19,7 +19,7 @@ namespace VagaModbusAnalyzer.ViewModels
             this.channelMgt = channelMgt;
             this.dispatcher = dispatcher;
 
-            editingChannel = channelMgt.SelectedChannel;
+            editingChannel = channelMgt.AppData.SelectedChannel;
             Channel = editingChannel.Copy();
         }
 

@@ -32,7 +32,7 @@ namespace VagaModbusAnalyzer.Controls
 
                         if (parent is ModbusChannelScanPivot modbusChannelScanPivot)
                         {
-                            modbusChannelScanPivot.SelectedScanView = view;
+                            modbusChannelScanPivot.SelectedView = view;
                             break;
                         }
                     }

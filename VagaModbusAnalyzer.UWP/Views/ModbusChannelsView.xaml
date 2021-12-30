@@ -129,8 +129,8 @@
     <Grid>
         <GridView
             x:Name="PART_GridView" 
-            ItemsSource="{Binding Path=Channels}" 
-            SelectedItem="{Binding Path=SelectedChannel, Mode=TwoWay}"
+            ItemsSource="{Binding AppData.Channels}" 
+            SelectedItem="{Binding AppData.SelectedChannel, Mode=TwoWay}"
             Padding="15">
             <!--<GridView.ItemContainerTransitions>
                 <TransitionCollection>
@@ -200,7 +200,7 @@
         </GridView>
         <Button x:Uid="ModbusChannelsView_AddChannel"
                 Command="{Binding AddChannelCommand}"
-                Visibility="{Binding Channels.Count, Converter={converters:ObjectEqualsToVisibilityConverter}, ConverterParameter={local:ToInt32 Value=0}}"
+                Visibility="{Binding AppData.Channels.Count, Converter={converters:ObjectEqualsToVisibilityConverter}, ConverterParameter={local:ToInt32 Value=0}}"
                 Style="{StaticResource AddNewItemButtonStyle}"/>
 
     </Grid>

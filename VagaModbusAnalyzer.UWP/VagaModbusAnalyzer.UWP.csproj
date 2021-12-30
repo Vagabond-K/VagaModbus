@@ -177,7 +177,7 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainViewModel.cs" />
+    <Compile Include="Shell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Settings.cs" />
     <Compile Include="ViewModels\ThemeColorPickerPopup.cs" />
@@ -192,6 +192,9 @@
     </Compile>
     <Compile Include="Views\ModbusChannelsView.xaml.cs">
       <DependentUpon>ModbusChannelsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WriteDataView.xaml.cs">
+      <DependentUpon>WriteDataView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ReadDataView.xaml.cs">
       <DependentUpon>ReadDataView.xaml</DependentUpon>
@@ -251,6 +254,10 @@
     <Page Include="Views\ModbusChannelsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WriteDataView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ReadDataView.xaml">
       <SubType>Designer</SubType>

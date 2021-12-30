@@ -11,12 +11,12 @@ namespace VagaModbusAnalyzer.Infrastructures
     [ServiceDescription(typeof(ICrossThreadDispatcher), ServiceLifetime.Singleton)]
     public class CrossThreadDispatcher : ICrossThreadDispatcher
     {
-        public CrossThreadDispatcher(MainViewModel mainViewModel)
+        public CrossThreadDispatcher(Shell mainViewModel)
         {
             this.mainViewModel = mainViewModel;
         }
 
-        private readonly MainViewModel mainViewModel;
+        private readonly Shell mainViewModel;
 
         public void Invoke(Action callback)
         {

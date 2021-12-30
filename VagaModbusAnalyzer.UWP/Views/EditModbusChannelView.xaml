@@ -229,7 +229,8 @@
             <ContentControl 
                 Content="{Binding ChannelSetting}" 
                 ContentTemplateSelector="{StaticResource ChannelSettingEditTemplateSelector}"
-                HorizontalContentAlignment="Stretch"/>
+                HorizontalContentAlignment="Stretch"
+                IsTabStop="False"/>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

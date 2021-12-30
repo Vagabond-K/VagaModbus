@@ -13,12 +13,12 @@ namespace VagaModbusAnalyzer.ViewModels
     {
         public ReadData(AppData appData, IDialog dialog, IStringLocalizer stringLocalizer)
         {
-            this.appData = appData;
+            AppData = appData;
             this.dialog = dialog;
             this.stringLocalizer = stringLocalizer;
         }
 
-        private readonly AppData appData;
+        public AppData AppData { get; }
         private readonly IDialog dialog;
         private readonly IStringLocalizer stringLocalizer;
 
@@ -33,21 +33,18 @@ namespace VagaModbusAnalyzer.ViewModels
         {
         }
 
-        public IReadOnlyList<ModbusChannel> Channels => appData.Channels;
-        public ModbusChannel SelectedChannel { get { return Get(() => appData?.Channels?.FirstOrDefault()); } set { Set(value); } }
-
         private async void AddScan()
         {
             if (await dialog.ShowDialog<EditModbusScan>(stringLocalizer["EditModbusScanView_AddScan/Title"], out var editModbusScan) == true)
             {
-                SelectedChannel.ModbusScans.Add(ModbusScan.CreateScan(
-                    SelectedChannel,
-                    editModbusScan.ObjectType,
-                    (byte)editModbusScan.SlaveAddress,
-                    (ushort)editModbusScan.Address,
-                    (ushort)editModbusScan.Length,
-                    editModbusScan.ResponseTimeout
-                ));
+                AppData.SelectedChannel.ModbusScans.Add(new ModbusScan
+                {
+                    ObjectType = editModbusScan.ObjectType,
+                    SlaveAddress = (byte)editModbusScan.SlaveAddress,
+                    Address = (ushort)editModbusScan.Address,
+                    Length = (ushort)editModbusScan.Length,
+                    ResponseTimeout = editModbusScan.ResponseTimeout
+                });
             }
         }
 
@@ -101,7 +98,7 @@ namespace VagaModbusAnalyzer.ViewModels
 
         private void DeleteScan(ModbusScan modbusScan)
         {
-            SelectedChannel.ModbusScans.Remove(modbusScan);
+            AppData.SelectedChannel.ModbusScans.Remove(modbusScan);
         }
 
         private bool CanDeleteScan(ModbusScan modbusScan)

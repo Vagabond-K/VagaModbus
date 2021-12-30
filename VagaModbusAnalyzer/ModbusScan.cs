@@ -9,9 +9,6 @@ namespace VagaModbusAnalyzer
 {
     public class ModbusScan : NotifyPropertyChangeObject
     {
-        [JsonProperty]
-        public ModbusChannel Channel { get; private set; }
-
         public ModbusObjectType ObjectType { get => Get(ModbusObjectType.InputRegister); set => Set(value); }
 
         public byte SlaveAddress { get => Get((byte)1); set => Set(value); }
@@ -20,9 +17,6 @@ namespace VagaModbusAnalyzer
         public int ResponseTimeout { get => Get(5000); set => Set(value); }
 
         public bool RunScan { get => Get(true); set => Set(value); }
-
-        public static ModbusScan CreateScan(ModbusChannel channel, ModbusObjectType objectType, byte slaveAddress, ushort address, ushort length, int responseTimeout)
-            => new ModbusScan { Channel = channel, ObjectType = objectType, SlaveAddress = slaveAddress, Address = address, Length = length, ResponseTimeout = responseTimeout };
 
         [JsonIgnore]
         public ModbusRequest Request { get => Get(() => { return new ModbusReadRequest(SlaveAddress, ObjectType, Address, Length); }); }
