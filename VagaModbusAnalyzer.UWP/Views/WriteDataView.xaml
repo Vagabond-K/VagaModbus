@@ -26,6 +26,7 @@
     
     <Grid x:Name="PART_WriteDataView" Margin="0,15,0,0">
         <Pivot
+            Style="{StaticResource ModbusChannelsPivotStyle}"
             ItemsSource="{Binding AppData.Channels}" 
             SelectedItem="{Binding AppData.SelectedChannel, Mode=TwoWay}"
             >
