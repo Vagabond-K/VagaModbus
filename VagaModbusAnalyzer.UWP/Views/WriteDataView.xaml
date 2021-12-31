@@ -28,6 +28,7 @@
         <Pivot
             ItemsSource="{Binding AppData.Channels}" 
             SelectedItem="{Binding AppData.SelectedChannel, Mode=TwoWay}"
+            ModbusWriteCommand="{Binding ModbusWriteCommand}"
             >
             <Pivot.ItemTemplate>
                 <DataTemplate>
