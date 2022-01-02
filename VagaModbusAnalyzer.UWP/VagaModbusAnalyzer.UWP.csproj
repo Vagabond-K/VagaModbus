@@ -130,6 +130,7 @@
     </Compile>
     <Compile Include="Controls\FloatingPanelPresentor.cs" />
     <Compile Include="Controls\ModbusScanBitDataItemView.cs" />
+    <Compile Include="Controls\TextBoxExtensions.cs" />
     <Compile Include="Converters\BinaryConverter.cs" />
     <Compile Include="Converters\ChannelLogBackgroundColorConverter.cs" />
     <Compile Include="Converters\ChannelLogToMessageConverter.cs" />

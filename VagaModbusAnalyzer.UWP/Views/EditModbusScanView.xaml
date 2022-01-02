@@ -16,12 +16,21 @@
                     <Setter Property="Margin" Value="6"/>
                 </Style>
                 <Style TargetType="TextBox">
+                    <Setter Property="controls:TextBoxExtensions.SelectAllGotFocus" Value="True"/>
                     <Setter Property="Margin" Value="6"/>
                 </Style>
                 <Style TargetType="AutoSuggestBox">
                     <Setter Property="Margin" Value="6"/>
+                    <Setter Property="TextBoxStyle">
+                        <Setter.Value>
+                            <Style TargetType="TextBox" BasedOn="{StaticResource AutoSuggestBoxTextBoxStyle}">
+                                <Setter Property="controls:TextBoxExtensions.SelectAllGotFocus" Value="True"/>
+                            </Style>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
                 <Style TargetType="controls:NumericBox">
+                    <Setter Property="controls:TextBoxExtensions.SelectAllGotFocus" Value="True"/>
                     <Setter Property="Margin" Value="6"/>
                 </Style>
                 <Style TargetType="Slider">

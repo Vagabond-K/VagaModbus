@@ -21,6 +21,7 @@ namespace VagaModbusAnalyzer.ViewModels
 
         public InstantCommand AddHoldingRegisterWriterCommand { get => Get(() => new InstantCommand(AddHoldingRegisterWriter)); }
         public InstantCommand AddCoilWriterCommand { get => Get(() => new InstantCommand(AddCoilWriter)); }
+        public InstantCommand<ModbusWriter> EditWriterCommand { get => Get(() => new InstantCommand<ModbusWriter>(EditWriter, CanExecute)); }
         public InstantCommand<ModbusWriter> DeleteWriterCommand { get => Get(() => new InstantCommand<ModbusWriter>(DeleteWriter, CanExecute)); }
         public InstantCommand<ModbusWriter> ModbusWriteCommand { get => Get(() => new InstantCommand<ModbusWriter>(ModbusWrite, CanExecute)); }
 
@@ -30,6 +31,10 @@ namespace VagaModbusAnalyzer.ViewModels
 
         private void AddCoilWriter()
             => AppData.SelectedChannel.ModbusWriters.Add(new ModbusCoilWriter());
+
+        private void EditWriter(ModbusWriter modbusWriter)
+        {
+        }
 
         private void DeleteWriter(ModbusWriter modbusWriter)
             => AppData.SelectedChannel.ModbusWriters.Remove(modbusWriter);
