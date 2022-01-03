@@ -594,4 +594,25 @@
   <data name="WriteDataView_AppBarButton_AddHoldingRegisterWriter.Label" xml:space="preserve">
     <value>Add write to holding register</value>
   </data>
+  <data name="EditModbusCoilWriterView_AddWriter/Title" xml:space="preserve">
+    <value>Add write to coil</value>
+  </data>
+  <data name="EditModbusCoilWriterView_EditWriter/Title" xml:space="preserve">
+    <value>Edit write to coil</value>
+  </data>
+  <data name="Text_CopyToClipboard.Text" xml:space="preserve">
+    <value>Copy to clipboard</value>
+  </data>
+  <data name="Text_Hex.Text" xml:space="preserve">
+    <value>Hex</value>
+  </data>
+  <data name="Text_Message.Text" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="Text_Send.Text" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="Text_UseMultiWrite.Text" xml:space="preserve">
+    <value>Use multiple write function</value>
+  </data>
 </root>

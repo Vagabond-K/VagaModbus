@@ -1,0 +1,47 @@
+﻿<ContentDialog
+    x:Class="VagaModbusAnalyzer.Views.EditModbusCoilWriterView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:VagaModbusAnalyzer.Infrastructures"
+    xmlns:controls="using:VagaModbusAnalyzer.Controls"
+    xmlns:converters="using:VagaModbusAnalyzer.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Uid="EditModbusScanView"
+    mc:Ignorable="d">
+    <ScrollViewer>
+        <StackPanel>
+            <StackPanel.Resources>
+                <Style TargetType="controls:NumericBox">
+                    <Setter Property="controls:TextBoxExtensions.SelectAllGotFocus" Value="True"/>
+                    <Setter Property="Margin" Value="6"/>
+                </Style>
+                <Style TargetType="Slider">
+                    <Setter Property="Margin" Value="6"/>
+                </Style>
+            </StackPanel.Resources>
+            <controls:NumericBox Text="{Binding SlaveAddress, Mode=TwoWay}" ValueTypeCode="Byte" MinValue="0" MaxValue="255">
+                <TextBox.Header>
+                    <TextBlock x:Uid="Text_SlaveAddress"/>
+                </TextBox.Header>
+            </controls:NumericBox>
+            <controls:NumericBox Text="{Binding Address, Mode=TwoWay}" ValueTypeCode="UInt16" MinValue="0" MaxValue="65535">
+                <TextBox.Header>
+                    <TextBlock x:Uid="Text_DataAddress"/>
+                </TextBox.Header>
+            </controls:NumericBox>
+            <controls:NumericBox Text="{Binding Length, Mode=TwoWay}" ValueTypeCode="UInt16" MinValue="1" MaxValue="2040">
+                <TextBox.Header>
+                    <TextBlock x:Uid="Text_NumOfData"/>
+                </TextBox.Header>
+            </controls:NumericBox>
+            <Slider Value="{Binding ResponseTimeout, Mode=TwoWay}" Maximum="10000" LargeChange="100" StepFrequency="100">
+                <Slider.Header>
+                    <TextBlock>
+                        <Run x:Uid="Text_ResponseTimeout"/><Run Text=": "/><Run Text="{Binding ResponseTimeout}"/><Run Text="ms"/>
+                    </TextBlock>
+                </Slider.Header>
+            </Slider>
+        </StackPanel>
+    </ScrollViewer>
+</ContentDialog>

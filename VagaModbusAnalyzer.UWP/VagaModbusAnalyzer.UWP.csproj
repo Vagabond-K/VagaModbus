@@ -140,6 +140,7 @@
     <Compile Include="Converters\TimeStampStringConverter.cs" />
     <Compile Include="Infrastructures\ChannelLogTemplateSelector.cs" />
     <Compile Include="Infrastructures\ChannelLogStyleSelector.cs" />
+    <Compile Include="Infrastructures\CopyToClipboardCommand.cs" />
     <Compile Include="Infrastructures\CrossThreadDispatcher.cs" />
     <Compile Include="Infrastructures\ModbusScanDataItemFloatingPanelTemplateSelector.cs" />
     <Compile Include="Controls\ModbusScanDataItemView.cs" />
@@ -166,6 +167,7 @@
     <Compile Include="Infrastructures\Dialog.cs" />
     <Compile Include="Converters\EnumComboBoxConverter.cs" />
     <Compile Include="Infrastructures\ItemWidthCalculator.cs" />
+    <Compile Include="Infrastructures\ModbusWriterDataTemplateSelector.cs" />
     <Compile Include="Infrastructures\ModbusScanDataTemplateSelector.cs" />
     <Compile Include="Infrastructures\NavigationManager.cs" />
     <Compile Include="Infrastructures\PropertySetCommand.cs" />
@@ -182,6 +184,9 @@
     <Compile Include="ViewModels\ThemeColorPickerPopup.cs" />
     <Compile Include="Views\EditModbusChannelView.xaml.cs">
       <DependentUpon>EditModbusChannelView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditModbusCoilWriterView.xaml.cs">
+      <DependentUpon>EditModbusCoilWriterView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EditModbusScanView.xaml.cs">
       <DependentUpon>EditModbusScanView.xaml</DependentUpon>
@@ -241,6 +246,10 @@
     <Page Include="Views\EditModbusChannelView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditModbusCoilWriterView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\EditModbusScanView.xaml">
       <SubType>Designer</SubType>

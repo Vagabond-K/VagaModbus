@@ -594,4 +594,25 @@
   <data name="WriteDataView_AppBarButton_AddHoldingRegisterWriter.Label" xml:space="preserve">
     <value>Holding Register 쓰기 추가</value>
   </data>
+  <data name="EditModbusCoilWriterView_AddWriter/Title" xml:space="preserve">
+    <value>Coil 쓰기 추가</value>
+  </data>
+  <data name="EditModbusCoilWriterView_EditWriter/Title" xml:space="preserve">
+    <value>Coil 쓰기 편집</value>
+  </data>
+  <data name="Text_CopyToClipboard.Text" xml:space="preserve">
+    <value>클립보드에 복사</value>
+  </data>
+  <data name="Text_Hex.Text" xml:space="preserve">
+    <value>16진수</value>
+  </data>
+  <data name="Text_Message.Text" xml:space="preserve">
+    <value>메시지</value>
+  </data>
+  <data name="Text_Send.Text" xml:space="preserve">
+    <value>보내기</value>
+  </data>
+  <data name="Text_UseMultiWrite.Text" xml:space="preserve">
+    <value>다중 쓰기 Function 사용</value>
+  </data>
 </root>

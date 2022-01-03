@@ -85,16 +85,16 @@ namespace VagaModbusAnalyzer.Controls
 
         private void NumericBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
         {
-            if (string.IsNullOrWhiteSpace(Text))
-            {
-                Text = AllowNullInput ? "" : "0";
-                SelectionStart = 1;
-                if (!AllowNullInput) return;
-            }
-            else if (Text.Last() == '.')
-            {
+            //if (string.IsNullOrWhiteSpace(Text))
+            //{
+            //    Text = AllowNullInput ? "" : "0";
+            //    SelectionStart = 1;
+            //    if (!AllowNullInput) return;
+            //}
+            //else if (Text.Last() == '.')
+            //{
 
-            }
+            //}
 
             string newText = Text ?? (AllowNullInput ? "" : "0");
 
@@ -114,9 +114,9 @@ namespace VagaModbusAnalyzer.Controls
                     if (limitedNumeric != numeric)
                         Text = Value.ToString();
                 }
-                else if (AllowNullInput && string.IsNullOrEmpty(newText))
+                else if (string.IsNullOrEmpty(newText))
                 {
-                    Value = null;
+                    Value = AllowNullInput ? null : (MinValue == null || MinValue.Value <= 0 ? 0d : MinValue);
                 }
                 else
                 {
@@ -133,6 +133,14 @@ namespace VagaModbusAnalyzer.Controls
                     SelectionStart = oldSelectionStart;
                 }
             }
+        }
+
+        protected override void OnLostFocus(RoutedEventArgs e)
+        {
+            base.OnLostFocus(e);
+            if (Value == null)
+                Value = AllowNullInput ? null : (MinValue == null || MinValue.Value <= 0 ? 0d : MinValue);
+            Text = Value.ToString();
         }
 
         static Type ToType(TypeCode code)

@@ -67,7 +67,7 @@
                     <TextBlock x:Uid="Text_DataAddress"/>
                 </TextBox.Header>
             </controls:NumericBox>
-            <controls:NumericBox Text="{Binding Length, Mode=TwoWay}" ValueTypeCode="UInt16" MinValue="0" MaxValue="65535">
+            <controls:NumericBox Text="{Binding Length, Mode=TwoWay}" ValueTypeCode="UInt16" MinValue="1" MaxValue="65535">
                 <TextBox.Header>
                     <TextBlock x:Uid="Text_NumOfData"/>
                 </TextBox.Header>

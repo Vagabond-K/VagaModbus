@@ -82,33 +82,49 @@ namespace VagaModbusAnalyzer
             get => Get(() =>
             {
                 var result = new ObservableCollection<ModbusScan>();
-                result.CollectionChanged += ModbusScansCollectionChanged;
+                result.CollectionChanged += OnModbusScansCollectionChanged;
                 return result;
-            }); private set => Set(value);
+            });
         }
 
-        public IList<ModbusWriter> ModbusWriters { get => Get(() => new ObservableCollection<ModbusWriter>()); private set => Set(value); }
+        public IList<ModbusWriter> ModbusWriters
+        {
+            get => Get(() =>
+            {
+                var result = new ObservableCollection<ModbusWriter>();
+                result.CollectionChanged += OnModbusWritersCollectionChanged;
+                return result;
+            });
+        }
 
-
-
-        private void ModbusScansCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void OnModbusScansCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.OldItems != null)
-                foreach (ModbusScan oldItem in e.OldItems)
-                    oldItem.PropertyChanged -= ModbusScanPropertyChanged;
+                foreach (ModbusScan item in e.OldItems)
+                    item.PropertyChanged -= OnModbusScanPropertyChanged;
             if (e.NewItems != null)
-                foreach (ModbusScan newItem in e.NewItems)
-                    newItem.PropertyChanged += ModbusScanPropertyChanged;
+                foreach (ModbusScan item in e.NewItems)
+                    item.PropertyChanged += OnModbusScanPropertyChanged;
 
             scanOptionEventWaitHandle.Set();
         }
 
-        private void ModbusScanPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnModbusScanPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (sender is ModbusScan modbusScan && e.PropertyName == nameof(modbusScan.RunScan) && modbusScan.RunScan)
             {
                 scanOptionEventWaitHandle.Set();
             }
+        }
+
+        private void OnModbusWritersCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+                foreach (ModbusWriter item in e.OldItems)
+                    item.Channel = null;
+            if (e.NewItems != null)
+                foreach (ModbusWriter item in e.NewItems)
+                    item.Channel = this;
         }
 
 
@@ -269,10 +285,26 @@ namespace VagaModbusAnalyzer
             {
                 lock (channelLock)
                 {
-                    if (modbusMaster.Channel == null) return;
+                    var channel = modbusMaster.Channel;
+                    if (channel == null) return;
 
-                    var response = modbusMaster.Request(writer.Request, writer.ResponseTimeout);
+                    try
+                    {
+                        writer.Write(modbusMaster, dispatcher);
+                    }
+                    catch (Exception error)
+                    {
+                        dispatcher?.Invoke(() =>
+                        {
+                            if (error.GetType() == typeof(Exception))
+                            {
+                                error = new MessageException(error.Message);
+                                channel.Logger.Log(new ChannelErrorLog(channel, error));
+                            }
 
+                            writer.Status = error;
+                        });
+                    }
                 }
             });
 
