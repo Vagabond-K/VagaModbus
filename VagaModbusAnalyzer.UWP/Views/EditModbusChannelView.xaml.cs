@@ -23,10 +23,10 @@ namespace VagaModbusAnalyzer.Views
         public EditModbusChannelView()
         {
             this.InitializeComponent();
-            Loaded += EditModbusChannelView_Loaded;
+            Loaded += OnLoaded;
         }
 
-        private void EditModbusChannelView_Loaded(object sender, RoutedEventArgs e)
+        private void OnLoaded(object sender, RoutedEventArgs e)
         {
             PART_TextBox_Name.Focus(FocusState.Keyboard);
             PART_TextBox_Name.SelectAll();

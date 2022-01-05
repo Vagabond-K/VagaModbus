@@ -5,7 +5,7 @@ using System.Text;
 namespace VagaModbusAnalyzer.ViewModels
 {
     [ViewModel(DefaultViewType = typeof(Views.IEditModbusHoldingRegisterWriterView))]
-    public class EditModbusHoldingRegisterWriter : EditModbusWriter
+    public class EditModbusHoldingRegisterWriter : NotifyPropertyChangeObject
     {
     }
 }

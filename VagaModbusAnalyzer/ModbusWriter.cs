@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using VagabondK.Protocols.Modbus;
@@ -105,22 +106,22 @@ namespace VagaModbusAnalyzer
         }
     }
 
-    public abstract class ModbusWriter<T> : ModbusWriter where T : ModbusWriteSetting
+    public abstract class ModbusWriter<T> : ModbusWriter where T : ModbusWriteValue
     {
         protected ModbusWriter()
         {
-            WriteSettings = new ObservableCollection<T>();
+            WriteValues = new ObservableCollection<T>();
         }
 
-        public ObservableCollection<T> WriteSettings { get => Get<ObservableCollection<T>>(); set => Set(value); }
+        public ObservableCollection<T> WriteValues { get => Get<ObservableCollection<T>>(); set => Set(value); }
 
         protected override bool OnPropertyChanging(QueryPropertyChangingEventArgs e)
         {
-            if (e.PropertyName == nameof(WriteSettings) && WriteSettings != null)
+            if (e.PropertyName == nameof(WriteValues) && WriteValues != null)
             {
-                WriteSettings.CollectionChanged -= OnWriteSettingsCollectionChanged;
-                foreach (var setting in WriteSettings)
-                    setting.PropertyChanged -= OnWriteSettingPropertyChanged;
+                WriteValues.CollectionChanged -= OnWriteValuesCollectionChanged;
+                foreach (var value in WriteValues)
+                    value.PropertyChanged -= OnWriteValuePropertyChanged;
             }
 
             return base.OnPropertyChanging(e);
@@ -132,16 +133,16 @@ namespace VagaModbusAnalyzer
 
             switch (e.PropertyName)
             {
-                case nameof(WriteSettings):
-                    if (WriteSettings != null)
+                case nameof(WriteValues):
+                    if (WriteValues != null)
                     {
-                        WriteSettings.CollectionChanged += OnWriteSettingsCollectionChanged;
-                        foreach (var setting in WriteSettings)
-                            setting.PropertyChanged += OnWriteSettingPropertyChanged;
+                        WriteValues.CollectionChanged += OnWriteValuesCollectionChanged;
+                        foreach (var value in WriteValues)
+                            value.PropertyChanged += OnWriteValuePropertyChanged;
 
                         OnPropertyChanged(new PropertyChangedEventArgs(nameof(Request)));
                         UpdateRequestMessage();
-                        UpdateWriteSettingAddresses(WriteSettings);
+                        UpdateWriteValueAddresses(WriteValues);
                     }
                     break;
                 case nameof(Channel):
@@ -149,139 +150,141 @@ namespace VagaModbusAnalyzer
                     UpdateRequestMessage();
                     break;
                 case nameof(Address):
-                    UpdateWriteSettingAddresses(WriteSettings);
+                    UpdateWriteValueAddresses(WriteValues);
                     break;
             }
         }
 
-        private void OnWriteSettingsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void OnWriteValuesCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.OldItems != null)
-                foreach (var item in e.OldItems.Cast<ModbusWriteSetting>())
-                    item.PropertyChanged -= OnWriteSettingPropertyChanged;
+                foreach (var item in e.OldItems.Cast<T>())
+                    item.PropertyChanged -= OnWriteValuePropertyChanged;
             if (e.NewItems != null)
             {
                 var collection = sender as IList;
-                foreach (var item in e.NewItems.Cast<ModbusWriteSetting>())
-                    item.PropertyChanged += OnWriteSettingPropertyChanged;
+                foreach (var item in e.NewItems.Cast<T>())
+                    item.PropertyChanged += OnWriteValuePropertyChanged;
 
-                UpdateWriteSettingAddresses(e.NewItems);
+                UpdateWriteValueAddresses(e.NewItems.Cast<T>());
             }
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(Request)));
             UpdateRequestMessage();
         }
 
-        private void OnWriteSettingPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnWriteValuePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(Request)));
             UpdateRequestMessage();
         }
 
-        protected abstract void UpdateWriteSettingAddresses(IEnumerable list);
+        protected abstract void UpdateWriteValueAddresses(IEnumerable<T> list);
 
     }
 
-    public class ModbusWriteSetting : NotifyPropertyChangeObject
+    public class ModbusWriteValue : NotifyPropertyChangeObject
     {
         public string Name { get => Get<string>(); set => Set(value); }
+
+        [JsonIgnore]
         public ushort Address { get => Get((ushort)0); set => Set(value); }
     }
 
-    public class ModbusHoldingRegisterWriter : ModbusWriter<ModbusWriteHoldingRegisterSetting>
+    public class ModbusHoldingRegisterWriter : ModbusWriter<ModbusWriteHoldingRegister>
     {
-        public override ModbusRequest Request => new ModbusWriteHoldingRegisterRequest(SlaveAddress, Address, WriteSettings.SelectMany(setting => setting.Bytes));
+        public override ModbusRequest Request => new ModbusWriteHoldingRegisterRequest(SlaveAddress, Address, WriteValues.SelectMany(value => value.Bytes));
 
-        protected override void UpdateWriteSettingAddresses(IEnumerable list)
+        protected override void UpdateWriteValueAddresses(IEnumerable<ModbusWriteHoldingRegister> list)
         {
-            throw new NotImplementedException();
-        }
-    }
-
-
-
-    public abstract class ModbusWriteHoldingRegisterSetting : ModbusWriteSetting
-    {
-        public bool IsFirstByte { get => Get(true); set => Set(value); }
-        public abstract ushort ByteLength { get; }
-
-        public abstract IEnumerable<byte> Bytes { get; }
-    }
-
-    public class ModbusWriteNumericSetting<T> : ModbusWriteHoldingRegisterSetting where T : struct
-    {
-        private static readonly ushort byteLength = (ushort)System.Runtime.InteropServices.Marshal.SizeOf(default(T));
-
-        public T Value { get => Get<T>(); set => Set(value); }
-
-        public T Max { get => Get<T>(); set => Set(value); }
-        public T Min { get => Get<T>(); set => Set(value); }
-
-        public ModbusEndian ModbusEndian { get => Get(ModbusEndian.AllBig); set => Set(value); }
-
-        public override ushort ByteLength => byteLength;
-
-        public override IEnumerable<byte> Bytes
-        {
-            get
+            int? totalLength = null;
+            foreach (var item in list)
             {
-                //TODO: 수치형 데이터를 바이트 배열로 변환하는 로직 작성해야 함.
-                throw new NotImplementedException();
-            }
-        }
-    }
-
-    public class ModbusWriteBitArray : ModbusWriteHoldingRegisterSetting
-    {
-        public IReadOnlyList<BitValue> BitValues { get; set; }
-
-        public override ushort ByteLength => (ushort)(BitValues?.Count / 8 + 1);
-
-        public override IEnumerable<byte> Bytes
-        {
-            get
-            {
-                var values = BitValues.Select(bitValue => bitValue.Value).ToArray();
-                var byteLength = ByteLength;
-                for (int i = 0; i < byteLength; i++)
+                if (WriteValues.Count == 0)
                 {
-                    byte byteValue = 0;
-                    for (int j = 0; j < 8; j++)
-                    {
-                        int index = i * 8 + j;
-                        if (index < values.Length)
-                            byteValue |= (byte)((values[index] ? 1 : 0) << (7 - j));
-                    }
-                    yield return byteValue;
+                    item.Address = Address;
+                    totalLength = item.ByteLength;
+                }
+                else
+                {
+                    int index = WriteValues.IndexOf(item);
+                    if (totalLength == null)
+                        totalLength = WriteValues.Take(WriteValues.IndexOf(item)).Sum(s => s.ByteLength);
+
+                    item.Address = (ushort)(Address + totalLength.Value / 2);
+                    item.IsFirstByte = totalLength.Value % 2 == 0;
+
+                    totalLength += item.ByteLength;
                 }
             }
         }
+    }
 
-        public class BitValue : NotifyPropertyChangeObject
+
+
+    public class ModbusWriteHoldingRegister : ModbusWriteValue
+    {
+        public TypeCode Type { get => Get(TypeCode.UInt16); set => Set(value); }
+        public decimal Value { get => Get<decimal>(0); set => Set(value); }
+
+        public ModbusEndian ModbusEndian { get => Get(ModbusEndian.AllBig); set => Set(value); }
+
+        [JsonIgnore]
+        public bool IsFirstByte { get => Get(true); set => Set(value); }
+
+        [JsonIgnore]
+        public ushort ByteLength => (ushort)Marshal.SizeOf(Convert.ChangeType(Value, Type));
+
+        [JsonIgnore]
+        public IEnumerable<byte> Bytes
         {
-            public bool Value { get => Get(false); set => Set(value); }
+            get
+            {
+                switch (Type)
+                {
+                    case TypeCode.Byte:
+                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<byte>()).Reverse().ToArray());
+                    case TypeCode.UInt16:
+                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<ushort>()).Reverse().ToArray());
+                    case TypeCode.UInt32:
+                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<uint>()).Reverse().ToArray());
+                    case TypeCode.UInt64:
+                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<ulong>()).Reverse().ToArray());
+                    case TypeCode.SByte:
+                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<sbyte>()).Reverse().ToArray());
+                    case TypeCode.Int16:
+                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<short>()).Reverse().ToArray());
+                    case TypeCode.Int32:
+                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<int>()).Reverse().ToArray());
+                    case TypeCode.Int64:
+                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<long>()).Reverse().ToArray());
+                    case TypeCode.Single:
+                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<float>()).Reverse().ToArray());
+                    case TypeCode.Double:
+                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<double>()).Reverse().ToArray());
+                }
+                return null;
+            }
         }
     }
 
 
 
 
-
-
-    public class ModbusCoilWriter : ModbusWriter<ModbusWriteCoilSetting>
+    public class ModbusCoilWriter : ModbusWriter<ModbusWriteCoil>
     {
         public override ModbusRequest Request 
-            => WriteSettings.Count > 1 || UseMultipleWriteWhenSingle ? new ModbusWriteCoilRequest(SlaveAddress, Address, WriteSettings.Select(setting => setting.Value))
-            : new ModbusWriteCoilRequest(SlaveAddress, Address, WriteSettings.FirstOrDefault()?.Value ?? false);
+            => WriteValues.Count > 1 || UseMultipleWriteWhenSingle ? new ModbusWriteCoilRequest(SlaveAddress, Address, WriteValues.Select(value => value.Value))
+            : new ModbusWriteCoilRequest(SlaveAddress, Address, WriteValues.FirstOrDefault()?.Value ?? false);
 
-        protected override void UpdateWriteSettingAddresses(IEnumerable list)
+        protected override void UpdateWriteValueAddresses(IEnumerable<ModbusWriteCoil> list)
         {
-            var collection = WriteSettings;
-            foreach (var item in list.Cast<ModbusWriteCoilSetting>())
+            var collection = WriteValues;
+            foreach (var item in list.Cast<ModbusWriteCoil>())
                 item.Address = (ushort)(Address + collection.IndexOf(item));
         }
     }
 
-    public class ModbusWriteCoilSetting : ModbusWriteSetting
+    public class ModbusWriteCoil : ModbusWriteValue
     {
         public bool Value { get => Get(false); set => Set(value); }
     }

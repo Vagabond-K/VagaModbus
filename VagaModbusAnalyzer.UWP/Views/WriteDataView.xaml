@@ -27,6 +27,8 @@
     <Grid x:Name="PART_WriteDataView" Margin="0,15,0,0">
         <Grid.Resources>
             <local:CopyToClipboardCommand x:Key="CopyToClipboardCommand"/>
+            <converters:ObjectEqualsToVisibilityConverter x:Key="ObjectEqualsToVisibileConverter"/>
+            <converters:ObjectEqualsToVisibilityConverter x:Key="ObjectEqualsToCollapseConverter" Inverse="True"/>
             <Style x:Key="CoilCheckBoxStyle" TargetType="CheckBox">
                 <Setter Property="Background" Value="{ThemeResource CheckBoxBackgroundUnchecked}"/>
                 <Setter Property="Foreground" Value="{ThemeResource CheckBoxForegroundUnchecked}"/>
@@ -689,15 +691,15 @@
                                 <TextBlock Margin="5,4"><Run x:Uid="Text_DataAddress" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
                                     <Run Text="{Binding Address}" FontFamily="Consolas"/></TextBlock>
                                 <TextBlock Margin="5,4"
-                                           Visibility="{Binding WriteSettings.Count, Converter={converters:ObjectEqualsToVisibilityConverter Inverse=True},ConverterParameter={local:ToInt32 Value=1}}"><Run x:Uid="Text_NumOfData" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
-                                    <Run Text="{Binding WriteSettings.Count}" FontFamily="Consolas"/></TextBlock>
-                                <StackPanel Orientation="Horizontal" Visibility="{Binding WriteSettings.Count, Converter={converters:ObjectEqualsToVisibilityConverter},ConverterParameter={local:ToInt32 Value=1}}">
+                                           Visibility="{Binding WriteValues.Count, Converter={StaticResource ObjectEqualsToCollapseConverter},ConverterParameter={local:ToInt32 Value=1}}"><Run x:Uid="Text_NumOfData" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                                    <Run Text="{Binding WriteValues.Count}" FontFamily="Consolas"/></TextBlock>
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding WriteValues.Count, Converter={StaticResource ObjectEqualsToVisibileConverter},ConverterParameter={local:ToInt32 Value=1}}">
                                     <TextBlock Margin="5,6" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"><Run x:Uid="Text_LogicalValue"/><Run Text=":"/></TextBlock>
-                                    <CheckBox IsChecked="{Binding WriteSettings[0].Value, Mode=TwoWay}" Style="{StaticResource CoilCheckBoxNonContentStyle}"
-                                          Visibility="{Binding WriteSettings.Count, Converter={converters:ObjectEqualsToVisibilityConverter},ConverterParameter={local:ToInt32 Value=1}}"
+                                    <CheckBox IsChecked="{Binding WriteValues[0].Value, Mode=TwoWay}" Style="{StaticResource CoilCheckBoxNonContentStyle}"
+                                          Visibility="{Binding WriteValues.Count, Converter={StaticResource ObjectEqualsToVisibileConverter},ConverterParameter={local:ToInt32 Value=1}}"
                                               Width="24" Height="24" Margin="0,0,4,0"/>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" Visibility="{Binding WriteSettings.Count, Converter={converters:ObjectEqualsToVisibilityConverter}, ConverterParameter={local:ToInt32 Value=1}}">
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding WriteValues.Count, Converter={StaticResource ObjectEqualsToVisibileConverter}, ConverterParameter={local:ToInt32 Value=1}}">
                                     <TextBlock Margin="5,4"><Run x:Uid="Text_UseMultiWrite" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
                                     <Run Text=" " FontFamily="Consolas"/></TextBlock>
                                     <ToggleSwitch IsOn="{Binding UseMultipleWriteWhenSingle, Mode=TwoWay}" Width="80" FontSize="12" Margin="4"
@@ -717,8 +719,8 @@
                                 </Button>
                             </StackPanel>
                             <muxc:ItemsRepeater 
-                                Grid.Row="2" Grid.ColumnSpan="2" Margin="4" ItemsSource="{Binding WriteSettings}" 
-                                Visibility="{Binding WriteSettings.Count, Converter={converters:ObjectEqualsToVisibilityConverter Inverse=True},ConverterParameter={local:ToInt32 Value=1}}">
+                                Grid.Row="2" Grid.ColumnSpan="2" Margin="4" ItemsSource="{Binding WriteValues}" 
+                                Visibility="{Binding WriteValues.Count, Converter={StaticResource ObjectEqualsToCollapseConverter},ConverterParameter={local:ToInt32 Value=1}}">
                                 <muxc:ItemsRepeater.Layout>
                                     <muxc:UniformGridLayout/>
                                 </muxc:ItemsRepeater.Layout>
@@ -783,7 +785,7 @@
                         <StackPanel 
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
-                            Visibility="{Binding ModbusWriters.Count, Converter={converters:ObjectEqualsToVisibilityConverter}, ConverterParameter={local:ToInt32 Value=0}}">
+                            Visibility="{Binding ModbusWriters.Count, Converter={StaticResource ObjectEqualsToVisibileConverter}, ConverterParameter={local:ToInt32 Value=0}}">
                             <StackPanel.Resources>
                                 <Style TargetType="Button" BasedOn="{StaticResource AddNewItemButtonStyle}">
                                     <Setter Property="HorizontalAlignment" Value="Stretch"/>

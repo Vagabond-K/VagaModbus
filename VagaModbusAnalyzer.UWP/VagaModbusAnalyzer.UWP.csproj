@@ -182,6 +182,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Settings.cs" />
     <Compile Include="ViewModels\ThemeColorPickerPopup.cs" />
+    <Compile Include="Views\EditModbusHoldingRegisterWriterView.xaml.cs">
+      <DependentUpon>EditModbusHoldingRegisterWriterView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EditModbusChannelView.xaml.cs">
       <DependentUpon>EditModbusChannelView.xaml</DependentUpon>
     </Compile>
@@ -240,6 +243,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\EditModbusHoldingRegisterWriterView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -11,15 +11,17 @@ namespace VagaModbusAnalyzer.ViewModels
     [ViewModel(ServiceLifetime.Singleton)]
     public class WriteData : NotifyPropertyChangeObject
     {
-        public WriteData(AppData appData, IDialog dialog, IStringLocalizer stringLocalizer, ICrossThreadDispatcher dispatcher)
+        public WriteData(AppData appData, Shell shell, IDialog dialog, IStringLocalizer stringLocalizer, ICrossThreadDispatcher dispatcher)
         {
             AppData = appData;
+            this.shell = shell;
             this.dialog = dialog;
             this.stringLocalizer = stringLocalizer;
             this.dispatcher = dispatcher;
         }
 
         public AppData AppData { get; }
+        private readonly Shell shell;
         private readonly IDialog dialog;
         private readonly IStringLocalizer stringLocalizer;
         private readonly ICrossThreadDispatcher dispatcher;
@@ -31,8 +33,10 @@ namespace VagaModbusAnalyzer.ViewModels
         public InstantCommand<ModbusWriter> ModbusWriteCommand { get => Get(() => new InstantCommand<ModbusWriter>(ModbusWrite, CanExecute)); }
 
 
-        private void AddHoldingRegisterWriter()
-            => AppData.SelectedChannel.ModbusWriters.Add(new ModbusHoldingRegisterWriter());
+        private async void AddHoldingRegisterWriter()
+        {
+            await shell.OpenPage<AddModbusHoldingRegisterWriter>($"{AppData.SelectedChannel.Name} > {stringLocalizer["WriteDataView_AppBarButton_AddHoldingRegisterWriter/Label"]}");
+        }
 
         private async void AddCoilWriter()
         {
@@ -43,8 +47,8 @@ namespace VagaModbusAnalyzer.ViewModels
                     SlaveAddress = (byte)editCoilWriter.SlaveAddress,
                     Address = (ushort)editCoilWriter.Address,
                     ResponseTimeout = editCoilWriter.ResponseTimeout,
-                    WriteSettings = new System.Collections.ObjectModel.ObservableCollection<ModbusWriteCoilSetting>(
-                        Enumerable.Range(0, editCoilWriter.Length).Select(i => new ModbusWriteCoilSetting()))
+                    WriteValues = new System.Collections.ObjectModel.ObservableCollection<ModbusWriteCoil>(
+                        Enumerable.Range(0, editCoilWriter.Length).Select(i => new ModbusWriteCoil()))
                 });
             }
         }
@@ -57,7 +61,7 @@ namespace VagaModbusAnalyzer.ViewModels
                 viewModel.SlaveAddress = coilWriter.SlaveAddress;
                 viewModel.Address = coilWriter.Address;
                 viewModel.ResponseTimeout = coilWriter.ResponseTimeout;
-                viewModel.Length = coilWriter.WriteSettings.Count;
+                viewModel.Length = coilWriter.WriteValues.Count;
             }, out var editCoilWriter) == true)
             {
                 lock (coilWriter)
@@ -66,10 +70,10 @@ namespace VagaModbusAnalyzer.ViewModels
                     coilWriter.Address = (ushort)editCoilWriter.Address;
                     coilWriter.ResponseTimeout = editCoilWriter.ResponseTimeout;
 
-                    while (coilWriter.WriteSettings.Count < editCoilWriter.Length)
-                        coilWriter.WriteSettings.Add(new ModbusWriteCoilSetting());
-                    while (coilWriter.WriteSettings.Count > editCoilWriter.Length)
-                        coilWriter.WriteSettings.RemoveAt(coilWriter.WriteSettings.Count - 1);
+                    while (coilWriter.WriteValues.Count < editCoilWriter.Length)
+                        coilWriter.WriteValues.Add(new ModbusWriteCoil());
+                    while (coilWriter.WriteValues.Count > editCoilWriter.Length)
+                        coilWriter.WriteValues.RemoveAt(coilWriter.WriteValues.Count - 1);
                 }
             }
         }
