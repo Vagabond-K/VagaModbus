@@ -118,10 +118,10 @@
                                     <x:Int32>7</x:Int32>
                                     <x:Int32>8</x:Int32>
                                 </ComboBox>
-                                <ComboBox Grid.Column="2" x:Uid="EditModbusChannelView_SerialPort_StopBits" SelectedValue="{Binding StopBits, Mode=TwoWay, Converter={StaticResource EnumComboBoxConverter}}" SelectedValuePath="Value" DisplayMemberPath="Display">
-                                    <converters:EnumComboBoxItem Display="1" Value="{local:ToInt32 Value=0}"/>
-                                    <converters:EnumComboBoxItem Display="1.5" Value="{local:ToInt32 Value=1}"/>
-                                    <converters:EnumComboBoxItem Display="2" Value="{local:ToInt32 Value=2}"/>
+                                <ComboBox Grid.Column="2" x:Uid="EditModbusChannelView_SerialPort_StopBits" SelectedValue="{Binding StopBits, Mode=TwoWay, Converter={StaticResource EnumComboBoxConverter}}" SelectedValuePath="Value" DisplayMemberPath="Text">
+                                    <converters:EnumComboBoxItem Text="1" Value="{local:ToInt32 Value=0}"/>
+                                    <converters:EnumComboBoxItem Text="1.5" Value="{local:ToInt32 Value=1}"/>
+                                    <converters:EnumComboBoxItem Text="2" Value="{local:ToInt32 Value=2}"/>
                                 </ComboBox>
                             </Grid>
                         </mtuuc:WrapPanel>
@@ -131,18 +131,18 @@
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <ComboBox Grid.Column="0" x:Uid="EditModbusChannelView_SerialPort_Parity" SelectedValue="{Binding Parity, Mode=TwoWay, Converter={StaticResource EnumComboBoxConverter}}" SelectedValuePath="Value" DisplayMemberPath="Display">
-                                    <converters:EnumComboBoxItem Display="None" Value="{local:ToInt32 Value=0}"/>
-                                    <converters:EnumComboBoxItem Display="Odd" Value="{local:ToInt32 Value=1}"/>
-                                    <converters:EnumComboBoxItem Display="Even" Value="{local:ToInt32 Value=2}"/>
-                                    <converters:EnumComboBoxItem Display="Mark" Value="{local:ToInt32 Value=3}"/>
-                                    <converters:EnumComboBoxItem Display="Space" Value="{local:ToInt32 Value=4}"/>
+                                <ComboBox Grid.Column="0" x:Uid="EditModbusChannelView_SerialPort_Parity" SelectedValue="{Binding Parity, Mode=TwoWay, Converter={StaticResource EnumComboBoxConverter}}" SelectedValuePath="Value" DisplayMemberPath="Text">
+                                    <converters:EnumComboBoxItem Text="None" Value="{local:ToInt32 Value=0}"/>
+                                    <converters:EnumComboBoxItem Text="Odd" Value="{local:ToInt32 Value=1}"/>
+                                    <converters:EnumComboBoxItem Text="Even" Value="{local:ToInt32 Value=2}"/>
+                                    <converters:EnumComboBoxItem Text="Mark" Value="{local:ToInt32 Value=3}"/>
+                                    <converters:EnumComboBoxItem Text="Space" Value="{local:ToInt32 Value=4}"/>
                                 </ComboBox>
-                                <ComboBox Grid.Column="1" x:Uid="EditModbusChannelView_SerialPort_Handshake" SelectedValue="{Binding Handshake, Mode=TwoWay, Converter={StaticResource EnumComboBoxConverter}}" SelectedValuePath="Value" DisplayMemberPath="Display">
-                                    <converters:EnumComboBoxItem Display="None" Value="{local:ToInt32 Value=0}"/>
-                                    <converters:EnumComboBoxItem Display="RTS" Value="{local:ToInt32 Value=1}"/>
-                                    <converters:EnumComboBoxItem Display="XOn/XOff" Value="{local:ToInt32 Value=2}"/>
-                                    <converters:EnumComboBoxItem Display="RTS, XOn/XOff" Value="{local:ToInt32 Value=3}"/>
+                                <ComboBox Grid.Column="1" x:Uid="EditModbusChannelView_SerialPort_Handshake" SelectedValue="{Binding Handshake, Mode=TwoWay, Converter={StaticResource EnumComboBoxConverter}}" SelectedValuePath="Value" DisplayMemberPath="Text">
+                                    <converters:EnumComboBoxItem Text="None" Value="{local:ToInt32 Value=0}"/>
+                                    <converters:EnumComboBoxItem Text="RTS" Value="{local:ToInt32 Value=1}"/>
+                                    <converters:EnumComboBoxItem Text="XOn/XOff" Value="{local:ToInt32 Value=2}"/>
+                                    <converters:EnumComboBoxItem Text="RTS, XOn/XOff" Value="{local:ToInt32 Value=3}"/>
                                 </ComboBox>
                             </Grid>
                             <StackPanel Orientation="Horizontal" Width="412">

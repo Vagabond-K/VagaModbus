@@ -48,26 +48,26 @@
                 </Style>
                 <converters:EnumComboBoxConverter x:Key="EnumComboBoxConverter"/>
             </StackPanel.Resources>
-            <ComboBox SelectedValue="{Binding ObjectType, Mode=TwoWay, Converter={StaticResource EnumComboBoxConverter}}" SelectedValuePath="Value" DisplayMemberPath="Display">
+            <ComboBox SelectedValue="{Binding ObjectType, Mode=TwoWay, Converter={StaticResource EnumComboBoxConverter}}" SelectedValuePath="Value" DisplayMemberPath="Text">
                 <ComboBox.Header>
                     <TextBlock x:Uid="Text_DataType"/>
                 </ComboBox.Header>
-                <converters:EnumComboBoxItem Display="Input Register" Value="{local:ToByte Value=4}"/>
-                <converters:EnumComboBoxItem Display="Discrete Input" Value="{local:ToByte Value=2}"/>
-                <converters:EnumComboBoxItem Display="Holding Register" Value="{local:ToByte Value=3}"/>
-                <converters:EnumComboBoxItem Display="Coil" Value="{local:ToByte Value=1}"/>
+                <converters:EnumComboBoxItem Text="Input Register" Value="{local:ToByte Value=4}"/>
+                <converters:EnumComboBoxItem Text="Discrete Input" Value="{local:ToByte Value=2}"/>
+                <converters:EnumComboBoxItem Text="Holding Register" Value="{local:ToByte Value=3}"/>
+                <converters:EnumComboBoxItem Text="Coil" Value="{local:ToByte Value=1}"/>
             </ComboBox>
-            <controls:NumericBox Text="{Binding SlaveAddress, Mode=TwoWay}" ValueTypeCode="Byte" MinValue="0" MaxValue="255">
+            <controls:NumericBox Value="{Binding SlaveAddress, Mode=TwoWay}" ValueTypeCode="Byte" MinValue="0" MaxValue="255">
                 <TextBox.Header>
                     <TextBlock x:Uid="Text_SlaveAddress"/>
                 </TextBox.Header>
             </controls:NumericBox>
-            <controls:NumericBox Text="{Binding Address, Mode=TwoWay}" ValueTypeCode="UInt16" MinValue="0" MaxValue="65535">
+            <controls:NumericBox Value="{Binding Address, Mode=TwoWay}" ValueTypeCode="UInt16" MinValue="0" MaxValue="65535">
                 <TextBox.Header>
                     <TextBlock x:Uid="Text_DataAddress"/>
                 </TextBox.Header>
             </controls:NumericBox>
-            <controls:NumericBox Text="{Binding Length, Mode=TwoWay}" ValueTypeCode="UInt16" MinValue="1" MaxValue="65535">
+            <controls:NumericBox Value="{Binding Length, Mode=TwoWay}" ValueTypeCode="UInt16" MinValue="1" MaxValue="65535">
                 <TextBox.Header>
                     <TextBlock x:Uid="Text_NumOfData"/>
                 </TextBox.Header>

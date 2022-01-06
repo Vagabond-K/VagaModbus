@@ -20,17 +20,17 @@
                     <Setter Property="Margin" Value="6"/>
                 </Style>
             </StackPanel.Resources>
-            <controls:NumericBox Text="{Binding SlaveAddress, Mode=TwoWay}" ValueTypeCode="Byte" MinValue="0" MaxValue="255">
+            <controls:NumericBox Value="{Binding SlaveAddress, Mode=TwoWay}" ValueTypeCode="Byte" MinValue="0" MaxValue="255">
                 <TextBox.Header>
                     <TextBlock x:Uid="Text_SlaveAddress"/>
                 </TextBox.Header>
             </controls:NumericBox>
-            <controls:NumericBox Text="{Binding Address, Mode=TwoWay}" ValueTypeCode="UInt16" MinValue="0" MaxValue="65535">
+            <controls:NumericBox Value="{Binding Address, Mode=TwoWay}" ValueTypeCode="UInt16" MinValue="0" MaxValue="65535">
                 <TextBox.Header>
                     <TextBlock x:Uid="Text_DataAddress"/>
                 </TextBox.Header>
             </controls:NumericBox>
-            <controls:NumericBox Text="{Binding Length, Mode=TwoWay}" ValueTypeCode="UInt16" MinValue="1" MaxValue="2040">
+            <controls:NumericBox Value="{Binding Length, Mode=TwoWay}" ValueTypeCode="UInt16" MinValue="1" MaxValue="2040">
                 <TextBox.Header>
                     <TextBlock x:Uid="Text_NumOfData"/>
                 </TextBox.Header>

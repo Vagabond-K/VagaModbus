@@ -726,7 +726,9 @@
                                 </muxc:ItemsRepeater.Layout>
                                 <muxc:ItemsRepeater.ItemTemplate>
                                     <DataTemplate>
-                                        <CheckBox IsChecked="{Binding Value, Mode=TwoWay}" Content="{Binding Address}" Style="{StaticResource CoilCheckBoxStyle}"/>
+                                        <CheckBox 
+                                            IsChecked="{Binding BooleanValue, Mode=TwoWay}"
+                                            Content="{Binding Address}" Style="{StaticResource CoilCheckBoxStyle}"/>
                                     </DataTemplate>
                                 </muxc:ItemsRepeater.ItemTemplate>
                             </muxc:ItemsRepeater>

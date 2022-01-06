@@ -42,20 +42,21 @@ namespace VagaModbusAnalyzer.ViewModels
         {
             if (await dialog.ShowDialog<EditModbusCoilWriter>(stringLocalizer["EditModbusCoilWriterView_AddWriter/Title"], out var editCoilWriter) == true)
             {
-                AppData.SelectedChannel.ModbusWriters.Add(new ModbusCoilWriter
+                AppData.SelectedChannel.ModbusWriters.Add(new ModbusWriter
                 {
                     SlaveAddress = (byte)editCoilWriter.SlaveAddress,
                     Address = (ushort)editCoilWriter.Address,
                     ResponseTimeout = editCoilWriter.ResponseTimeout,
-                    WriteValues = new System.Collections.ObjectModel.ObservableCollection<ModbusWriteCoil>(
-                        Enumerable.Range(0, editCoilWriter.Length).Select(i => new ModbusWriteCoil()))
+                    ObjectType = VagabondK.Protocols.Modbus.ModbusObjectType.Coil,
+                    WriteValues = new System.Collections.ObjectModel.ObservableCollection<ModbusWriteValue>(
+                        Enumerable.Range(0, editCoilWriter.Length).Select(i => new ModbusWriteValue() { Type = TypeCode.Boolean }))
                 });
             }
         }
 
         private async void EditWriter(ModbusWriter modbusWriter)
         {
-            if (modbusWriter is ModbusCoilWriter coilWriter
+            if (modbusWriter is ModbusWriter coilWriter
                 && await dialog.ShowDialog<EditModbusCoilWriter>(stringLocalizer["EditModbusCoilWriterView_EditWriter/Title"], viewModel =>
             {
                 viewModel.SlaveAddress = coilWriter.SlaveAddress;
@@ -71,7 +72,7 @@ namespace VagaModbusAnalyzer.ViewModels
                     coilWriter.ResponseTimeout = editCoilWriter.ResponseTimeout;
 
                     while (coilWriter.WriteValues.Count < editCoilWriter.Length)
-                        coilWriter.WriteValues.Add(new ModbusWriteCoil());
+                        coilWriter.WriteValues.Add(new ModbusWriteValue() { Type = TypeCode.Boolean });
                     while (coilWriter.WriteValues.Count > editCoilWriter.Length)
                         coilWriter.WriteValues.RemoveAt(coilWriter.WriteValues.Count - 1);
                 }

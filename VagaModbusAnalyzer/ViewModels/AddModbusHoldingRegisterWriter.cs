@@ -14,8 +14,12 @@ namespace VagaModbusAnalyzer.ViewModels
             AppData = appData;
             this.pageContext = pageContext;
 
-            ModbusWriter = new ModbusHoldingRegisterWriter();
+            ModbusWriter = new ModbusWriter()
+            {
+                ObjectType = VagabondK.Protocols.Modbus.ModbusObjectType.HoldingRegister
+            };
             ModbusWriter.WriteValues.CollectionChanged += OnWriteValuesCollectionChanged;
+            ModbusWriter.WriteValues.Add(new ModbusWriteValue());
         }
 
         private void OnWriteValuesCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -26,14 +30,14 @@ namespace VagaModbusAnalyzer.ViewModels
         private readonly PageContext pageContext;
 
         public AppData AppData { get; }
-        public ModbusHoldingRegisterWriter ModbusWriter { get; }
+        public ModbusWriter ModbusWriter { get; }
 
-        public ICommand AddValueCommand { get => GetCommand(() => ModbusWriter.WriteValues.Add(new ModbusWriteHoldingRegister())); }
-        public ICommand DeleteValueCommand { get => GetCommand<ModbusWriteHoldingRegister>(Delete); }
+        public ICommand AddValueCommand { get => GetCommand(() => ModbusWriter.WriteValues.Add(new ModbusWriteValue())); }
+        public ICommand DeleteValueCommand { get => GetCommand<ModbusWriteValue>(Delete); }
 
         public IInstantCommand SaveCommand { get => GetCommand(Save, CanSave); }
 
-        private void Delete(ModbusWriteHoldingRegister writeValue)
+        private void Delete(ModbusWriteValue writeValue)
         {
             if (writeValue != null)
                 ModbusWriter.WriteValues.Remove(writeValue);

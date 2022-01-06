@@ -14,16 +14,43 @@ using VagabondK.Protocols.Modbus.Serialization;
 
 namespace VagaModbusAnalyzer
 {
-    public abstract class ModbusWriter : NotifyPropertyChangeObject
+    public class ModbusWriter : NotifyPropertyChangeObject
     {
+        public ModbusWriter()
+        {
+            WriteValues = new ObservableCollection<ModbusWriteValue>();
+        }
+
         public byte SlaveAddress { get => Get((byte)1); set => Set(value); }
         public ushort Address { get => Get((ushort)0); set => Set(value); }
         public int ResponseTimeout { get => Get(5000); set => Set(value); }
 
         public bool UseMultipleWriteWhenSingle { get => Get(false); set => Set(value); }
 
+        public ModbusObjectType ObjectType { get => Get(ModbusObjectType.HoldingRegister); set => Set(value); }
+
         [JsonIgnore]
-        public abstract ModbusRequest Request { get; }
+        public ModbusRequest Request
+        {
+            get
+            {
+                switch (ObjectType)
+                {
+                    case ModbusObjectType.HoldingRegister:
+                        return WriteValues.Count > 1 || UseMultipleWriteWhenSingle
+                            ? new ModbusWriteHoldingRegisterRequest(SlaveAddress, Address, WriteValues.SelectMany(value => value.Bytes))
+                            : new ModbusWriteHoldingRegisterRequest(SlaveAddress, Address, BitConverter.IsLittleEndian
+                                ? BitConverter.ToUInt16(WriteValues.FirstOrDefault()?.Bytes?.Reverse()?.ToArray() ?? new byte[] { 0, 0 }, 0)
+                                : BitConverter.ToUInt16(WriteValues.FirstOrDefault()?.Bytes?.ToArray() ?? new byte[] { 0, 0 }, 0));
+                    case ModbusObjectType.Coil:
+                        return WriteValues.Count > 1 || UseMultipleWriteWhenSingle 
+                            ? new ModbusWriteCoilRequest(SlaveAddress, Address, WriteValues.Select(value => value.BooleanValue))
+                            : new ModbusWriteCoilRequest(SlaveAddress, Address, WriteValues.FirstOrDefault()?.BooleanValue ?? false);
+                    default:
+                        return null;
+                }
+            }
+        }
 
         [JsonIgnore]
         public bool IsBusy { get => Get(false); set => Set(value); }
@@ -60,7 +87,7 @@ namespace VagaModbusAnalyzer
         private static readonly ModbusTcpSerializer modbusTcpSerializer = new ModbusTcpSerializer();
         private static readonly ModbusAsciiSerializer modbusAsciiSerializer = new ModbusAsciiSerializer();
 
-        protected void UpdateRequestMessage()
+        internal void UpdateRequestMessage()
         {
             if (Channel != null)
             {
@@ -104,24 +131,18 @@ namespace VagaModbusAnalyzer
             else
                 RequestMessage = string.Empty;
         }
-    }
 
-    public abstract class ModbusWriter<T> : ModbusWriter where T : ModbusWriteValue
-    {
-        protected ModbusWriter()
-        {
-            WriteValues = new ObservableCollection<T>();
-        }
 
-        public ObservableCollection<T> WriteValues { get => Get<ObservableCollection<T>>(); set => Set(value); }
+
+        public ObservableCollection<ModbusWriteValue> WriteValues { get => Get<ObservableCollection<ModbusWriteValue>>(); set => Set(value); }
 
         protected override bool OnPropertyChanging(QueryPropertyChangingEventArgs e)
         {
             if (e.PropertyName == nameof(WriteValues) && WriteValues != null)
             {
                 WriteValues.CollectionChanged -= OnWriteValuesCollectionChanged;
-                foreach (var value in WriteValues)
-                    value.PropertyChanged -= OnWriteValuePropertyChanged;
+                foreach (var item in WriteValues)
+                    item.modbusWriter = null;
             }
 
             return base.OnPropertyChanging(e);
@@ -137,8 +158,8 @@ namespace VagaModbusAnalyzer
                     if (WriteValues != null)
                     {
                         WriteValues.CollectionChanged += OnWriteValuesCollectionChanged;
-                        foreach (var value in WriteValues)
-                            value.PropertyChanged += OnWriteValuePropertyChanged;
+                        foreach (var item in WriteValues)
+                            item.modbusWriter = this;
 
                         OnPropertyChanged(new PropertyChangedEventArgs(nameof(Request)));
                         UpdateRequestMessage();
@@ -158,43 +179,25 @@ namespace VagaModbusAnalyzer
         private void OnWriteValuesCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.OldItems != null)
-                foreach (var item in e.OldItems.Cast<T>())
-                    item.PropertyChanged -= OnWriteValuePropertyChanged;
+            {
+                foreach (var item in e.OldItems.Cast<ModbusWriteValue>())
+                    item.modbusWriter = null;
+
+                if (e.OldStartingIndex >= 0)
+                    UpdateWriteValueAddresses(WriteValues.Skip(e.OldStartingIndex));
+            }
             if (e.NewItems != null)
             {
-                var collection = sender as IList;
-                foreach (var item in e.NewItems.Cast<T>())
-                    item.PropertyChanged += OnWriteValuePropertyChanged;
+                foreach (var item in e.NewItems.Cast<ModbusWriteValue>())
+                    item.modbusWriter = this;
 
-                UpdateWriteValueAddresses(e.NewItems.Cast<T>());
+                UpdateWriteValueAddresses(e.NewItems.Cast<ModbusWriteValue>());
             }
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(Request)));
             UpdateRequestMessage();
         }
 
-        private void OnWriteValuePropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            OnPropertyChanged(new PropertyChangedEventArgs(nameof(Request)));
-            UpdateRequestMessage();
-        }
-
-        protected abstract void UpdateWriteValueAddresses(IEnumerable<T> list);
-
-    }
-
-    public class ModbusWriteValue : NotifyPropertyChangeObject
-    {
-        public string Name { get => Get<string>(); set => Set(value); }
-
-        [JsonIgnore]
-        public ushort Address { get => Get((ushort)0); set => Set(value); }
-    }
-
-    public class ModbusHoldingRegisterWriter : ModbusWriter<ModbusWriteHoldingRegister>
-    {
-        public override ModbusRequest Request => new ModbusWriteHoldingRegisterRequest(SlaveAddress, Address, WriteValues.SelectMany(value => value.Bytes));
-
-        protected override void UpdateWriteValueAddresses(IEnumerable<ModbusWriteHoldingRegister> list)
+        internal void UpdateWriteValueAddresses(IEnumerable<ModbusWriteValue> list)
         {
             int? totalLength = null;
             foreach (var item in list)
@@ -208,31 +211,56 @@ namespace VagaModbusAnalyzer
                 {
                     int index = WriteValues.IndexOf(item);
                     if (totalLength == null)
-                        totalLength = WriteValues.Take(WriteValues.IndexOf(item)).Sum(s => s.ByteLength);
+                        totalLength = WriteValues.Take(index).Sum(s => s.ByteLength);
 
-                    item.Address = (ushort)(Address + totalLength.Value / 2);
-                    item.IsFirstByte = totalLength.Value % 2 == 0;
+                    switch (ObjectType)
+                    {
+                        case ModbusObjectType.HoldingRegister:
+                            item.Address = (ushort)(Address + totalLength.Value / 2);
+                            item.IsFirstByte = totalLength.Value % 2 == 0;
+                            break;
+                        case ModbusObjectType.Coil:
+                            item.Address = (ushort)(Address + totalLength.Value);
+                            break;
+                    }
 
                     totalLength += item.ByteLength;
                 }
             }
         }
+
     }
 
-
-
-    public class ModbusWriteHoldingRegister : ModbusWriteValue
+    public class ModbusWriteValue : NotifyPropertyChangeObject
     {
-        public TypeCode Type { get => Get(TypeCode.UInt16); set => Set(value); }
-        public decimal Value { get => Get<decimal>(0); set => Set(value); }
+        internal ModbusWriter modbusWriter;
 
-        public ModbusEndian ModbusEndian { get => Get(ModbusEndian.AllBig); set => Set(value); }
+        public string Name { get => Get<string>(); set => Set(value); }
+
+        [JsonIgnore]
+        public ushort Address { get => Get((ushort)0); set => Set(value); }
+
+        public TypeCode Type { get => Get(TypeCode.UInt64); set => Set(value); }
+        public ushort ByteLength { get => Get((ushort)2); set => Set(value); }
+
+        public ModbusEndian ModbusEndian { get => Get(() => ModbusEndian.AllBig); set => Set(value); }
+
+        public decimal Value { get => Get(0M); set => Set(value); }
+
+        public bool BooleanValue { get => Get(false); set => Set(value); }
+        
 
         [JsonIgnore]
         public bool IsFirstByte { get => Get(true); set => Set(value); }
 
         [JsonIgnore]
-        public ushort ByteLength => (ushort)Marshal.SizeOf(Convert.ChangeType(Value, Type));
+        public bool EditableByteLength { get => Get(true); private set => Set(value); }
+
+        [JsonIgnore]
+        public bool EditableModbusEndian { get => Get(true); private set => Set(value); }
+
+        [JsonIgnore]
+        public bool EnableMixedEndian { get => Get(true); private set => Set(value); }
 
         [JsonIgnore]
         public IEnumerable<byte> Bytes
@@ -265,28 +293,74 @@ namespace VagaModbusAnalyzer
                 return null;
             }
         }
-    }
 
-
-
-
-    public class ModbusCoilWriter : ModbusWriter<ModbusWriteCoil>
-    {
-        public override ModbusRequest Request 
-            => WriteValues.Count > 1 || UseMultipleWriteWhenSingle ? new ModbusWriteCoilRequest(SlaveAddress, Address, WriteValues.Select(value => value.Value))
-            : new ModbusWriteCoilRequest(SlaveAddress, Address, WriteValues.FirstOrDefault()?.Value ?? false);
-
-        protected override void UpdateWriteValueAddresses(IEnumerable<ModbusWriteCoil> list)
+        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
         {
-            var collection = WriteValues;
-            foreach (var item in list.Cast<ModbusWriteCoil>())
-                item.Address = (ushort)(Address + collection.IndexOf(item));
-        }
-    }
+            base.OnPropertyChanged(e);
 
-    public class ModbusWriteCoil : ModbusWriteValue
-    {
-        public bool Value { get => Get(false); set => Set(value); }
+            switch (e.PropertyName)
+            {
+                case nameof(Type):
+                    switch (Type)
+                    {
+                        case TypeCode.Single:
+                            ByteLength = 4;
+                            EditableByteLength = false;
+                            break;
+                        case TypeCode.Double:
+                            ByteLength = 8;
+                            EditableByteLength = false;
+                            break;
+                        case TypeCode.Boolean:
+                            ByteLength = 1;
+                            EditableByteLength = false;
+                            break;
+                        default:
+                            EditableByteLength = true;
+                            break;
+                    }
+                    EditableModbusEndian = Type != TypeCode.Boolean && ByteLength > 1;
+                    break;
+                case nameof(Value):
+                    BooleanValue = Value != 0;
+                    modbusWriter?.UpdateRequestMessage();
+                    break;
+                case nameof(BooleanValue):
+                    Value = BooleanValue ? 1 : 0;
+                    break;
+                case nameof(ByteLength):
+                    if (modbusWriter != null)
+                        modbusWriter.UpdateWriteValueAddresses(modbusWriter.WriteValues.Skip(modbusWriter.WriteValues.IndexOf(this)));
+                    EditableModbusEndian = Type != TypeCode.Boolean && ByteLength > 1;
+                    UpdateEnableMixedEndian();
+                    break;
+                case nameof(IsFirstByte):
+                    UpdateEnableMixedEndian();
+                    break;
+                case nameof(EnableMixedEndian):
+                    ModbusEndian = tempModbusEndian;
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(ModbusEndian)));
+                    break;
+            }
+        }
+
+        private ModbusEndian tempModbusEndian = ModbusEndian.AllBig;
+        private void UpdateEnableMixedEndian()
+        {
+            if (IsFirstByte && ByteLength >= 4 && ByteLength % 2 == 0)
+            {
+                tempModbusEndian = ModbusEndian;
+                EnableMixedEndian = true;
+            }
+            else
+            {
+                if (ModbusEndian != ModbusEndian.AllBig && ModbusEndian != ModbusEndian.AllLittle)
+                    tempModbusEndian = ModbusEndian.AllBig;
+                else
+                    tempModbusEndian = ModbusEndian;
+                EnableMixedEndian = false;
+            }
+        }
     }
 
 }

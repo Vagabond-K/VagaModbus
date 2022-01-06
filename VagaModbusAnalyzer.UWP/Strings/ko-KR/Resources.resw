@@ -615,4 +615,25 @@
   <data name="Text_UseMultiWrite.Text" xml:space="preserve">
     <value>다중 쓰기 Function 사용</value>
   </data>
+  <data name="EditModbusHoldingRegisterWriterView_AppBarButton_AddValue.Label" xml:space="preserve">
+    <value>값 추가</value>
+  </data>
+  <data name="EditModbusHoldingRegisterWriterView_AppBarButton_Save.Label" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="Text_Address.Text" xml:space="preserve">
+    <value>어드레스</value>
+  </data>
+  <data name="Text_BitFlags.Text" xml:space="preserve">
+    <value>비트 플래그 조합</value>
+  </data>
+  <data name="Text_Endian.Text" xml:space="preserve">
+    <value>엔디언</value>
+  </data>
+  <data name="Text_Mixed_endian.Text" xml:space="preserve">
+    <value>혼합 엔디언</value>
+  </data>
+  <data name="Text_ValueType.Text" xml:space="preserve">
+    <value>값 형식</value>
+  </data>
 </root>

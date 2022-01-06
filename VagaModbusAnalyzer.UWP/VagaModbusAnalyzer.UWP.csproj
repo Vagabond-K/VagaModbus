@@ -137,6 +137,7 @@
     <Compile Include="Converters\HexConverter.cs" />
     <Compile Include="Converters\IsTypeToVisibilityConverter.cs" />
     <Compile Include="Converters\ModbusExceptionToDetailMessageConverter.cs" />
+    <Compile Include="Converters\ModbusWriteEndianListConverter.cs" />
     <Compile Include="Converters\TimeStampStringConverter.cs" />
     <Compile Include="Infrastructures\ChannelLogTemplateSelector.cs" />
     <Compile Include="Infrastructures\ChannelLogStyleSelector.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="Infrastructures\Dialog.cs" />
     <Compile Include="Converters\EnumComboBoxConverter.cs" />
     <Compile Include="Infrastructures\ItemWidthCalculator.cs" />
+    <Compile Include="Converters\ModbusEndianToTextConverter.cs" />
     <Compile Include="Infrastructures\ModbusWriterDataTemplateSelector.cs" />
     <Compile Include="Infrastructures\ModbusScanDataTemplateSelector.cs" />
     <Compile Include="Infrastructures\NavigationManager.cs" />

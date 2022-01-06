@@ -5,9 +5,10 @@
     xmlns:local="using:VagaModbusAnalyzer.Infrastructures"
     xmlns:controls="using:VagaModbusAnalyzer.Controls"
     xmlns:converters="using:VagaModbusAnalyzer.Converters"
-    xmlns:modbus="using:VagaModbusAnalyzer"
+    xmlns:modbus="using:VagabondK.Protocols.Modbus.Data"
     xmlns:model="using:VagaModbusAnalyzer.ChannelSetting"
     xmlns:mtuuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:collections="using:System.Collections"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -16,8 +17,8 @@
     <controls:ViewHostPage.ViewCommands>
         <controls:ViewCommands>
             <controls:ViewCommands.PrimaryCommands>
-                <AppBarButton x:Uid="EditModbusChannelView_AppBarButton_AddValue" Icon="Add" Command="{Binding AddValueCommand}"/>
-                <AppBarButton x:Uid="EditModbusChannelView_AppBarButton_Save" Icon="Save" Command="{Binding SaveCommand}"/>
+                <AppBarButton x:Uid="EditModbusHoldingRegisterWriterView_AppBarButton_AddValue" Icon="Add" Command="{Binding AddValueCommand}"/>
+                <AppBarButton x:Uid="EditModbusHoldingRegisterWriterView_AppBarButton_Save" Icon="Save" Command="{Binding SaveCommand}"/>
             </controls:ViewCommands.PrimaryCommands>
         </controls:ViewCommands>
     </controls:ViewHostPage.ViewCommands>
@@ -63,15 +64,14 @@
                 <Style TargetType="CheckBox">
                     <Setter Property="Margin" Value="6"/>
                 </Style>
-                <converters:EnumComboBoxConverter x:Key="EnumComboBoxConverter"/>
             </FrameworkElement.Resources>
 
-            <controls:NumericBox Text="{Binding SlaveAddress, Mode=TwoWay}" ValueTypeCode="Byte" MinValue="0" MaxValue="255" Width="194">
+            <controls:NumericBox Value="{Binding SlaveAddress, Mode=TwoWay}" ValueTypeCode="Byte" MinValue="0" MaxValue="255" Width="194">
                 <TextBox.Header>
                     <TextBlock x:Uid="Text_SlaveAddress"/>
                 </TextBox.Header>
             </controls:NumericBox>
-            <controls:NumericBox Text="{Binding Address, Mode=TwoWay}" ValueTypeCode="UInt16" MinValue="0" MaxValue="65535" Width="194">
+            <controls:NumericBox Value="{Binding Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ValueTypeCode="UInt16" MinValue="0" MaxValue="65535" Width="194">
                 <TextBox.Header>
                     <TextBlock x:Uid="Text_DataAddress"/>
                 </TextBox.Header>
@@ -83,7 +83,6 @@
                     </TextBlock>
                 </Slider.Header>
             </Slider>
-
         </mtuuc:WrapPanel>
 
         <ScrollViewer Grid.Row="1" DataContext="{Binding ModbusWriter}">
@@ -92,6 +91,9 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
+                                <FrameworkElement.Resources>
+                                    <converters:EnumComboBoxConverter x:Key="EnumComboBoxConverter"/>
+                                </FrameworkElement.Resources>
                                 <Grid Margin="3" HorizontalAlignment="Left">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
@@ -104,40 +106,53 @@
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition/>
                                                 </Grid.RowDefinitions>
-                                                <TextBlock Text="어드레스"/>
-                                                <TextBlock Grid.Row="1" Text="1.B" FontSize="20" Width="94" VerticalAlignment="Center"/>
+                                                <TextBlock x:Uid="Text_Address"/>
+                                                <TextBlock Grid.Row="1" FontSize="20" Width="104" VerticalAlignment="Center">
+                                                    <Run Text="{Binding Address}"/>.<Run Text="{Binding IsFirstByte, Converter={converters:BooleanToObjectConverter TrueValue=A, FalseValue=B}}"/>
+                                                </TextBlock>
                                             </Grid>
 
-                                            <ComboBox x:Name="ComboBox_ValueType" SelectedValuePath="Value" DisplayMemberPath="Display" Width="280" Margin="6">
+                                            <ComboBox 
+                                                x:Name="ComboBox_ValueType"
+                                                SelectedValue="{Binding Type, Mode=TwoWay, Converter={StaticResource EnumComboBoxConverter}}"
+                                                SelectedValuePath="Value" DisplayMemberPath="Text" Width="270" Margin="6">
                                                 <ComboBox.Header>
-                                                    <TextBlock Text="데이터 형식"/>
+                                                    <TextBlock x:Uid="Text_ValueType"/>
                                                 </ComboBox.Header>
-                                                <converters:EnumComboBoxItem Display="Input Register" Value="{local:ToByte Value=4}"/>
-                                                <converters:EnumComboBoxItem Display="Discrete Input" Value="{local:ToByte Value=2}"/>
-                                                <converters:EnumComboBoxItem Display="Holding Register" Value="{local:ToByte Value=3}"/>
-                                                <converters:EnumComboBoxItem Display="Coil" Value="{local:ToByte Value=1}"/>
+                                                <converters:EnumComboBoxItem x:Uid="Text_SignedInteger" Value="{local:ToInt32 Value=11}"/>
+                                                <converters:EnumComboBoxItem x:Uid="Text_UnsignedInteger" Value="{local:ToInt32 Value=12}"/>
+                                                <converters:EnumComboBoxItem x:Uid="Text_FloatValue" Value="{local:ToInt32 Value=13}"/>
+                                                <converters:EnumComboBoxItem x:Uid="Text_DoubleValue" Value="{local:ToInt32 Value=14}"/>
+                                                <converters:EnumComboBoxItem x:Uid="Text_BitFlags" Value="{local:ToInt32 Value=3}"/>
                                             </ComboBox>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
-                                            <Slider Value="{Binding ByteLength, Mode=TwoWay}" Minimum="1" Maximum="8" Width="94" TickPlacement="Inline" Margin="6">
+                                            <Slider Value="{Binding ByteLength, Mode=TwoWay}" IsEnabled="{Binding EditableByteLength}" Minimum="1" Maximum="8" Width="104" TickPlacement="Inline" Margin="6">
                                                 <Slider.Header>
                                                     <TextBlock>
                                                         <Run Text="{Binding ByteLength}"/><Run x:Uid="Text_Bytes"/>
                                                     </TextBlock>
                                                 </Slider.Header>
                                             </Slider>
-                                            <ComboBox SelectedValuePath="Value" DisplayMemberPath="Display" Width="280" Margin="6">
+                                            <ComboBox 
+                                                Width="270" Margin="6" 
+                                                SelectedItem="{Binding ModbusEndian, Mode=TwoWay}"
+                                                ItemsSource="{Binding EnableMixedEndian, Converter={converters:ModbusWriteEndianListConverter}}"
+                                                IsEnabled="{Binding EditableModbusEndian}">
                                                 <ComboBox.Header>
-                                                    <TextBlock Text="엔디안"/>
+                                                    <TextBlock x:Uid="Text_Endian"/>
                                                 </ComboBox.Header>
-                                                <converters:EnumComboBoxItem Display="빅 엔디안(ABCD)" Value="{local:ToByte Value=4}"/>
-                                                <converters:EnumComboBoxItem Display="리틀 엔디안(DCBA)" Value="{local:ToByte Value=2}"/>
-                                                <converters:EnumComboBoxItem Display="혼합 엔디안(BADC)" Value="{local:ToByte Value=3}"/>
-                                                <converters:EnumComboBoxItem Display="혼합 엔디안(CDAB)" Value="{local:ToByte Value=1}"/>
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Converter={converters:ModbusEndianToTextConverter}}"/>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
                                             </ComboBox>
                                         </StackPanel>
                                     </mtuuc:WrapPanel>
-                                    <Button Grid.Column="1" Content="&#xE74D;" Command="{Binding ElementName=Root, Path=DataContext.DeleteValueCommand}" CommandParameter="{Binding}" Margin="3" Style="{StaticResource SelectorItemButtonStyle}">
+                                    <Button Grid.Column="1" Content="&#xE74D;" Command="{Binding ElementName=Root, Path=DataContext.DeleteValueCommand}" 
+                                            CommandParameter="{Binding}" Margin="3" Style="{StaticResource SelectorItemButtonStyle}"
+                                            IsEnabled="{Binding ElementName=Root, Path=DataContext.ModbusWriter.WriteValues.Count, Converter={converters:ObjectEqualsConverter Inverse=True}, ConverterParameter={local:ToInt32 Value=1}}">
                                         <ToolTipService.ToolTip>
                                             <TextBlock x:Uid="ItemDeleteButton"/>
                                         </ToolTipService.ToolTip>

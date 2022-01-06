@@ -12,13 +12,15 @@ namespace VagaModbusAnalyzer.Infrastructures
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
-            if (item is ModbusHoldingRegisterWriter)
+            if (item is ModbusWriter modbusWriter)
             {
-                return HoldingRegisterWriterTemplate;
-            }
-            else if (item is ModbusCoilWriter)
-            {
-                return CoilWriterTemplate;
+                switch (modbusWriter.ObjectType)
+                {
+                    case VagabondK.Protocols.Modbus.ModbusObjectType.HoldingRegister:
+                        return HoldingRegisterWriterTemplate;
+                    case VagabondK.Protocols.Modbus.ModbusObjectType.Coil:
+                        return CoilWriterTemplate;
+                }
             }
 
             return base.SelectTemplateCore(item, container);
