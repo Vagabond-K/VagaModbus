@@ -140,7 +140,8 @@ namespace VagaModbusAnalyzer.Controls
             base.OnLostFocus(e);
             if (Value == null)
                 Value = AllowNullInput ? null : (MinValue == null || MinValue.Value <= 0 ? 0d : MinValue);
-            Text = Value.ToString();
+
+            Text = Value?.ToString() ?? string.Empty;
         }
 
         static Type ToType(TypeCode code)

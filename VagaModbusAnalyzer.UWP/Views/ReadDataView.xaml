@@ -17,9 +17,7 @@
         <controls:ViewCommands>
             <controls:ViewCommands.PrimaryCommands>
                 <AppBarButton x:Uid="ReadDataView_AppBarButton_AddScan" Icon="Add" Command="{Binding AddScanCommand}"
-                      IsEnabled="{Binding AppData.SelectedChannel, Converter={converters:ObjectEqualsConverter Inverse=True}, ConverterParameter={x:Null}}"/>
-                <!--<AppBarButton x:Uid="ReadDataView_AppBarButton_AddScan" Icon="Send" Command="{Binding AddScanCommand}"
-                      IsEnabled="{Binding AppData.SelectedChannel, Converter={vk:ObjectEqualsConverter Inverse=True}, ConverterParameter={x:Null}}"/>-->
+                      IsEnabled="{Binding AppData.SelectedChannel, Converter={StaticResource ObjectNotEqualsConverter}, ConverterParameter={x:Null}}"/>
             </controls:ViewCommands.PrimaryCommands>
         </controls:ViewCommands>
     </controls:ViewHostPage.ViewCommands>
@@ -102,7 +100,7 @@
                         </ScrollViewer>
                         <Button x:Uid="ReadDataView_AddScan"
                             Command="{Binding ElementName=PART_ReadDataView, Path=DataContext.AddScanCommand}"
-                            Visibility="{Binding ModbusScans.Count, Converter={converters:ObjectEqualsToVisibilityConverter}, ConverterParameter={local:ToInt32 Value=0}}"
+                            Visibility="{Binding ModbusScans.Count, Converter={StaticResource ObjectEqualsToVisibileConverter}, ConverterParameter={local:ToInt32 Value=0}}"
                             Style="{StaticResource AddNewItemButtonStyle}"/>
                     </Grid>
                 </DataTemplate>

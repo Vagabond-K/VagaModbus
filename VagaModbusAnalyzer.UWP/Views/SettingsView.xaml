@@ -26,7 +26,7 @@
                 <StackPanel Margin="16,6" DataContext="{Binding ThemeManager}">
                     <StackPanel Margin="10">
                         <TextBlock x:Uid="Settings_General_ThemeSelect" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                        <RadioButton x:Uid="Settings_General_ThemeSelect_Light" GroupName="SelectedTheme" IsChecked="{Binding AppTheme, Converter={converters:ObjectEqualsConverter}, ConverterParameter=Light}">
+                        <RadioButton x:Uid="Settings_General_ThemeSelect_Light" GroupName="SelectedTheme" IsChecked="{Binding AppTheme, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter=Light}">
                             <RadioButton.Command>
                                 <local:PropertySetCommand PropertyBinding="{Binding AppTheme, Mode=TwoWay}"/>
                             </RadioButton.Command>
@@ -34,7 +34,7 @@
                                 <ElementTheme>Light</ElementTheme>
                             </RadioButton.CommandParameter>
                         </RadioButton>
-                        <RadioButton x:Uid="Settings_General_ThemeSelect_Dark" GroupName="SelectedTheme" IsChecked="{Binding AppTheme, Converter={converters:ObjectEqualsConverter}, ConverterParameter=Dark}">
+                        <RadioButton x:Uid="Settings_General_ThemeSelect_Dark" GroupName="SelectedTheme" IsChecked="{Binding AppTheme, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter=Dark}">
                             <RadioButton.Command>
                                 <local:PropertySetCommand PropertyBinding="{Binding AppTheme, Mode=TwoWay}"/>
                             </RadioButton.Command>
@@ -42,7 +42,7 @@
                                 <ElementTheme>Dark</ElementTheme>
                             </RadioButton.CommandParameter>
                         </RadioButton>
-                        <RadioButton x:Uid="Settings_General_ThemeSelect_Default" GroupName="SelectedTheme" IsChecked="{Binding AppTheme, Converter={converters:ObjectEqualsConverter}, ConverterParameter=Default}">
+                        <RadioButton x:Uid="Settings_General_ThemeSelect_Default" GroupName="SelectedTheme" IsChecked="{Binding AppTheme, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter=Default}">
                             <RadioButton.Command>
                                 <local:PropertySetCommand PropertyBinding="{Binding AppTheme, Mode=TwoWay}"/>
                             </RadioButton.Command>

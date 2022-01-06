@@ -108,7 +108,7 @@
                                                 </Grid.RowDefinitions>
                                                 <TextBlock x:Uid="Text_Address"/>
                                                 <TextBlock Grid.Row="1" FontSize="20" Width="104" VerticalAlignment="Center">
-                                                    <Run Text="{Binding Address}"/>.<Run Text="{Binding IsFirstByte, Converter={converters:BooleanToObjectConverter TrueValue=A, FalseValue=B}}"/>
+                                                    <Run Text="{Binding Address}"/>.<Run Text="{Binding IsFirstByte, Converter={StaticResource IsFirstByteToSubAddressConverter}}"/>
                                                 </TextBlock>
                                             </Grid>
 
@@ -137,14 +137,14 @@
                                             <ComboBox 
                                                 Width="270" Margin="6" 
                                                 SelectedItem="{Binding ModbusEndian, Mode=TwoWay}"
-                                                ItemsSource="{Binding EnableMixedEndian, Converter={converters:ModbusWriteEndianListConverter}}"
+                                                ItemsSource="{Binding ModbusEndians}"
                                                 IsEnabled="{Binding EditableModbusEndian}">
                                                 <ComboBox.Header>
                                                     <TextBlock x:Uid="Text_Endian"/>
                                                 </ComboBox.Header>
                                                 <ComboBox.ItemTemplate>
                                                     <DataTemplate>
-                                                        <TextBlock Text="{Binding Converter={converters:ModbusEndianToTextConverter}}"/>
+                                                        <TextBlock Text="{Binding Converter={StaticResource ModbusEndianToTextConverter}}"/>
                                                     </DataTemplate>
                                                 </ComboBox.ItemTemplate>
                                             </ComboBox>
@@ -152,7 +152,7 @@
                                     </mtuuc:WrapPanel>
                                     <Button Grid.Column="1" Content="&#xE74D;" Command="{Binding ElementName=Root, Path=DataContext.DeleteValueCommand}" 
                                             CommandParameter="{Binding}" Margin="3" Style="{StaticResource SelectorItemButtonStyle}"
-                                            IsEnabled="{Binding ElementName=Root, Path=DataContext.ModbusWriter.WriteValues.Count, Converter={converters:ObjectEqualsConverter Inverse=True}, ConverterParameter={local:ToInt32 Value=1}}">
+                                            IsEnabled="{Binding ElementName=Root, Path=DataContext.ModbusWriter.WriteValues.Count, Converter={StaticResource ObjectNotEqualsConverter}, ConverterParameter={local:ToInt32 Value=1}}">
                                         <ToolTipService.ToolTip>
                                             <TextBlock x:Uid="ItemDeleteButton"/>
                                         </ToolTipService.ToolTip>

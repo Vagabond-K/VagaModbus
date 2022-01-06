@@ -164,7 +164,7 @@
                 <StackPanel Margin="6" Width="400">
                     <TextBlock x:Uid="EditModbusChannelView_ProtocolVersion"/>
                     <mtuuc:UniformGrid Columns="3">
-                        <RadioButton Content="TCP" GroupName="Modbus" IsChecked="{Binding ModbusType, Converter={converters:ObjectEqualsConverter}, ConverterParameter=TCP}" HorizontalAlignment="Stretch">
+                        <RadioButton Content="TCP" GroupName="Modbus" IsChecked="{Binding ModbusType, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter=TCP}" HorizontalAlignment="Stretch">
                             <RadioButton.Command>
                                 <local:PropertySetCommand PropertyBinding="{Binding ModbusType, Mode=TwoWay}"/>
                             </RadioButton.Command>
@@ -172,7 +172,7 @@
                                 <modbus:ModbusType>TCP</modbus:ModbusType>
                             </RadioButton.CommandParameter>
                         </RadioButton>
-                        <RadioButton Content="RTU" GroupName="Modbus" IsChecked="{Binding ModbusType, Converter={converters:ObjectEqualsConverter}, ConverterParameter=RTU}" HorizontalAlignment="Stretch">
+                        <RadioButton Content="RTU" GroupName="Modbus" IsChecked="{Binding ModbusType, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter=RTU}" HorizontalAlignment="Stretch">
                             <RadioButton.Command>
                                 <local:PropertySetCommand PropertyBinding="{Binding ModbusType, Mode=TwoWay}"/>
                             </RadioButton.Command>
@@ -180,7 +180,7 @@
                                 <modbus:ModbusType>RTU</modbus:ModbusType>
                             </RadioButton.CommandParameter>
                         </RadioButton>
-                        <RadioButton Content="ASCII" GroupName="Modbus" IsChecked="{Binding ModbusType, Converter={converters:ObjectEqualsConverter}, ConverterParameter=ASCII}" HorizontalAlignment="Stretch">
+                        <RadioButton Content="ASCII" GroupName="Modbus" IsChecked="{Binding ModbusType, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter=ASCII}" HorizontalAlignment="Stretch">
                             <RadioButton.Command>
                                 <local:PropertySetCommand PropertyBinding="{Binding ModbusType, Mode=TwoWay}"/>
                             </RadioButton.Command>
@@ -201,7 +201,7 @@
             <StackPanel Margin="6" Width="400" HorizontalAlignment="Left">
                 <TextBlock x:Uid="EditModbusChannelView_ChannelType"/>
                 <mtuuc:UniformGrid Columns="2">
-                    <RadioButton x:Uid="EditModbusChannelView_ChannelType_TcpClient" GroupName="ChannelSetting" IsChecked="{Binding ChannelType, Converter={converters:ObjectEqualsConverter}, ConverterParameter=TcpClient}" HorizontalAlignment="Stretch">
+                    <RadioButton x:Uid="EditModbusChannelView_ChannelType_TcpClient" GroupName="ChannelSetting" IsChecked="{Binding ChannelType, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter=TcpClient}" HorizontalAlignment="Stretch">
                         <RadioButton.Command>
                             <local:PropertySetCommand PropertyBinding="{Binding ChannelType, Mode=TwoWay}"/>
                         </RadioButton.Command>
@@ -209,7 +209,7 @@
                             <modbus:ChannelType>TcpClient</modbus:ChannelType>
                         </RadioButton.CommandParameter>
                     </RadioButton>
-                    <RadioButton x:Uid="EditModbusChannelView_ChannelType_TcpServer" GroupName="ChannelSetting" IsChecked="{Binding ChannelType, Converter={converters:ObjectEqualsConverter}, ConverterParameter=TcpServer}" HorizontalAlignment="Stretch">
+                    <RadioButton x:Uid="EditModbusChannelView_ChannelType_TcpServer" GroupName="ChannelSetting" IsChecked="{Binding ChannelType, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter=TcpServer}" HorizontalAlignment="Stretch">
                         <RadioButton.Command>
                             <local:PropertySetCommand PropertyBinding="{Binding ChannelType, Mode=TwoWay}"/>
                         </RadioButton.Command>
@@ -217,7 +217,7 @@
                             <modbus:ChannelType>TcpServer</modbus:ChannelType>
                         </RadioButton.CommandParameter>
                     </RadioButton>
-                    <RadioButton x:Uid="EditModbusChannelView_ChannelType_UdpSocket" GroupName="ChannelSetting" IsChecked="{Binding ChannelType, Converter={converters:ObjectEqualsConverter}, ConverterParameter=UdpSocket}" HorizontalAlignment="Stretch">
+                    <RadioButton x:Uid="EditModbusChannelView_ChannelType_UdpSocket" GroupName="ChannelSetting" IsChecked="{Binding ChannelType, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter=UdpSocket}" HorizontalAlignment="Stretch">
                         <RadioButton.Command>
                             <local:PropertySetCommand PropertyBinding="{Binding ChannelType, Mode=TwoWay}"/>
                         </RadioButton.Command>
@@ -225,7 +225,7 @@
                             <modbus:ChannelType>UdpSocket</modbus:ChannelType>
                         </RadioButton.CommandParameter>
                     </RadioButton>
-                    <RadioButton x:Uid="EditModbusChannelView_ChannelType_SerialPort" GroupName="ChannelSetting" IsChecked="{Binding ChannelType, Converter={converters:ObjectEqualsConverter}, ConverterParameter=SerialPort}" HorizontalAlignment="Stretch">
+                    <RadioButton x:Uid="EditModbusChannelView_ChannelType_SerialPort" GroupName="ChannelSetting" IsChecked="{Binding ChannelType, Converter={StaticResource ObjectEqualsConverter}, ConverterParameter=SerialPort}" HorizontalAlignment="Stretch">
                         <RadioButton.Command>
                             <local:PropertySetCommand PropertyBinding="{Binding ChannelType, Mode=TwoWay}"/>
                         </RadioButton.Command>

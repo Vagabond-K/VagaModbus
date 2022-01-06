@@ -17,9 +17,9 @@
         <controls:ViewCommands>
             <controls:ViewCommands.PrimaryCommands>
                 <AppBarButton x:Uid="WriteDataView_AppBarButton_AddHoldingRegisterWriter" Icon="Add" Command="{Binding AddHoldingRegisterWriterCommand}"
-                      IsEnabled="{Binding AppData.SelectedChannel, Converter={converters:ObjectEqualsConverter Inverse=True}, ConverterParameter={x:Null}}"/>
+                      IsEnabled="{Binding AppData.SelectedChannel, Converter={StaticResource ObjectNotEqualsConverter}, ConverterParameter={x:Null}}"/>
                 <AppBarButton x:Uid="WriteDataView_AppBarButton_AddCoilWriter" Icon="Add" Command="{Binding AddCoilWriterCommand}"
-                      IsEnabled="{Binding AppData.SelectedChannel, Converter={converters:ObjectEqualsConverter Inverse=True}, ConverterParameter={x:Null}}"/>
+                      IsEnabled="{Binding AppData.SelectedChannel, Converter={StaticResource ObjectNotEqualsConverter}, ConverterParameter={x:Null}}"/>
             </controls:ViewCommands.PrimaryCommands>
         </controls:ViewCommands>
     </controls:ViewHostPage.ViewCommands>
@@ -27,8 +27,6 @@
     <Grid x:Name="PART_WriteDataView" Margin="0,15,0,0">
         <Grid.Resources>
             <local:CopyToClipboardCommand x:Key="CopyToClipboardCommand"/>
-            <converters:ObjectEqualsToVisibilityConverter x:Key="ObjectEqualsToVisibileConverter"/>
-            <converters:ObjectEqualsToVisibilityConverter x:Key="ObjectEqualsToCollapseConverter" Inverse="True"/>
             <Style x:Key="CoilCheckBoxStyle" TargetType="CheckBox">
                 <Setter Property="Background" Value="{ThemeResource CheckBoxBackgroundUnchecked}"/>
                 <Setter Property="Foreground" Value="{ThemeResource CheckBoxForegroundUnchecked}"/>
@@ -695,7 +693,7 @@
                                     <Run Text="{Binding WriteValues.Count}" FontFamily="Consolas"/></TextBlock>
                                 <StackPanel Orientation="Horizontal" Visibility="{Binding WriteValues.Count, Converter={StaticResource ObjectEqualsToVisibileConverter},ConverterParameter={local:ToInt32 Value=1}}">
                                     <TextBlock Margin="5,6" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"><Run x:Uid="Text_LogicalValue"/><Run Text=":"/></TextBlock>
-                                    <CheckBox IsChecked="{Binding WriteValues[0].Value, Mode=TwoWay}" Style="{StaticResource CoilCheckBoxNonContentStyle}"
+                                    <CheckBox IsChecked="{Binding WriteValues[0].Value, Mode=TwoWay, Converter={StaticResource DecimalValueToCheckBoxConverter}}" Style="{StaticResource CoilCheckBoxNonContentStyle}"
                                           Visibility="{Binding WriteValues.Count, Converter={StaticResource ObjectEqualsToVisibileConverter},ConverterParameter={local:ToInt32 Value=1}}"
                                               Width="24" Height="24" Margin="0,0,4,0"/>
                                 </StackPanel>
@@ -727,7 +725,7 @@
                                 <muxc:ItemsRepeater.ItemTemplate>
                                     <DataTemplate>
                                         <CheckBox 
-                                            IsChecked="{Binding BooleanValue, Mode=TwoWay}"
+                                            IsChecked="{Binding Value, Mode=TwoWay, Converter={StaticResource DecimalValueToCheckBoxConverter}}"
                                             Content="{Binding Address}" Style="{StaticResource CoilCheckBoxStyle}"/>
                                     </DataTemplate>
                                 </muxc:ItemsRepeater.ItemTemplate>

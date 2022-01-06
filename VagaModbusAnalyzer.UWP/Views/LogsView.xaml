@@ -20,9 +20,9 @@
                     <ComboBox ItemsSource="{Binding AppData.Channels}" SelectedItem="{Binding AppData.SelectedChannel, Mode=TwoWay}" DisplayMemberPath="Name" Margin="6,0" MinWidth="150"/>
                 </AppBarElementContainer>
                 <AppBarButton x:Uid="LogsView_AppBarButton_Clear" Icon="Delete" Command="{Binding AppData.SelectedChannel.Logger.ClearCommand}"
-                      IsEnabled="{Binding AppData.SelectedChannel, Converter={converters:ObjectEqualsConverter Inverse=True}, ConverterParameter={x:Null}}"/>
+                      IsEnabled="{Binding AppData.SelectedChannel, Converter={StaticResource ObjectNotEqualsConverter}, ConverterParameter={x:Null}}"/>
                 <AppBarElementContainer VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Padding="10,0" 
-                                IsEnabled="{Binding AppData.SelectedChannel, Converter={converters:ObjectEqualsConverter Inverse=True}, ConverterParameter={x:Null}}">
+                                IsEnabled="{Binding AppData.SelectedChannel, Converter={StaticResource ObjectNotEqualsConverter}, ConverterParameter={x:Null}}">
                     <ToggleSwitch IsOn="{Binding AppData.SelectedChannel.Logger.IsOn, Mode=TwoWay}" Width="100" Template="{StaticResource NoneAnimationToggleSwitch}"/>
                 </AppBarElementContainer>
                 <AppBarSeparator Height="40"/>
@@ -39,7 +39,6 @@
         <converters:TimeStampStringConverter x:Key="TimeStampStringConverter"/>
         <converters:ObjectEqualsToVisibilityConverter x:Key="ObjectNotEqualsToVisibilityConverter" Inverse="True"/>
         <converters:IsTypeToVisibilityConverter x:Key="IsTypeToVisibilityConverter"/>
-        <converters:EnumToLocalizedStringConverter x:Key="EnumToLocalizedStringConverter"/>
         <converters:HexConverter x:Key="HexConverter"/>
         <converters:ModbusExceptionToDetailMessageConverter x:Key="ModbusExceptionToDetailMessageConverter"/>
         <converters:ChannelLogToMessageConverter x:Key="ChannelLogToMessageConverter"/>
@@ -391,7 +390,7 @@
                         <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_Description"/>:</TextBlock>
                         <TextBlock Grid.Column="1" Grid.Row="2" x:Uid="Text_ReceivedException" Style="{StaticResource ValueStyle}"/>
                         <TextBlock Grid.Column="0" Grid.Row="3" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_Code"/>:</TextBlock>
-                        <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding ExceptionCode, Converter={converters:EnumComboBoxConverter}}" Style="{StaticResource ValueStyle}"/>
+                        <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding ExceptionCode, Converter={StaticResource EnumComboBoxConverter}}" Style="{StaticResource ValueStyle}"/>
                         <TextBlock Grid.Column="0" Grid.Row="4" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_Text"/>:</TextBlock>
                         <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding ExceptionCode, Converter={StaticResource EnumToLocalizedStringConverter}}" Style="{StaticResource ValueStyle}"/>
                         <TextBlock Grid.Column="0" Grid.Row="5" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_Details"/>:</TextBlock>
@@ -426,7 +425,7 @@
                         <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_SlaveAddress"/>:</TextBlock>
                         <TextBlock Grid.Column="1" Grid.Row="2" DataContext="{Binding Converter={StaticResource ChannelLogToMessageConverter}}" Text="{Binding SlaveAddress}" Style="{StaticResource ValueStyle}"/>
                         <TextBlock Grid.Column="0" Grid.Row="3" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_FunctionCode"/>:</TextBlock>
-                        <TextBlock Grid.Column="1" Grid.Row="3" DataContext="{Binding Converter={StaticResource ChannelLogToMessageConverter}}"  Text="{Binding Function, Converter={converters:EnumToLocalizedStringConverter}}" Style="{StaticResource ValueStyle}"/>
+                        <TextBlock Grid.Column="1" Grid.Row="3" DataContext="{Binding Converter={StaticResource ChannelLogToMessageConverter}}"  Text="{Binding Function, Converter={StaticResource EnumToLocalizedStringConverter}}" Style="{StaticResource ValueStyle}"/>
                         <TextBlock Grid.Column="0" Grid.Row="4" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_DataAddress"/>:</TextBlock>
                         <TextBlock Grid.Column="1" Grid.Row="4" DataContext="{Binding Converter={StaticResource ChannelLogToMessageConverter}}"  Text="{Binding Address}" Style="{StaticResource ValueStyle}"/>
                         <TextBlock Grid.Column="0" Grid.Row="5" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_NumOfData"/>:</TextBlock>
@@ -462,7 +461,7 @@
                         <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_SlaveAddress"/>:</TextBlock>
                         <TextBlock Grid.Column="1" Grid.Row="2" DataContext="{Binding Converter={StaticResource ChannelLogToMessageConverter}}" Text="{Binding Request.SlaveAddress}" Style="{StaticResource ValueStyle}"/>
                         <TextBlock Grid.Column="0" Grid.Row="3" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_FunctionCode"/>:</TextBlock>
-                        <TextBlock Grid.Column="1" Grid.Row="3" DataContext="{Binding Converter={StaticResource ChannelLogToMessageConverter}}"  Text="{Binding Request.Function, Converter={converters:EnumToLocalizedStringConverter}}" Style="{StaticResource ValueStyle}"/>
+                        <TextBlock Grid.Column="1" Grid.Row="3" DataContext="{Binding Converter={StaticResource ChannelLogToMessageConverter}}"  Text="{Binding Request.Function, Converter={StaticResource EnumToLocalizedStringConverter}}" Style="{StaticResource ValueStyle}"/>
                         <TextBlock Grid.Column="0" Grid.Row="4" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_DataAddress"/>:</TextBlock>
                         <TextBlock Grid.Column="1" Grid.Row="4" DataContext="{Binding Converter={StaticResource ChannelLogToMessageConverter}}"  Text="{Binding Request.Address}" Style="{StaticResource ValueStyle}"/>
                         <TextBlock Grid.Column="0" Grid.Row="5" Style="{StaticResource LabelStyle}"><Run x:Uid="Text_NumOfData"/>:</TextBlock>

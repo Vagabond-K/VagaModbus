@@ -44,8 +44,8 @@ namespace VagaModbusAnalyzer
                                 : BitConverter.ToUInt16(WriteValues.FirstOrDefault()?.Bytes?.ToArray() ?? new byte[] { 0, 0 }, 0));
                     case ModbusObjectType.Coil:
                         return WriteValues.Count > 1 || UseMultipleWriteWhenSingle 
-                            ? new ModbusWriteCoilRequest(SlaveAddress, Address, WriteValues.Select(value => value.BooleanValue))
-                            : new ModbusWriteCoilRequest(SlaveAddress, Address, WriteValues.FirstOrDefault()?.BooleanValue ?? false);
+                            ? new ModbusWriteCoilRequest(SlaveAddress, Address, WriteValues.Select(value => value.Value.To<bool>()))
+                            : new ModbusWriteCoilRequest(SlaveAddress, Address, (WriteValues.FirstOrDefault()?.Value ?? 0) == 1);
                     default:
                         return null;
                 }
@@ -247,9 +247,6 @@ namespace VagaModbusAnalyzer
 
         public decimal Value { get => Get(0M); set => Set(value); }
 
-        public bool BooleanValue { get => Get(false); set => Set(value); }
-        
-
         [JsonIgnore]
         public bool IsFirstByte { get => Get(true); set => Set(value); }
 
@@ -260,7 +257,24 @@ namespace VagaModbusAnalyzer
         public bool EditableModbusEndian { get => Get(true); private set => Set(value); }
 
         [JsonIgnore]
-        public bool EnableMixedEndian { get => Get(true); private set => Set(value); }
+        public ModbusEndian[] ModbusEndians => IsFirstByte && ByteLength >= 4 && ByteLength % 2 == 0 ? allEndians : filteredEndians;
+
+        private static readonly ModbusEndian[] allEndians = new ModbusEndian[]
+        {
+            ModbusEndian.AllBig,
+            new ModbusEndian(false, true),
+            new ModbusEndian(true, false),
+            ModbusEndian.AllLittle
+        };
+
+        private static readonly ModbusEndian[] filteredEndians = new ModbusEndian[]
+        {
+            ModbusEndian.AllBig,
+            new ModbusEndian(false, true),
+            new ModbusEndian(true, false),
+            ModbusEndian.AllLittle
+        };
+
 
         [JsonIgnore]
         public IEnumerable<byte> Bytes
@@ -322,22 +336,18 @@ namespace VagaModbusAnalyzer
                     EditableModbusEndian = Type != TypeCode.Boolean && ByteLength > 1;
                     break;
                 case nameof(Value):
-                    BooleanValue = Value != 0;
                     modbusWriter?.UpdateRequestMessage();
-                    break;
-                case nameof(BooleanValue):
-                    Value = BooleanValue ? 1 : 0;
                     break;
                 case nameof(ByteLength):
                     if (modbusWriter != null)
                         modbusWriter.UpdateWriteValueAddresses(modbusWriter.WriteValues.Skip(modbusWriter.WriteValues.IndexOf(this)));
                     EditableModbusEndian = Type != TypeCode.Boolean && ByteLength > 1;
-                    UpdateEnableMixedEndian();
+                    UpdateModbusEndians();
                     break;
                 case nameof(IsFirstByte):
-                    UpdateEnableMixedEndian();
+                    UpdateModbusEndians();
                     break;
-                case nameof(EnableMixedEndian):
+                case nameof(ModbusEndians):
                     ModbusEndian = tempModbusEndian;
                     OnPropertyChanged(new PropertyChangedEventArgs(nameof(ModbusEndian)));
                     break;
@@ -345,12 +355,11 @@ namespace VagaModbusAnalyzer
         }
 
         private ModbusEndian tempModbusEndian = ModbusEndian.AllBig;
-        private void UpdateEnableMixedEndian()
+        private void UpdateModbusEndians()
         {
             if (IsFirstByte && ByteLength >= 4 && ByteLength % 2 == 0)
             {
                 tempModbusEndian = ModbusEndian;
-                EnableMixedEndian = true;
             }
             else
             {
@@ -358,8 +367,9 @@ namespace VagaModbusAnalyzer
                     tempModbusEndian = ModbusEndian.AllBig;
                 else
                     tempModbusEndian = ModbusEndian;
-                EnableMixedEndian = false;
             }
+
+            OnPropertyChanged(new PropertyChangedEventArgs(nameof(ModbusEndians)));
         }
     }
 

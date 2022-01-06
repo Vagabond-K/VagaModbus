@@ -137,7 +137,6 @@
     <Compile Include="Converters\HexConverter.cs" />
     <Compile Include="Converters\IsTypeToVisibilityConverter.cs" />
     <Compile Include="Converters\ModbusExceptionToDetailMessageConverter.cs" />
-    <Compile Include="Converters\ModbusWriteEndianListConverter.cs" />
     <Compile Include="Converters\TimeStampStringConverter.cs" />
     <Compile Include="Infrastructures\ChannelLogTemplateSelector.cs" />
     <Compile Include="Infrastructures\ChannelLogStyleSelector.cs" />

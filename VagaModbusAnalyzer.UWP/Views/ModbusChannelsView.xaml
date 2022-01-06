@@ -200,7 +200,7 @@
         </GridView>
         <Button x:Uid="ModbusChannelsView_AddChannel"
                 Command="{Binding AddChannelCommand}"
-                Visibility="{Binding AppData.Channels.Count, Converter={converters:ObjectEqualsToVisibilityConverter}, ConverterParameter={local:ToInt32 Value=0}}"
+                Visibility="{Binding AppData.Channels.Count, Converter={StaticResource ObjectEqualsToVisibileConverter}, ConverterParameter={local:ToInt32 Value=0}}"
                 Style="{StaticResource AddNewItemButtonStyle}"/>
 
     </Grid>
