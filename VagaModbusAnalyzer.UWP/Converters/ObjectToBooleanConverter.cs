@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Markup;
 
 namespace VagaModbusAnalyzer.Converters
 {
-    public class BooleanToObjectConverter : IValueConverter
+    public class ObjectToBooleanConverter : MarkupExtension, IValueConverter
     {
         public bool Inverse { get; set; }
         public object TrueValue { get; set; }
@@ -29,6 +29,13 @@ namespace VagaModbusAnalyzer.Converters
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
+            if (Equals(value, TrueValue)) return !Inverse;
+            else if (Equals(value, FalseValue)) return Inverse;
+            else return null;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
             if (value == null)
                 return Inverse ? TrueValue : FalseValue;
 
@@ -38,25 +45,24 @@ namespace VagaModbusAnalyzer.Converters
             return Inverse ? TrueValue : FalseValue;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        protected override object ProvideValue()
         {
-            if (Equals(value, TrueValue)) return !Inverse;
-            else if (Equals(value, FalseValue)) return Inverse;
-            else return null;
+            return this;
         }
     }
 
-    public class BooleanToObjectConverterExtension : MarkupExtension
+    public class ObjectToBooleanConverterExtension : MarkupExtension
     {
         public bool Inverse { get; set; }
         public object TrueValue { get; set; }
         public object FalseValue { get; set; }
 
-        protected override object ProvideValue() => new BooleanToObjectConverter()
+        protected override object ProvideValue() => new ObjectToBooleanConverter()
         {
             Inverse = Inverse,
             TrueValue = TrueValue,
             FalseValue = FalseValue
         };
     }
+
 }
