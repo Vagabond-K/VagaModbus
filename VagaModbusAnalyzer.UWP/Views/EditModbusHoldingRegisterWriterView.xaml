@@ -119,8 +119,7 @@
                                                 <ComboBox.Header>
                                                     <TextBlock x:Uid="Text_ValueType"/>
                                                 </ComboBox.Header>
-                                                <converters:EnumComboBoxItem x:Uid="Text_SignedInteger" Value="{local:ToInt32 Value=11}"/>
-                                                <converters:EnumComboBoxItem x:Uid="Text_UnsignedInteger" Value="{local:ToInt32 Value=12}"/>
+                                                <converters:EnumComboBoxItem x:Uid="Text_Integer" Value="{local:ToInt32 Value=12}"/>
                                                 <converters:EnumComboBoxItem x:Uid="Text_FloatValue" Value="{local:ToInt32 Value=13}"/>
                                                 <converters:EnumComboBoxItem x:Uid="Text_DoubleValue" Value="{local:ToInt32 Value=14}"/>
                                                 <converters:EnumComboBoxItem x:Uid="Text_BitFlags" Value="{local:ToInt32 Value=3}"/>

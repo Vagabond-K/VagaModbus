@@ -11,4 +11,8 @@
     <PackageReference Include="VagabondK.Protocols.Modbus" Version="1.0.14" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
 </Project>

@@ -636,4 +636,7 @@
   <data name="Text_ValueType.Text" xml:space="preserve">
     <value>값 형식</value>
   </data>
+  <data name="Text_Integer.Text" xml:space="preserve">
+    <value>정수</value>
+  </data>
 </root>

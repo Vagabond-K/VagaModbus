@@ -9,6 +9,17 @@ namespace VagaModbusAnalyzer
 {
     public class ModbusWriteValue : NotifyPropertyChangeObject
     {
+        private static ulong[] maxValues = Enumerable.Range(1, 8).Select(length =>
+        {
+            var bytes = Enumerable.Repeat((byte)0xff, length).Concat(Enumerable.Repeat((byte)0, 8 - length));
+            return BitConverter.ToUInt64((BitConverter.IsLittleEndian ? bytes : bytes.Reverse()).ToArray(), 0);
+        }).ToArray();
+        private static long[] minValues = Enumerable.Range(1, 8).Select(length =>
+        {
+            var bytes = Enumerable.Repeat((byte)0, length - 1).Concat(Enumerable.Repeat((byte)0x80, 1)).Concat(Enumerable.Repeat((byte)0xff, 8 - length));
+            return BitConverter.ToInt64((BitConverter.IsLittleEndian ? bytes : bytes.Reverse()).ToArray(), 0);
+        }).ToArray();
+
         internal ModbusWriter modbusWriter;
 
         public string Name { get => Get<string>(); set => Set(value); }
@@ -46,8 +57,6 @@ namespace VagaModbusAnalyzer
         private static readonly ModbusEndian[] filteredEndians = new ModbusEndian[]
         {
             ModbusEndian.AllBig,
-            new ModbusEndian(false, true),
-            new ModbusEndian(true, false),
             ModbusEndian.AllLittle
         };
 
@@ -60,25 +69,39 @@ namespace VagaModbusAnalyzer
                 switch (Type)
                 {
                     case TypeCode.Byte:
-                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<byte>()).Reverse().ToArray());
                     case TypeCode.UInt16:
-                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<ushort>()).Reverse().ToArray());
                     case TypeCode.UInt32:
-                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<uint>()).Reverse().ToArray());
                     case TypeCode.UInt64:
-                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<ulong>()).Reverse().ToArray());
                     case TypeCode.SByte:
-                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<sbyte>()).Reverse().ToArray());
                     case TypeCode.Int16:
-                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<short>()).Reverse().ToArray());
                     case TypeCode.Int32:
-                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<int>()).Reverse().ToArray());
                     case TypeCode.Int64:
-                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<long>()).Reverse().ToArray());
+                        decimal value = Value;
+                        int byteLength = ByteLength;
+                        if (byteLength > 0 && byteLength <= 8)
+                        {
+                            var maxValue = maxValues[byteLength - 1];
+                            var minValue = minValues[byteLength - 1];
+
+                            if (value > maxValue) value = maxValue;
+                            if (value < minValue) value = minValue;
+
+                            byte[] bytes;
+                            if (value > 0) bytes = BitConverter.GetBytes((ulong)value).ToArray();
+                            else bytes = BitConverter.GetBytes((long)value).ToArray();
+
+                            bytes = BitConverter.IsLittleEndian ? bytes.Take(byteLength).Reverse().ToArray() : bytes.Skip(8 - byteLength).ToArray();
+                            return ModbusEndian.Sort(bytes);
+                        }
+                        return Array.Empty<byte>();
                     case TypeCode.Single:
-                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<float>()).Reverse().ToArray());
+                        return BitConverter.IsLittleEndian
+                            ? ModbusEndian.Sort(BitConverter.GetBytes((float)Value).Reverse().ToArray())
+                            : ModbusEndian.Sort(BitConverter.GetBytes((float)Value).ToArray());
                     case TypeCode.Double:
-                        return ModbusEndian.Sort(BitConverter.GetBytes(Value.To<double>()).Reverse().ToArray());
+                        return BitConverter.IsLittleEndian
+                            ? ModbusEndian.Sort(BitConverter.GetBytes((double)Value).Reverse().ToArray())
+                            : ModbusEndian.Sort(BitConverter.GetBytes((double)Value).ToArray());
                 }
                 return null;
             }
@@ -112,6 +135,28 @@ namespace VagaModbusAnalyzer
                     EditableModbusEndian = Type != TypeCode.Boolean && ByteLength > 1;
                     break;
                 case nameof(Value):
+                    switch (Type)
+                    {
+                        case TypeCode.Byte:
+                        case TypeCode.UInt16:
+                        case TypeCode.UInt32:
+                        case TypeCode.UInt64:
+                        case TypeCode.SByte:
+                        case TypeCode.Int16:
+                        case TypeCode.Int32:
+                        case TypeCode.Int64:
+                            decimal value = Value;
+                            int byteLength = ByteLength;
+                            if (byteLength > 0 && byteLength <= 8)
+                            {
+                                var maxValue = maxValues[byteLength - 1];
+                                var minValue = minValues[byteLength - 1];
+
+                                if (value > maxValue) Value = maxValue;
+                                if (value < minValue) Value = minValue;
+                            }
+                            break;
+                    }
                     modbusWriter?.UpdateRequestMessage();
                     break;
                 case nameof(ByteLength):
