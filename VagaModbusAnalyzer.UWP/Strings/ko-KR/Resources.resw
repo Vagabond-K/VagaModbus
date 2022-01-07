@@ -639,4 +639,7 @@
   <data name="Text_Integer.Text" xml:space="preserve">
     <value>정수</value>
   </data>
+  <data name="WriteDataView_AppBarButton_EditHoldingRegisterWriter.Label" xml:space="preserve">
+    <value>Holding Register 쓰기 편집</value>
+  </data>
 </root>

@@ -44,7 +44,8 @@
     <converters:ObjectToBooleanConverter x:Key="DecimalValueToCheckBoxConverter" TrueValue="{local:ToDecimal Value=1}" FalseValue="{local:ToDecimal Value=0}"/>
     <converters:ModbusEndianToTextConverter x:Key="ModbusEndianToTextConverter"/>
     <converters:BooleanToObjectConverter x:Key="IsFirstByteToSubAddressConverter" TrueValue="A" FalseValue="B"/>
-    
+    <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
+
     <ControlTemplate x:Key="NoneAnimationToggleSwitch" TargetType="ToggleSwitch">
         <Grid Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="{TemplateBinding CornerRadius}">
             <Grid.RowDefinitions>

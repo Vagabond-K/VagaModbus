@@ -16,13 +16,30 @@ namespace VagaModbusAnalyzer
             WriteValues = new ObservableCollection<ModbusWriteValue>();
         }
 
+        public void CopyTo(ModbusWriter modbusWriter)
+        {
+            modbusWriter.SlaveAddress = SlaveAddress;
+            modbusWriter.Address = Address;
+            modbusWriter.ResponseTimeout = ResponseTimeout;
+            modbusWriter.WriteValues = new ObservableCollection<ModbusWriteValue>(WriteValues.Select(writeValue =>
+            {
+                var result = new ModbusWriteValue();
+                writeValue.CopyTo(result);
+                return result;
+            }));
+            modbusWriter.Channel = Channel;
+            modbusWriter.UseMultipleWriteWhenSingle = UseMultipleWriteWhenSingle;
+        }
+
+        public ModbusObjectType ObjectType { get => Get(ModbusObjectType.HoldingRegister); set => Set(value); }
         public byte SlaveAddress { get => Get((byte)1); set => Set(value); }
         public ushort Address { get => Get((ushort)0); set => Set(value); }
         public int ResponseTimeout { get => Get(5000); set => Set(value); }
-
         public bool UseMultipleWriteWhenSingle { get => Get(false); set => Set(value); }
+        public ObservableCollection<ModbusWriteValue> WriteValues { get => Get<ObservableCollection<ModbusWriteValue>>(); set => Set(value); }
 
-        public ModbusObjectType ObjectType { get => Get(ModbusObjectType.HoldingRegister); set => Set(value); }
+        [JsonIgnore]
+        public bool IsWriteSingle { get => Get(false); private set => Set(value); }
 
         [JsonIgnore]
         public ModbusRequest Request
@@ -32,13 +49,28 @@ namespace VagaModbusAnalyzer
                 switch (ObjectType)
                 {
                     case ModbusObjectType.HoldingRegister:
-                        return WriteValues.Count > 1 || UseMultipleWriteWhenSingle
-                            ? new ModbusWriteHoldingRegisterRequest(SlaveAddress, Address, WriteValues.SelectMany(value => value.Bytes))
-                            : new ModbusWriteHoldingRegisterRequest(SlaveAddress, Address, BitConverter.IsLittleEndian
-                                ? BitConverter.ToUInt16(WriteValues.FirstOrDefault()?.Bytes?.Reverse()?.ToArray() ?? new byte[] { 0, 0 }, 0)
-                                : BitConverter.ToUInt16(WriteValues.FirstOrDefault()?.Bytes?.ToArray() ?? new byte[] { 0, 0 }, 0));
+                        ModbusRequest request;
+                        if (!IsWriteSingle || UseMultipleWriteWhenSingle)
+                            request = new ModbusWriteHoldingRegisterRequest(SlaveAddress, Address, WriteValues.SelectMany(value => value.Bytes));
+                        else
+                        {
+                            var bytes = (BitConverter.IsLittleEndian
+                                ? WriteValues.FirstOrDefault()?.Bytes?.Reverse()?.ToArray()
+                                : WriteValues.FirstOrDefault()?.Bytes?.ToArray()) ?? new byte[] { 0, 0 };
+
+                            if (bytes.Length == 0)
+                                bytes = new byte[] { 0, 0 };
+
+                            if (bytes.Length == 1)
+                                bytes = BitConverter.IsLittleEndian
+                                    ? new byte[] { 0, bytes[0] }
+                                    : new byte[] { bytes[0], 0 };
+
+                            request = new ModbusWriteHoldingRegisterRequest(SlaveAddress, Address, BitConverter.ToUInt16(bytes, 0));
+                        }
+                        return request;
                     case ModbusObjectType.Coil:
-                        return WriteValues.Count > 1 || UseMultipleWriteWhenSingle 
+                        return !IsWriteSingle || UseMultipleWriteWhenSingle 
                             ? new ModbusWriteCoilRequest(SlaveAddress, Address, WriteValues.Select(value => value.Value.To<bool>()))
                             : new ModbusWriteCoilRequest(SlaveAddress, Address, (WriteValues.FirstOrDefault()?.Value ?? 0) == 1);
                     default:
@@ -127,10 +159,6 @@ namespace VagaModbusAnalyzer
                 RequestMessage = string.Empty;
         }
 
-
-
-        public ObservableCollection<ModbusWriteValue> WriteValues { get => Get<ObservableCollection<ModbusWriteValue>>(); set => Set(value); }
-
         protected override bool OnPropertyChanging(QueryPropertyChangingEventArgs e)
         {
             if (e.PropertyName == nameof(WriteValues) && WriteValues != null)
@@ -155,11 +183,10 @@ namespace VagaModbusAnalyzer
                         WriteValues.CollectionChanged += OnWriteValuesCollectionChanged;
                         foreach (var item in WriteValues)
                             item.modbusWriter = this;
-
-                        OnPropertyChanged(new PropertyChangedEventArgs(nameof(Request)));
-                        UpdateRequestMessage();
-                        UpdateWriteValueAddresses(WriteValues);
                     }
+                    UpdateWriteValueAddresses(WriteValues);
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(Request)));
+                    UpdateRequestMessage();
                     break;
                 case nameof(Channel):
                 case nameof(UseMultipleWriteWhenSingle):
@@ -222,6 +249,9 @@ namespace VagaModbusAnalyzer
                     totalLength += item.ByteLength;
                 }
             }
+
+            IsWriteSingle = WriteValues.Count == 1
+                && (ObjectType == ModbusObjectType.Coil || ObjectType == ModbusObjectType.HoldingRegister && WriteValues[0].ByteLength <= 2);
         }
 
     }

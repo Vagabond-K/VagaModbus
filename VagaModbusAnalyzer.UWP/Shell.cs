@@ -127,7 +127,7 @@ namespace VagaModbusAnalyzer
 
         public override Task<PageContext> OpenPage(Type viewModelType, Type viewType, string title)
         {
-            var pageScope = ShellServiceProvider.CreatePageScope(viewModelType, viewType, title);
+            var pageScope = (SelectedPageContext?.ServiceProvider ?? ShellServiceProvider).CreatePageScope(viewModelType, viewType, title);
             var pageContext = pageScope.ServiceProvider.GetService<PageContext>();
 
             MainPage.PageFrame.Navigate(typeof(ViewHostPage), pageContext, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });

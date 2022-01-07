@@ -43,7 +43,8 @@ namespace VagaModbusAnalyzer
         {
             PreserveReferencesHandling = PreserveReferencesHandling.Objects,
             TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
-            TypeNameHandling = TypeNameHandling.All
+            TypeNameHandling = TypeNameHandling.All,
+            Converters = new JsonConverter[] { new ModbusEndianJsonConverter() }
         };
 
         private Shell mainViewModel;

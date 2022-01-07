@@ -116,7 +116,7 @@ namespace VagaModbusAnalyzer.Controls
                 }
                 else if (string.IsNullOrEmpty(newText))
                 {
-                    Value = AllowNullInput ? null : (MinValue == null || MinValue.Value <= 0 ? 0d : MinValue);
+                    Value = AllowNullInput ? null : (MinValue == null || MinValue.Value <= 0 ? Convert.ChangeType(0, ValueTypeCode) : MinValue);
                 }
                 else
                 {
@@ -139,7 +139,7 @@ namespace VagaModbusAnalyzer.Controls
         {
             base.OnLostFocus(e);
             if (Value == null)
-                Value = AllowNullInput ? null : (MinValue == null || MinValue.Value <= 0 ? 0d : MinValue);
+                Value = AllowNullInput ? null : (MinValue == null || MinValue.Value <= 0 ? Convert.ChangeType(0, ValueTypeCode) : MinValue);
 
             Text = Value?.ToString() ?? string.Empty;
         }
@@ -213,7 +213,7 @@ namespace VagaModbusAnalyzer.Controls
                 case TypeCode.UInt64:
                     return ulong.MaxValue;
             }
-            return double.MaxValue;
+            return ulong.MaxValue;
         }
 
         static double GetMinValue(TypeCode code)
@@ -243,7 +243,7 @@ namespace VagaModbusAnalyzer.Controls
                 case TypeCode.UInt64:
                     return ulong.MinValue;
             }
-            return double.MinValue;
+            return long.MinValue;
         }
 
     }

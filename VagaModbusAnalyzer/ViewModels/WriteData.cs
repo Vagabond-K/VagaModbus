@@ -32,14 +32,17 @@ namespace VagaModbusAnalyzer.ViewModels
         public InstantCommand<ModbusWriter> DeleteWriterCommand { get => Get(() => new InstantCommand<ModbusWriter>(DeleteWriter, CanExecute)); }
         public InstantCommand<ModbusWriter> ModbusWriteCommand { get => Get(() => new InstantCommand<ModbusWriter>(ModbusWrite, CanExecute)); }
 
+        public ModbusWriter EditingModbusWriter { get; private set; }
 
         private async void AddHoldingRegisterWriter()
         {
-            await shell.OpenPage<AddModbusHoldingRegisterWriter>($"{AppData.SelectedChannel.Name} > {stringLocalizer["WriteDataView_AppBarButton_AddHoldingRegisterWriter/Label"]}");
+            EditingModbusWriter = null;
+            await shell.OpenPage<EditModbusHoldingRegisterWriter>($"{AppData.SelectedChannel.Name} > {stringLocalizer["WriteDataView_AppBarButton_AddHoldingRegisterWriter/Label"]}");
         }
 
         private async void AddCoilWriter()
         {
+            EditingModbusWriter = null;
             if (await dialog.ShowDialog<EditModbusCoilWriter>(stringLocalizer["EditModbusCoilWriterView_AddWriter/Title"], out var editCoilWriter) == true)
             {
                 AppData.SelectedChannel.ModbusWriters.Add(new ModbusWriter
@@ -56,26 +59,34 @@ namespace VagaModbusAnalyzer.ViewModels
 
         private async void EditWriter(ModbusWriter modbusWriter)
         {
-            if (modbusWriter is ModbusWriter coilWriter
-                && await dialog.ShowDialog<EditModbusCoilWriter>(stringLocalizer["EditModbusCoilWriterView_EditWriter/Title"], viewModel =>
+            EditingModbusWriter = modbusWriter;
+            switch (modbusWriter.ObjectType)
             {
-                viewModel.SlaveAddress = coilWriter.SlaveAddress;
-                viewModel.Address = coilWriter.Address;
-                viewModel.ResponseTimeout = coilWriter.ResponseTimeout;
-                viewModel.Length = coilWriter.WriteValues.Count;
-            }, out var editCoilWriter) == true)
-            {
-                lock (coilWriter)
-                {
-                    coilWriter.SlaveAddress = (byte)editCoilWriter.SlaveAddress;
-                    coilWriter.Address = (ushort)editCoilWriter.Address;
-                    coilWriter.ResponseTimeout = editCoilWriter.ResponseTimeout;
+                case VagabondK.Protocols.Modbus.ModbusObjectType.Coil:
+                    if (await dialog.ShowDialog<EditModbusCoilWriter>(stringLocalizer["EditModbusCoilWriterView_EditWriter/Title"], viewModel =>
+                    {
+                        viewModel.SlaveAddress = modbusWriter.SlaveAddress;
+                        viewModel.Address = modbusWriter.Address;
+                        viewModel.ResponseTimeout = modbusWriter.ResponseTimeout;
+                        viewModel.Length = modbusWriter.WriteValues.Count;
+                    }, out var editCoilWriter) == true)
+                    {
+                        lock (modbusWriter)
+                        {
+                            modbusWriter.SlaveAddress = (byte)editCoilWriter.SlaveAddress;
+                            modbusWriter.Address = (ushort)editCoilWriter.Address;
+                            modbusWriter.ResponseTimeout = editCoilWriter.ResponseTimeout;
 
-                    while (coilWriter.WriteValues.Count < editCoilWriter.Length)
-                        coilWriter.WriteValues.Add(new ModbusWriteValue() { Type = TypeCode.Boolean });
-                    while (coilWriter.WriteValues.Count > editCoilWriter.Length)
-                        coilWriter.WriteValues.RemoveAt(coilWriter.WriteValues.Count - 1);
-                }
+                            while (modbusWriter.WriteValues.Count < editCoilWriter.Length)
+                                modbusWriter.WriteValues.Add(new ModbusWriteValue() { Type = TypeCode.Boolean });
+                            while (modbusWriter.WriteValues.Count > editCoilWriter.Length)
+                                modbusWriter.WriteValues.RemoveAt(modbusWriter.WriteValues.Count - 1);
+                        }
+                    }
+                    break;
+                case VagabondK.Protocols.Modbus.ModbusObjectType.HoldingRegister:
+                    await shell.OpenPage<EditModbusHoldingRegisterWriter>($"{AppData.SelectedChannel.Name} > {stringLocalizer["WriteDataView_AppBarButton_EditHoldingRegisterWriter/Label"]}");
+                    break;
             }
         }
 

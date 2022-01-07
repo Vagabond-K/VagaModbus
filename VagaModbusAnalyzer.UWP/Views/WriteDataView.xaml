@@ -651,13 +651,71 @@
                 <Setter Property="TextWrapping" Value="WrapWholeWords"/>
             </Style>
             <DataTemplate x:Key="HoldingRegisterWriterDataTemplate">
-                <Border
-                    Margin="6"
-                    Background="{ThemeResource SystemControlBackgroundAltMediumBrush}"
-                    BorderThickness="1" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
-                </Border>
+                <Grid>
+                    <mtuuc:WrapPanel Visibility="{Binding IsWriteSingle, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="5,6" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"><Run x:Uid="Text_LogicalValue"/><Run Text=":"/></TextBlock>
+                            <controls:NumericBox Value="{Binding WriteValues[0].Value, Mode=TwoWay}" ValueTypeCode="Decimal"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="5,4"><Run x:Uid="Text_UseMultiWrite" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                                            <Run Text=" " FontFamily="Consolas"/></TextBlock>
+                            <ToggleSwitch IsOn="{Binding UseMultipleWriteWhenSingle, Mode=TwoWay}" Width="80" FontSize="12" Margin="4"
+                                              controls:SelectorItem.IsAutoSelectOnClick="True" Template="{StaticResource NoneAnimationToggleSwitch}"/>
+                        </StackPanel>
+                    </mtuuc:WrapPanel>
+                    <muxc:ItemsRepeater 
+                                    Margin="4" ItemsSource="{Binding WriteValues}"
+                                    Visibility="{Binding IsWriteSingle, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                        <muxc:ItemsRepeater.Layout>
+                            <muxc:UniformGridLayout/>
+                        </muxc:ItemsRepeater.Layout>
+                        <muxc:ItemsRepeater.ItemTemplate>
+                            <DataTemplate>
+                                <controls:NumericBox Value="{Binding Value, Mode=TwoWay}" ValueTypeCode="Decimal"/>
+                            </DataTemplate>
+                        </muxc:ItemsRepeater.ItemTemplate>
+                    </muxc:ItemsRepeater>
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="CoilWriterDataTemplate">
+                <Grid>
+                    <mtuuc:WrapPanel Visibility="{Binding IsWriteSingle, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="5,6" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"><Run x:Uid="Text_LogicalValue"/><Run Text=":"/></TextBlock>
+                            <CheckBox IsChecked="{Binding WriteValues[0].Value, Mode=TwoWay, Converter={StaticResource DecimalValueToCheckBoxConverter}}" Style="{StaticResource CoilCheckBoxNonContentStyle}"
+                                          Visibility="{Binding WriteValues.Count, Converter={StaticResource ObjectEqualsToVisibileConverter},ConverterParameter={local:ToInt32 Value=1}}"
+                                              Width="24" Height="24" Margin="0,0,4,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="5,4"><Run x:Uid="Text_UseMultiWrite" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                                            <Run Text=" " FontFamily="Consolas"/></TextBlock>
+                            <ToggleSwitch IsOn="{Binding UseMultipleWriteWhenSingle, Mode=TwoWay}" Width="80" FontSize="12" Margin="4"
+                                              controls:SelectorItem.IsAutoSelectOnClick="True" Template="{StaticResource NoneAnimationToggleSwitch}"/>
+                        </StackPanel>
+                    </mtuuc:WrapPanel>
+                    <muxc:ItemsRepeater 
+                                    Margin="4" ItemsSource="{Binding WriteValues}"
+                                    Visibility="{Binding IsWriteSingle, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                        <muxc:ItemsRepeater.Layout>
+                            <muxc:UniformGridLayout/>
+                        </muxc:ItemsRepeater.Layout>
+                        <muxc:ItemsRepeater.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox 
+                                            IsChecked="{Binding Value, Mode=TwoWay, Converter={StaticResource DecimalValueToCheckBoxConverter}}"
+                                            Content="{Binding Address}" Style="{StaticResource CoilCheckBoxStyle}"/>
+                            </DataTemplate>
+                        </muxc:ItemsRepeater.ItemTemplate>
+                    </muxc:ItemsRepeater>
+                </Grid>
+            </DataTemplate>
+            <local:ModbusWriterDataTemplateSelector
+                x:Key="ModbusWriterDataTemplateSelector"
+                HoldingRegisterWriterTemplate="{StaticResource HoldingRegisterWriterDataTemplate}"
+                CoilWriterTemplate="{StaticResource CoilWriterDataTemplate}"/>
+            
+            <DataTemplate x:Key="ModbusWriterDataTemplate">
                 <Border
                     Margin="6"
                     Background="{ThemeResource SystemControlBackgroundAltMediumBrush}"
@@ -681,7 +739,7 @@
                             </Grid.ColumnDefinitions>
                             <mtuuc:WrapPanel>
                                 <TextBlock Margin="5,4"><Run x:Uid="Text_DataType" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
-                                    <Run Text="Coil" FontSize="12"/> <Run Text=" " FontFamily="Consolas"/></TextBlock>
+                                    <Run Text="{Binding ObjectType, Converter={StaticResource EnumToDescriptionConverter}}" FontSize="12"/> <Run Text=" " FontFamily="Consolas"/></TextBlock>
                             </mtuuc:WrapPanel>
                             <mtuuc:WrapPanel Grid.Row="1" Grid.ColumnSpan="2">
                                 <TextBlock Margin="5,4"><Run x:Uid="Text_SlaveAddress" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
@@ -691,19 +749,8 @@
                                 <TextBlock Margin="5,4"
                                            Visibility="{Binding WriteValues.Count, Converter={StaticResource ObjectEqualsToCollapseConverter},ConverterParameter={local:ToInt32 Value=1}}"><Run x:Uid="Text_NumOfData" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
                                     <Run Text="{Binding WriteValues.Count}" FontFamily="Consolas"/></TextBlock>
-                                <StackPanel Orientation="Horizontal" Visibility="{Binding WriteValues.Count, Converter={StaticResource ObjectEqualsToVisibileConverter},ConverterParameter={local:ToInt32 Value=1}}">
-                                    <TextBlock Margin="5,6" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"><Run x:Uid="Text_LogicalValue"/><Run Text=":"/></TextBlock>
-                                    <CheckBox IsChecked="{Binding WriteValues[0].Value, Mode=TwoWay, Converter={StaticResource DecimalValueToCheckBoxConverter}}" Style="{StaticResource CoilCheckBoxNonContentStyle}"
-                                          Visibility="{Binding WriteValues.Count, Converter={StaticResource ObjectEqualsToVisibileConverter},ConverterParameter={local:ToInt32 Value=1}}"
-                                              Width="24" Height="24" Margin="0,0,4,0"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Visibility="{Binding WriteValues.Count, Converter={StaticResource ObjectEqualsToVisibileConverter}, ConverterParameter={local:ToInt32 Value=1}}">
-                                    <TextBlock Margin="5,4"><Run x:Uid="Text_UseMultiWrite" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
-                                    <Run Text=" " FontFamily="Consolas"/></TextBlock>
-                                    <ToggleSwitch IsOn="{Binding UseMultipleWriteWhenSingle, Mode=TwoWay}" Width="80" FontSize="12" Margin="4"
-                                              controls:SelectorItem.IsAutoSelectOnClick="True" Template="{StaticResource NoneAnimationToggleSwitch}"/>
-                                </StackPanel>
                             </mtuuc:WrapPanel>
+                            <ContentControl Grid.Row="2" Grid.ColumnSpan="2" IsTabStop="False" Content="{Binding}" ContentTemplateSelector="{StaticResource ModbusWriterDataTemplateSelector}"/>
                             <StackPanel Grid.Column="1" Grid.RowSpan="2" Orientation="Horizontal" VerticalAlignment="Top">
                                 <Button Content="&#xE70F;" Command="{Binding ElementName=PART_WriteDataView, Path=DataContext.EditWriterCommand}" CommandParameter="{Binding}" Margin="3" Style="{StaticResource SelectorItemButtonStyle}">
                                     <ToolTipService.ToolTip>
@@ -716,20 +763,6 @@
                                     </ToolTipService.ToolTip>
                                 </Button>
                             </StackPanel>
-                            <muxc:ItemsRepeater 
-                                Grid.Row="2" Grid.ColumnSpan="2" Margin="4" ItemsSource="{Binding WriteValues}" 
-                                Visibility="{Binding WriteValues.Count, Converter={StaticResource ObjectEqualsToCollapseConverter},ConverterParameter={local:ToInt32 Value=1}}">
-                                <muxc:ItemsRepeater.Layout>
-                                    <muxc:UniformGridLayout/>
-                                </muxc:ItemsRepeater.Layout>
-                                <muxc:ItemsRepeater.ItemTemplate>
-                                    <DataTemplate>
-                                        <CheckBox 
-                                            IsChecked="{Binding Value, Mode=TwoWay, Converter={StaticResource DecimalValueToCheckBoxConverter}}"
-                                            Content="{Binding Address}" Style="{StaticResource CoilCheckBoxStyle}"/>
-                                    </DataTemplate>
-                                </muxc:ItemsRepeater.ItemTemplate>
-                            </muxc:ItemsRepeater>
                         </Grid>
                         <Rectangle Grid.Row="1" Height="1" Fill="{ThemeResource SystemControlForegroundBaseLowBrush}" Margin="6,0"/>
                         <Grid Grid.Row="2">
@@ -766,10 +799,6 @@
                     </Grid>
                 </Border>
             </DataTemplate>
-            <local:ModbusWriterDataTemplateSelector
-                x:Key="ModbusWriterDataTemplateSelector"
-                HoldingRegisterWriterTemplate="{StaticResource HoldingRegisterWriterDataTemplate}"
-                CoilWriterTemplate="{StaticResource CoilWriterDataTemplate}"/>
         </Grid.Resources>
         <Pivot
             Style="{StaticResource ModbusChannelsPivotStyle}"
@@ -780,7 +809,7 @@
                 <DataTemplate>
                     <Grid>
                         <ScrollViewer>
-                            <ItemsControl ItemsSource="{Binding ModbusWriters}" IsTabStop="False" Margin="6" ItemTemplateSelector="{StaticResource ModbusWriterDataTemplateSelector}"/>
+                            <ItemsControl ItemsSource="{Binding ModbusWriters}" IsTabStop="False" Margin="6" ItemTemplate="{StaticResource ModbusWriterDataTemplate}"/>
                         </ScrollViewer>
                         <StackPanel 
                             VerticalAlignment="Center"

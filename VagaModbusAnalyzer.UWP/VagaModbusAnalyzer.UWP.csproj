@@ -132,6 +132,7 @@
     <Compile Include="Controls\ModbusScanBitDataItemView.cs" />
     <Compile Include="Controls\TextBoxExtensions.cs" />
     <Compile Include="Converters\BinaryConverter.cs" />
+    <Compile Include="Converters\EnumToDescriptionConverter.cs" />
     <Compile Include="Converters\ObjectToBooleanConverter.cs" />
     <Compile Include="Converters\ChannelLogBackgroundColorConverter.cs" />
     <Compile Include="Converters\ChannelLogToMessageConverter.cs" />
