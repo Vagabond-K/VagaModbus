@@ -63,7 +63,7 @@
                     <StackPanel>
                         <mtuuc:WrapPanel>
                             <TextBox x:Uid="EditModbusChannelView_TcpClient_HostName" Text="{Binding Host, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="286"/>
-                            <controls:NumericBox x:Uid="EditModbusChannelView_TcpClient_Port" Value="{Binding Port, Mode=TwoWay}" Width="102" ValueTypeCode="UInt16" MinValue="0" MaxValue="65535"/>
+                            <controls:NumericBox x:Uid="EditModbusChannelView_TcpClient_Port" Value="{Binding Port, Mode=TwoWay}" Width="102" ValueType="UInt16" MinValue="0" MaxValue="65535"/>
                             <Slider Value="{Binding ConnectTimeout, Mode=TwoWay}" Maximum="10000" LargeChange="100" StepFrequency="100" Width="400">
                                 <Slider.Header>
                                     <TextBlock>
@@ -77,7 +77,7 @@
                 <DataTemplate x:Key="EditTemplate_ChannelSettingTcpServer" x:DataType="model:TcpServerChannelSetting">
                     <StackPanel>
                         <mtuuc:WrapPanel>
-                            <controls:NumericBox x:Uid="EditModbusChannelView_TcpServer_Port" Value="{Binding Port, Mode=TwoWay}" Width="102" ValueTypeCode="UInt16" MinValue="0" MaxValue="65535"/>
+                            <controls:NumericBox x:Uid="EditModbusChannelView_TcpServer_Port" Value="{Binding Port, Mode=TwoWay}" Width="102" ValueType="UInt16" MinValue="0" MaxValue="65535"/>
                         </mtuuc:WrapPanel>
                     </StackPanel>
                 </DataTemplate>
@@ -85,8 +85,8 @@
                     <StackPanel>
                         <mtuuc:WrapPanel>
                             <TextBox x:Uid="EditModbusChannelView_UdpSocket_HostName" Text="{Binding Host, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="286"/>
-                            <controls:NumericBox x:Uid="EditModbusChannelView_UdpSocket_RemotePort" Value="{Binding RemotePort, Mode=TwoWay}" Width="102" ValueTypeCode="UInt16" MinValue="0" MaxValue="65535"/>
-                            <controls:NumericBox x:Uid="EditModbusChannelView_UdpSocket_LocalPort" Value="{Binding LocalPort, Mode=TwoWay}" Width="102" AllowNullInput="True"  ValueTypeCode="UInt16" MinValue="0" MaxValue="65535"/>
+                            <controls:NumericBox x:Uid="EditModbusChannelView_UdpSocket_RemotePort" Value="{Binding RemotePort, Mode=TwoWay}" Width="102" ValueType="UInt16" MinValue="0" MaxValue="65535"/>
+                            <controls:NumericBox x:Uid="EditModbusChannelView_UdpSocket_LocalPort" Value="{Binding LocalPort, Mode=TwoWay}" Width="102" AllowNullInput="True"  ValueType="UInt16" MinValue="0" MaxValue="65535"/>
                         </mtuuc:WrapPanel>
                     </StackPanel>
                 </DataTemplate>

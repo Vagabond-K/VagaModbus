@@ -57,17 +57,17 @@
                 <converters:EnumComboBoxItem Text="Holding Register" Value="{local:ToByte Value=3}"/>
                 <converters:EnumComboBoxItem Text="Coil" Value="{local:ToByte Value=1}"/>
             </ComboBox>
-            <controls:NumericBox Value="{Binding SlaveAddress, Mode=TwoWay}" ValueTypeCode="Byte" MinValue="0" MaxValue="255">
+            <controls:NumericBox Value="{Binding SlaveAddress, Mode=TwoWay}" ValueType="Byte" MinValue="0" MaxValue="255">
                 <TextBox.Header>
                     <TextBlock x:Uid="Text_SlaveAddress"/>
                 </TextBox.Header>
             </controls:NumericBox>
-            <controls:NumericBox Value="{Binding Address, Mode=TwoWay}" ValueTypeCode="UInt16" MinValue="0" MaxValue="65535">
+            <controls:NumericBox Value="{Binding Address, Mode=TwoWay}" ValueType="UInt16" MinValue="0" MaxValue="65535">
                 <TextBox.Header>
                     <TextBlock x:Uid="Text_DataAddress"/>
                 </TextBox.Header>
             </controls:NumericBox>
-            <controls:NumericBox Value="{Binding Length, Mode=TwoWay}" ValueTypeCode="UInt16" MinValue="1" MaxValue="65535">
+            <controls:NumericBox Value="{Binding Length, Mode=TwoWay}" ValueType="UInt16" MinValue="1" MaxValue="65535">
                 <TextBox.Header>
                     <TextBlock x:Uid="Text_NumOfData"/>
                 </TextBox.Header>

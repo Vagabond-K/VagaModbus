@@ -655,7 +655,7 @@
                     <mtuuc:WrapPanel Visibility="{Binding IsWriteSingle, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Margin="5,6" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"><Run x:Uid="Text_LogicalValue"/><Run Text=":"/></TextBlock>
-                            <controls:NumericBox Value="{Binding WriteValues[0].Value, Mode=TwoWay}" ValueTypeCode="Decimal"/>
+                            <controls:NumericBox DataContext="{Binding WriteValues[0]}" Value="{Binding Value, Mode=TwoWay}" ValueType="Decimal" EditType="{Binding Type}" controls:TextBoxExtensions.SelectAllGotFocus="True"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Margin="5,4"><Run x:Uid="Text_UseMultiWrite" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
@@ -664,18 +664,20 @@
                                               controls:SelectorItem.IsAutoSelectOnClick="True" Template="{StaticResource NoneAnimationToggleSwitch}"/>
                         </StackPanel>
                     </mtuuc:WrapPanel>
-                    <muxc:ItemsRepeater 
-                                    Margin="4" ItemsSource="{Binding WriteValues}"
-                                    Visibility="{Binding IsWriteSingle, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
-                        <muxc:ItemsRepeater.Layout>
-                            <muxc:UniformGridLayout/>
-                        </muxc:ItemsRepeater.Layout>
-                        <muxc:ItemsRepeater.ItemTemplate>
+                    <ItemsControl 
+                        Margin="4" ItemsSource="{Binding WriteValues}" IsTabStop="False"
+                        Visibility="{Binding IsWriteSingle, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VariableSizedWrapGrid Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <controls:NumericBox Value="{Binding Value, Mode=TwoWay}" ValueTypeCode="Decimal"/>
+                                <controls:NumericBox Value="{Binding Value, Mode=TwoWay}" ValueType="Decimal" EditType="{Binding Type}" controls:TextBoxExtensions.SelectAllGotFocus="True"/>
                             </DataTemplate>
-                        </muxc:ItemsRepeater.ItemTemplate>
-                    </muxc:ItemsRepeater>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="CoilWriterDataTemplate">
@@ -694,20 +696,22 @@
                                               controls:SelectorItem.IsAutoSelectOnClick="True" Template="{StaticResource NoneAnimationToggleSwitch}"/>
                         </StackPanel>
                     </mtuuc:WrapPanel>
-                    <muxc:ItemsRepeater 
-                                    Margin="4" ItemsSource="{Binding WriteValues}"
-                                    Visibility="{Binding IsWriteSingle, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
-                        <muxc:ItemsRepeater.Layout>
-                            <muxc:UniformGridLayout/>
-                        </muxc:ItemsRepeater.Layout>
-                        <muxc:ItemsRepeater.ItemTemplate>
+                    <ItemsControl 
+                        Margin="4" ItemsSource="{Binding WriteValues}" IsTabStop="False"
+                        Visibility="{Binding IsWriteSingle, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VariableSizedWrapGrid Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <CheckBox 
-                                            IsChecked="{Binding Value, Mode=TwoWay, Converter={StaticResource DecimalValueToCheckBoxConverter}}"
-                                            Content="{Binding Address}" Style="{StaticResource CoilCheckBoxStyle}"/>
+                                    IsChecked="{Binding Value, Mode=TwoWay, Converter={StaticResource DecimalValueToCheckBoxConverter}}"
+                                    Content="{Binding Address}" Style="{StaticResource CoilCheckBoxStyle}"/>
                             </DataTemplate>
-                        </muxc:ItemsRepeater.ItemTemplate>
-                    </muxc:ItemsRepeater>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </Grid>
             </DataTemplate>
             <local:ModbusWriterDataTemplateSelector
@@ -750,7 +754,6 @@
                                            Visibility="{Binding WriteValues.Count, Converter={StaticResource ObjectEqualsToCollapseConverter},ConverterParameter={local:ToInt32 Value=1}}"><Run x:Uid="Text_NumOfData" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
                                     <Run Text="{Binding WriteValues.Count}" FontFamily="Consolas"/></TextBlock>
                             </mtuuc:WrapPanel>
-                            <ContentControl Grid.Row="2" Grid.ColumnSpan="2" IsTabStop="False" Content="{Binding}" ContentTemplateSelector="{StaticResource ModbusWriterDataTemplateSelector}"/>
                             <StackPanel Grid.Column="1" Grid.RowSpan="2" Orientation="Horizontal" VerticalAlignment="Top">
                                 <Button Content="&#xE70F;" Command="{Binding ElementName=PART_WriteDataView, Path=DataContext.EditWriterCommand}" CommandParameter="{Binding}" Margin="3" Style="{StaticResource SelectorItemButtonStyle}">
                                     <ToolTipService.ToolTip>
@@ -763,6 +766,7 @@
                                     </ToolTipService.ToolTip>
                                 </Button>
                             </StackPanel>
+                            <ContentControl Grid.Row="2" Grid.ColumnSpan="2" IsTabStop="False" Content="{Binding}" ContentTemplateSelector="{StaticResource ModbusWriterDataTemplateSelector}"/>
                         </Grid>
                         <Rectangle Grid.Row="1" Height="1" Fill="{ThemeResource SystemControlForegroundBaseLowBrush}" Margin="6,0"/>
                         <Grid Grid.Row="2">

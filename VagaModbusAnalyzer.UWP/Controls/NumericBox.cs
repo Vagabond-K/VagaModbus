@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
 
 namespace VagaModbusAnalyzer.Controls
 {
@@ -13,11 +14,15 @@ namespace VagaModbusAnalyzer.Controls
     {
         public NumericBox()
         {
-            RegisterPropertyChangedCallback(TextProperty, TextPropertyChangedCallback);
-            TextChanging += NumericBox_TextChanging;
-            SelectionChanged += NumericBox_SelectionChanged;
+            RegisterPropertyChangedCallback(TextProperty, OnTextPropertyChangedCallback);
+            BeforeTextChanging += OnBeforeTextChanging;
+            TextChanging += OnTextChanging;
 
-            SetBinding(TextProperty, new Binding { Path = new PropertyPath(nameof(Value)), Source = this, Mode = BindingMode.OneWay });
+            InputScope scope = new InputScope();
+            InputScopeName scopeName = new InputScopeName();
+            scopeName.NameValue = InputScopeNameValue.Number;
+            scope.Names.Add(scopeName);
+            InputScope = scope;
         }
 
         public double? MaxValue
@@ -39,7 +44,6 @@ namespace VagaModbusAnalyzer.Controls
             DependencyProperty.Register("MinValue", typeof(double?), typeof(NumericBox), new PropertyMetadata(null));
 
 
-
         public bool AllowNullInput
         {
             get { return (bool)GetValue(AllowNullInputProperty); }
@@ -57,136 +61,251 @@ namespace VagaModbusAnalyzer.Controls
         }
 
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof(object), typeof(NumericBox), new PropertyMetadata(null));
+            DependencyProperty.Register("Value", typeof(object), typeof(NumericBox), new PropertyMetadata(null, OnValueChanged));
 
 
-        public TypeCode ValueTypeCode
+        public TypeCode ValueType
         {
-            get { return (TypeCode)GetValue(ValueTypeCodeProperty); }
-            set { SetValue(ValueTypeCodeProperty, value); }
+            get { return (TypeCode)GetValue(ValueTypeProperty); }
+            set { SetValue(ValueTypeProperty, value); }
         }
 
-        public static readonly DependencyProperty ValueTypeCodeProperty =
-            DependencyProperty.Register("ValueTypeCode", typeof(TypeCode), typeof(NumericBox), new PropertyMetadata(TypeCode.Double));
+        public static readonly DependencyProperty ValueTypeProperty =
+            DependencyProperty.Register("ValueType", typeof(TypeCode), typeof(NumericBox), new PropertyMetadata(TypeCode.Decimal));
 
 
-        private string oldText = "0";
-        private int oldSelectionStart = 0;
 
-        private void TextPropertyChangedCallback(DependencyObject sender, DependencyProperty dp)
+
+        public TypeCode? EditType
         {
-            oldText = Text ?? (AllowNullInput ? "" : "0");
+            get { return (TypeCode?)GetValue(EditTypeProperty); }
+            set { SetValue(EditTypeProperty, value); }
         }
 
-        private void NumericBox_SelectionChanged(object sender, RoutedEventArgs e)
+        public static readonly DependencyProperty EditTypeProperty =
+            DependencyProperty.Register("EditType", typeof(TypeCode?), typeof(NumericBox), new PropertyMetadata(null));
+
+        private TypeCode ActualEditType => EditType ?? ValueType;
+
+        private static void OnValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            oldSelectionStart = SelectionStart;
-        }
-
-        private void NumericBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
-        {
-            //if (string.IsNullOrWhiteSpace(Text))
-            //{
-            //    Text = AllowNullInput ? "" : "0";
-            //    SelectionStart = 1;
-            //    if (!AllowNullInput) return;
-            //}
-            //else if (Text.Last() == '.')
-            //{
-
-            //}
-
-            string newText = Text ?? (AllowNullInput ? "" : "0");
-
-            if (!string.Equals(oldText, newText))
+            if (sender is NumericBox numericBox
+                && FocusManager.GetFocusedElement() != numericBox)
             {
-                if (double.TryParse(newText, out var numeric))
+                numericBox.SetValueToText();
+            }
+        }
+
+        private void OnTextPropertyChangedCallback(DependencyObject sender, DependencyProperty dp)
+        {
+            oldText = Text;
+
+            try
+            {
+                var text = Text;
+
+                while (text.Length > 1 && text[0] == '0' && text[1] != '.')
+                    text = text.Remove(0, 1);
+                if (text.Contains('.'))
+                    while (text.Length > 0 && text[text.Length - 1] == '0')
+                        text = text.Remove(text.Length - 1);
+                if (text.Length > 1 && text[text.Length - 1] == '.')
+                    text = text.Remove(text.Length - 1);
+
+                if (ActualEditType == TypeCode.Double && double.TryParse(text, out var doubleNewValue))
                 {
-                    var limitedNumeric = numeric;
-                    var maxValue = MaxValue ?? GetMaxValue(ValueTypeCode);
-                    var minValue = MinValue ?? GetMinValue(ValueTypeCode);
+                    var newValue = doubleNewValue;
 
-                    if (limitedNumeric > maxValue) limitedNumeric = maxValue;
-                    if (limitedNumeric < minValue) limitedNumeric = minValue;
+                    double maxValue = double.MaxValue;
+                    double minValue = double.MinValue;
 
-                    Value = Convert.ChangeType(limitedNumeric, ValueTypeCode);
+                    if (MaxValue != null) maxValue = Math.Min(maxValue, MaxValue.Value);
+                    if (MinValue != null) minValue = Math.Max(minValue, MinValue.Value);
 
-                    if (limitedNumeric != numeric)
-                        Text = Value.ToString();
+                    if (newValue > maxValue) newValue = maxValue;
+                    if (newValue < minValue) newValue = minValue;
+
+                    var typedNewValue = ChangeType(newValue, ValueType);
+
+                    if (!Equals(Value, typedNewValue))
+                        Value = typedNewValue;
                 }
-                else if (string.IsNullOrEmpty(newText))
+                else if (ActualEditType == TypeCode.Single && float.TryParse(text, out var floatNewValue))
                 {
-                    Value = AllowNullInput ? null : (MinValue == null || MinValue.Value <= 0 ? Convert.ChangeType(0, ValueTypeCode) : MinValue);
+                    var newValue = floatNewValue;
+
+                    double maxValue = float.MaxValue;
+                    double minValue = float.MinValue;
+
+                    if (MaxValue != null) maxValue = Math.Min(maxValue, MaxValue.Value);
+                    if (MinValue != null) minValue = Math.Max(minValue, MinValue.Value);
+
+                    if (newValue > maxValue) newValue = (float)maxValue;
+                    if (newValue < minValue) newValue = (float)minValue;
+
+                    var typedNewValue = ChangeType(newValue, ValueType);
+
+                    if (!Equals(Value, typedNewValue))
+                        Value = typedNewValue;
+                }
+                else if (decimal.TryParse(text, out var newDecimalValue))
+                {
+                    var newValue = newDecimalValue;
+
+                    var maxValue = GetMaxValue(ActualEditType);
+                    var minValue = GetMinValue(ActualEditType);
+
+                    if (MaxValue != null) maxValue = Math.Min(maxValue, DoubleToDecimal(MaxValue.Value));
+                    if (MinValue != null) minValue = Math.Max(minValue, DoubleToDecimal(MinValue.Value));
+
+                    if (newValue > maxValue) newValue = maxValue;
+                    if (newValue < minValue) newValue = minValue;
+
+                    var typedNewValue = ActualEditType == ValueType
+                        ? ChangeType(newValue, ValueType)
+                        : ChangeType(ChangeType(newValue, ActualEditType), ValueType);
+
+                    if (!Equals(Value, typedNewValue))
+                        Value = typedNewValue;
                 }
                 else
                 {
-                    Text = oldText;
-                    SelectionStart = oldSelectionStart;
-                }
-
-                var text = Text;
-                while (text.Length > 1 && text[0] == '0' && text[1] != '.')
-                    text = text.Remove(0, 1);
-                if (Text != text)
-                {
-                    Text = text;
-                    SelectionStart = oldSelectionStart;
+                    if (AllowNullInput)
+                        Value = null;
+                    else if (MinValue == null || MinValue.Value <= 0)
+                        Value = ChangeType(0, ValueType);
+                    else
+                        Value = ChangeType(MinValue, ValueType);
                 }
             }
+            catch
+            {
+            }
+        }
+
+        private string oldText = null;
+
+        private bool IsValidText(string text)
+            => (ActualEditType == TypeCode.Double && double.TryParse(text, out _)
+                || ActualEditType == TypeCode.Single && float.TryParse(text, out _)
+                || decimal.TryParse(text, out _)
+                || text == "-."
+                || text == "-"
+                || text == ".")
+                && !text.Contains(',')
+                && (text.Length == 1 || text.Length > 1 && text[text.Length - 1] != '-' && text[text.Length - 1] != '+');
+
+        private void OnTextChanging(TextBox sender, TextBoxTextChangingEventArgs e)
+        {
+            var text = Text;
+
+            if (string.IsNullOrEmpty(text)) return;
+
+            if (!IsValidText(text))
+            {
+                if (string.IsNullOrEmpty(oldText))
+                {
+                    SelectionStart = 0;
+                    SelectionLength = 0;
+                }
+                var oldSelectionStart = SelectionStart;
+                var oldSelectionLength = SelectionLength;
+                Text = oldText;
+                SelectionStart = oldSelectionStart;
+                SelectionLength = oldSelectionLength;
+                return;
+            }
+
+            if (string.IsNullOrEmpty(oldText) && text.Length == 1)
+            {
+                SelectionStart = 1;
+                SelectionLength = 0;
+            }
+        }
+
+        private void OnBeforeTextChanging(TextBox sender, TextBoxBeforeTextChangingEventArgs e)
+        {
+            var text = e.NewText;
+
+            if (string.IsNullOrEmpty(text)) return;
+
+            if (!IsValidText(text))
+            {
+                if (string.IsNullOrEmpty(oldText))
+                {
+                    SelectionStart = 0;
+                    SelectionLength = 0;
+                }
+                e.Cancel = true;
+                return;
+            }
+
+            if (string.IsNullOrEmpty(oldText) && text.Length == 1)
+            {
+                SelectionStart = 1;
+                SelectionLength = 0;
+            }
+        }
+
+        protected override void OnGotFocus(RoutedEventArgs e)
+        {
+            SetValueToText();
+
+            base.OnGotFocus(e);
         }
 
         protected override void OnLostFocus(RoutedEventArgs e)
         {
-            base.OnLostFocus(e);
-            if (Value == null)
-                Value = AllowNullInput ? null : (MinValue == null || MinValue.Value <= 0 ? Convert.ChangeType(0, ValueTypeCode) : MinValue);
+            SetValueToText();
 
-            Text = Value?.ToString() ?? string.Empty;
+            base.OnLostFocus(e);
         }
 
-        static Type ToType(TypeCode code)
+        private void SetValueToText()
+        {
+            string text;
+
+            if (Value is float floatValue)
+                text = floatValue.ToString("R");
+            else if (Value is double doubleValue)
+                text = doubleValue.ToString("R");
+            else
+                text = Value?.ToString() ?? string.Empty;
+
+            while (text.Length > 1 && text[0] == '0' && text[1] != '.')
+                text = text.Remove(0, 1);
+            if (text.Contains('.'))
+                while (text.Length > 0 && text[text.Length - 1] == '0')
+                    text = text.Remove(text.Length - 1);
+            if (text.Length > 1 && text[text.Length - 1] == '.')
+                text = text.Remove(text.Length - 1);
+
+            Text = text;
+
+            try
+            {
+                GetBindingExpression(ValueProperty)?.UpdateSource();
+            }
+            catch { }
+        }
+
+        static decimal DoubleToDecimal(double doubleValue) => doubleValue > (double)decimal.MaxValue ? decimal.MaxValue : (decimal)doubleValue;
+
+        static object ChangeType(object value, TypeCode code)
         {
             switch (code)
             {
-                case TypeCode.Boolean:
-                    return typeof(bool);
-                case TypeCode.Byte:
-                    return typeof(byte);
-                case TypeCode.Char:
-                    return typeof(char);
-                case TypeCode.DateTime:
-                    return typeof(DateTime);
-                case TypeCode.DBNull:
-                    return typeof(DBNull);
                 case TypeCode.Decimal:
-                    return typeof(decimal);
-                case TypeCode.Double:
-                    return typeof(double);
-                case TypeCode.Int16:
-                    return typeof(short);
-                case TypeCode.Int32:
-                    return typeof(int);
-                case TypeCode.Int64:
-                    return typeof(long);
-                case TypeCode.Object:
-                    return typeof(object);
-                case TypeCode.SByte:
-                    return typeof(sbyte);
-                case TypeCode.Single:
-                    return typeof(float);
-                case TypeCode.String:
-                    return typeof(string);
-                case TypeCode.UInt16:
-                    return typeof(ushort);
-                case TypeCode.UInt32:
-                    return typeof(uint);
-                case TypeCode.UInt64:
-                    return typeof(ulong);
+                    if (value is float floatValue)
+                        return floatValue > (double)decimal.MaxValue ? decimal.MaxValue : (decimal)floatValue;
+                    else if (value is double doubleValue)
+                        return DoubleToDecimal(doubleValue);
+                    break;
             }
-            return null;
+            return Convert.ChangeType(value, code);
         }
 
-        static double GetMaxValue(TypeCode code)
+        static decimal GetMaxValue(TypeCode code)
         {
             switch (code)
             {
@@ -195,7 +314,7 @@ namespace VagaModbusAnalyzer.Controls
                 case TypeCode.Char:
                     return char.MaxValue;
                 case TypeCode.Double:
-                    return double.MaxValue;
+                    return decimal.MaxValue;
                 case TypeCode.Int16:
                     return short.MaxValue;
                 case TypeCode.Int32:
@@ -205,7 +324,7 @@ namespace VagaModbusAnalyzer.Controls
                 case TypeCode.SByte:
                     return sbyte.MaxValue;
                 case TypeCode.Single:
-                    return float.MaxValue;
+                    return decimal.MaxValue;
                 case TypeCode.UInt16:
                     return ushort.MaxValue;
                 case TypeCode.UInt32:
@@ -216,7 +335,7 @@ namespace VagaModbusAnalyzer.Controls
             return ulong.MaxValue;
         }
 
-        static double GetMinValue(TypeCode code)
+        static decimal GetMinValue(TypeCode code)
         {
             switch (code)
             {
@@ -225,7 +344,7 @@ namespace VagaModbusAnalyzer.Controls
                 case TypeCode.Char:
                     return char.MinValue;
                 case TypeCode.Double:
-                    return double.MinValue;
+                    return decimal.MinValue;
                 case TypeCode.Int16:
                     return short.MinValue;
                 case TypeCode.Int32:
@@ -235,7 +354,7 @@ namespace VagaModbusAnalyzer.Controls
                 case TypeCode.SByte:
                     return sbyte.MinValue;
                 case TypeCode.Single:
-                    return float.MinValue;
+                    return decimal.MinValue;
                 case TypeCode.UInt16:
                     return ushort.MinValue;
                 case TypeCode.UInt32:

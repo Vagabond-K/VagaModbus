@@ -66,12 +66,12 @@
                 </Style>
             </FrameworkElement.Resources>
 
-            <controls:NumericBox Value="{Binding SlaveAddress, Mode=TwoWay}" ValueTypeCode="Byte" MinValue="0" MaxValue="255" Width="194">
+            <controls:NumericBox Value="{Binding SlaveAddress, Mode=TwoWay}" ValueType="Byte" MinValue="0" MaxValue="255" Width="194">
                 <TextBox.Header>
                     <TextBlock x:Uid="Text_SlaveAddress"/>
                 </TextBox.Header>
             </controls:NumericBox>
-            <controls:NumericBox Value="{Binding Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ValueTypeCode="UInt16" MinValue="0" MaxValue="65535" Width="194">
+            <controls:NumericBox Value="{Binding Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ValueType="UInt16" MinValue="0" MaxValue="65535" Width="194">
                 <TextBox.Header>
                     <TextBlock x:Uid="Text_DataAddress"/>
                 </TextBox.Header>
