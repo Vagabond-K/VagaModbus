@@ -1032,7 +1032,7 @@
                             Style="{StaticResource NumericBoxStyle}"
                             Width="{Binding ByteLength, Converter={StaticResource ModbusWriteNumericWidthConverter}}">
                             <TextBox.Description>
-                                <TextBlock FontSize="11" Width="40" HorizontalAlignment="Left" TextAlignment="Center">
+                                <TextBlock FontSize="11">
                                     <Run Text="{Binding Address}"/>.<Run Text="{Binding IsFirstByte, Converter={StaticResource IsFirstByteToSubAddressConverter}}"/>
                                 </TextBlock>
                             </TextBox.Description>
@@ -1043,7 +1043,7 @@
                     <DataTemplate>
                         <controls:BitFlagsBox Margin="1" Value="{Binding Value, Mode=TwoWay, Converter={StaticResource DecimalToByteConverter}}">
                             <controls:BitFlagsBox.Description>
-                                <TextBlock Grid.Row="1" FontSize="11" Width="40" HorizontalAlignment="Left" TextAlignment="Center" Foreground="{ThemeResource SystemControlDescriptionTextForegroundBrush}">
+                                <TextBlock Grid.Row="1" FontSize="11" Foreground="{ThemeResource SystemControlDescriptionTextForegroundBrush}">
                                     <Run Text="{Binding Address}"/>.<Run Text="{Binding IsFirstByte, Converter={StaticResource IsFirstByteToSubAddressConverter}}"/>
                                 </TextBlock>
                             </controls:BitFlagsBox.Description>
@@ -1085,7 +1085,7 @@
                                 </ItemsControl.ItemsPanel>
                             </ItemsControl>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Visibility="{Binding Count, Converter={StaticResource ObjectEqualsToVisibileConverter}, ConverterParameter={local:ToUInt16 Value=1}}">
                             <TextBlock Margin="5,4"><Run x:Uid="Text_UseMultiWrite" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" FontSize="12" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
                                             <Run Text=" " FontFamily="Consolas"/></TextBlock>
                             <ToggleSwitch IsOn="{Binding UseMultipleWriteWhenSingle, Mode=TwoWay}" Width="80" FontSize="12" Margin="4"

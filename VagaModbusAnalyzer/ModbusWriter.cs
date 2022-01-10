@@ -51,7 +51,7 @@ namespace VagaModbusAnalyzer
                 {
                     case ModbusObjectType.HoldingRegister:
                         ModbusRequest request;
-                        if (!IsWriteSingle || UseMultipleWriteWhenSingle)
+                        if (Count > 1 || UseMultipleWriteWhenSingle)
                         {
                             var bytes = WriteValues.SelectMany(value => value.Bytes).ToArray();
                             if (bytes.Length % 2 == 1)
@@ -71,7 +71,7 @@ namespace VagaModbusAnalyzer
                         }
                         return request;
                     case ModbusObjectType.Coil:
-                        return !IsWriteSingle || UseMultipleWriteWhenSingle 
+                        return Count > 1 || UseMultipleWriteWhenSingle 
                             ? new ModbusWriteCoilRequest(SlaveAddress, Address, WriteValues.Select(value => value.Value.To<bool>()))
                             : new ModbusWriteCoilRequest(SlaveAddress, Address, (WriteValues.FirstOrDefault()?.Value ?? 0) == 1);
                     default:
@@ -248,7 +248,7 @@ namespace VagaModbusAnalyzer
                         break;
                 }
             }
-            IsWriteSingle = Count == 1;
+            IsWriteSingle = Count == 1 || WriteValues.Count == 1;
         }
 
         internal void UpdateWriteValueAddresses(IEnumerable<ModbusWriteValue> list)
