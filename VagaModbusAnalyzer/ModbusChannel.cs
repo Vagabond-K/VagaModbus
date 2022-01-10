@@ -290,7 +290,7 @@ namespace VagaModbusAnalyzer
             }
         }
 
-        public async Task Write(ModbusWriter writer, ICrossThreadDispatcher dispatcher)
+        public async Task Write(ModbusWriter writer, IStringLocalizer stringLocalizer)
         {
             ModbusResponse response = null;
             IChannel channel = null;
@@ -316,17 +316,17 @@ namespace VagaModbusAnalyzer
                 });
 
                 writer.IsBusy = false;
-                writer.Status = "Text_Succeed/Text";
+                writer.Status = $"{stringLocalizer["Text_Succeed/Text"]} ({DateTime.Now:yyyy-MM-dd HH:mm:ss.fff})";
             }
             catch (Exception error)
             {
                 writer.IsBusy = false;
-                writer.Status = error;
+                error = new MessageException($"{error.Message} ({DateTime.Now:yyyy-MM-dd HH:mm:ss.fff})");
                 if (channel != null && error.GetType() == typeof(Exception))
                 {
-                    error = new MessageException(error.Message);
                     channel.Logger.Log(new ChannelErrorLog(channel, error));
                 }
+                writer.Status = error;
             }
         }
 

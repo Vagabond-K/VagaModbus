@@ -94,7 +94,7 @@ namespace VagaModbusAnalyzer.ViewModels
             => AppData.SelectedChannel.ModbusWriters.Remove(modbusWriter);
 
         private async void ModbusWrite(ModbusWriter parameter)
-            => await AppData.SelectedChannel.Write(parameter, dispatcher);
+            => await AppData.SelectedChannel.Write(parameter, stringLocalizer);
 
         private bool CanExecute(ModbusWriter modbusWriter) => modbusWriter != null;
     }

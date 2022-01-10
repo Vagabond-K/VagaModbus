@@ -209,8 +209,6 @@ namespace VagaModbusAnalyzer
                 ((Frame)sender).CanGoBack ?
                 AppViewBackButtonVisibility.Visible :
                 AppViewBackButtonVisibility.Collapsed;
-
-            GC.Collect();
         }
 
         private void SetElementSourceBindings(ICommandBarElement command, FrameworkElement target)

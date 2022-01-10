@@ -96,7 +96,56 @@ namespace VagaModbusAnalyzer
         public ModbusChannel Channel { get => Get<ModbusChannel>(); set => Set(value); }
 
         [JsonIgnore]
-        public string RequestMessage { get => Get<string>(); private set => Set(value); }
+        public string RequestMessage
+        {
+            get
+            {
+                try
+                {
+                    if (Channel != null)
+                    {
+                        switch (Channel.ModbusType)
+                        {
+                            case ModbusType.RTU:
+                                return BitConverter.ToString(modbusRtuSerializer.Serialize(Request).ToArray()).Replace('-', ' ');
+                            case ModbusType.TCP:
+                                return "?? ??" + BitConverter.ToString(modbusTcpSerializer.Serialize(Request).ToArray()).Replace('-', ' ').Remove(0, 5);
+                            case ModbusType.ASCII:
+                                return BitConverter.ToString(modbusAsciiSerializer.Serialize(Request).ToArray()).Replace('-', ' ');
+                                //StringBuilder stringBuilder = new StringBuilder();
+                                //foreach (var b in modbusAsciiSerializer.Serialize(Request))
+                                //{
+                                //    switch (b)
+                                //    {
+                                //        case 0x0D:
+                                //            stringBuilder.Append("\\r");
+                                //            break;
+                                //        case 0x0A:
+                                //            stringBuilder.Append("\\n");
+                                //            break;
+                                //        default:
+                                //            if (b >= 33 && b <= 126)
+                                //                stringBuilder.Append((char)b);
+                                //            else
+                                //            {
+                                //                stringBuilder.Append("{0x");
+                                //                stringBuilder.Append(b.ToString("X2"));
+                                //                stringBuilder.Append("}");
+                                //            }
+                                //            break;
+                                //    }
+                                //}
+                                //return stringBuilder.ToString();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
+                return string.Empty;
+            }
+        }
 
         private static readonly ModbusRtuSerializer modbusRtuSerializer = new ModbusRtuSerializer();
         private static readonly ModbusTcpSerializer modbusTcpSerializer = new ModbusTcpSerializer();
@@ -104,54 +153,7 @@ namespace VagaModbusAnalyzer
 
         internal void UpdateRequestMessage()
         {
-            try
-            {
-                if (Channel != null)
-                {
-                    switch (Channel.ModbusType)
-                    {
-                        case ModbusType.RTU:
-                            RequestMessage = BitConverter.ToString(modbusRtuSerializer.Serialize(Request).ToArray()).Replace('-', ' ');
-                            break;
-                        case ModbusType.TCP:
-                            RequestMessage = "?? ??" + BitConverter.ToString(modbusTcpSerializer.Serialize(Request).ToArray()).Replace('-', ' ').Remove(0, 5);
-                            break;
-                        case ModbusType.ASCII:
-                            RequestMessage = BitConverter.ToString(modbusAsciiSerializer.Serialize(Request).ToArray()).Replace('-', ' ');
-                            //StringBuilder stringBuilder = new StringBuilder();
-                            //foreach (var b in modbusAsciiSerializer.Serialize(Request))
-                            //{
-                            //    switch (b)
-                            //    {
-                            //        case 0x0D:
-                            //            stringBuilder.Append("\\r");
-                            //            break;
-                            //        case 0x0A:
-                            //            stringBuilder.Append("\\n");
-                            //            break;
-                            //        default:
-                            //            if (b >= 33 && b <= 126)
-                            //                stringBuilder.Append((char)b);
-                            //            else
-                            //            {
-                            //                stringBuilder.Append("{0x");
-                            //                stringBuilder.Append(b.ToString("X2"));
-                            //                stringBuilder.Append("}");
-                            //            }
-                            //            break;
-                            //    }
-                            //}
-                            //RequestMessage = stringBuilder.ToString();
-                            break;
-                    }
-                }
-                else
-                    RequestMessage = string.Empty;
-            }
-            catch (Exception ex)
-            {
-                RequestMessage = ex.Message;
-            }
+            OnPropertyChanged(new PropertyChangedEventArgs(nameof(RequestMessage)));
         }
 
         protected override bool OnPropertyChanging(QueryPropertyChangingEventArgs e)
@@ -190,9 +192,6 @@ namespace VagaModbusAnalyzer
                     break;
                 case nameof(Address):
                     UpdateWriteValueAddresses(WriteValues);
-                    break;
-                case nameof(RequestMessage):
-                    Status = null;
                     break;
             }
         }

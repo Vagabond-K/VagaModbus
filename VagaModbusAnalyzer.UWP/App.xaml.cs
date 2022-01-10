@@ -28,6 +28,12 @@ namespace VagaModbusAnalyzer
             this.InitializeComponent();
 
             Suspending += OnSuspending;
+            UnhandledException += OnUnhandledException;
+        }
+
+        private void OnUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            throw e.Exception;
         }
 
         static JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings()

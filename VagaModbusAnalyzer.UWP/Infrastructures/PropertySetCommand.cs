@@ -10,6 +10,10 @@ namespace VagaModbusAnalyzer.Infrastructures
 {
     public class PropertySetCommand : DependencyObject, System.Windows.Input.ICommand
     {
+        public PropertySetCommand()
+        {
+
+        }
         public object PropertyBinding
         {
             get { return (object)GetValue(PropertyBindingProperty); }
