@@ -810,17 +810,17 @@
                                 <ContentPresenter x:Name="HeaderContentPresenter" ContentTemplate="{TemplateBinding HeaderTemplate}" Grid.Column="0" Content="{TemplateBinding Header}" Grid.ColumnSpan="2" Foreground="{ThemeResource TextControlHeaderForeground}" FontWeight="Normal" Margin="{StaticResource TextBoxTopHeaderMargin}" Grid.Row="0" TextWrapping="Wrap" VerticalAlignment="Top" Visibility="Collapsed" x:DeferLoadStrategy="Lazy"/>
                                 <Border x:Name="BorderElement" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}" Grid.Column="0" Grid.ColumnSpan="2" Control.IsTemplateFocusTarget="True" MinWidth="{ThemeResource TextControlThemeMinWidth}" MinHeight="{ThemeResource TextControlThemeMinHeight}" Grid.RowSpan="1" Grid.Row="1"/>
                                 <ScrollViewer 
-                        x:Name="ContentElement" AutomationProperties.AccessibilityView="Raw" Grid.Column="0" 
-                        HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" 
-                        HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}" 
-                        IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}" IsTabStop="False" 
-                        IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}" 
-                        IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}"
-                        Margin="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" Grid.Row="1" 
-                        VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" 
-                        VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}" 
-                        VerticalAlignment="Center"
-                        ZoomMode="Disabled"/>
+                                    x:Name="ContentElement" AutomationProperties.AccessibilityView="Raw" Grid.Column="0" 
+                                    HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" 
+                                    HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}" 
+                                    IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}" IsTabStop="False" 
+                                    IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}" 
+                                    IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}"
+                                    Margin="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" Grid.Row="1" 
+                                    VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" 
+                                    VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}" 
+                                    VerticalAlignment="Center"
+                                    ZoomMode="Disabled"/>
                                 <TextBlock x:Name="PlaceholderTextContentPresenter" Grid.Column="0" Grid.ColumnSpan="2" Foreground="{Binding PlaceholderForeground, RelativeSource={RelativeSource Mode=TemplatedParent}, TargetNullValue={ThemeResource TextControlPlaceholderForeground}}" IsHitTestVisible="False" Margin="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" Grid.Row="1" TextAlignment="{TemplateBinding TextAlignment}" TextWrapping="{TemplateBinding TextWrapping}" Text="{TemplateBinding PlaceholderText}"/>
                                 <Button x:Name="DeleteButton" AutomationProperties.AccessibilityView="Raw" BorderThickness="{TemplateBinding BorderThickness}" Grid.Column="1" FontSize="{TemplateBinding FontSize}" IsTabStop="False" Margin="{ThemeResource HelperButtonThemePadding}" MinWidth="34" Grid.Row="1" Style="{StaticResource DeleteButtonStyle}" VerticalAlignment="Stretch" Visibility="Collapsed"/>
                                 <ContentPresenter x:Name="DescriptionPresenter" AutomationProperties.AccessibilityView="Raw" Grid.Column="0" Content="{TemplateBinding Description}" Grid.ColumnSpan="2" Foreground="{ThemeResource SystemControlDescriptionTextForegroundBrush}" Grid.Row="2" x:Load="False"/>
@@ -927,7 +927,7 @@
                                                     <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource CheckBoxCheckBackgroundStrokeCheckedDisabled}"/>
                                                 </ObjectAnimationUsingKeyFrames>
                                                 <ObjectAnimationUsingKeyFrames Storyboard.TargetName="CheckGlyph" Storyboard.TargetProperty="Fill">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource CheckBoxCheckBackgroundFillCheckedDisabled}"/>
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TextControlBorderBrush}"/>
                                                 </ObjectAnimationUsingKeyFrames>
                                                 <DoubleAnimation Duration="0" Storyboard.TargetName="CheckGlyph" To="1" Storyboard.TargetProperty="Opacity"/>
                                             </Storyboard>
@@ -997,7 +997,7 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <Border BorderThickness="1" BorderBrush="{ThemeResource TextControlBorderBrush}" MinHeight="{ThemeResource TextControlThemeMinHeight}">
+                                <Border x:Name="BorderElement"  BorderThickness="1" BorderBrush="{ThemeResource TextControlBorderBrush}" MinHeight="{ThemeResource TextControlThemeMinHeight}">
                                     <StackPanel Orientation="Horizontal">
                                         <StackPanel.Resources>
                                             <Style TargetType="CheckBox" BasedOn="{StaticResource BitFlagCheckBoxStyle}"/>
@@ -1178,18 +1178,24 @@
                                     <Run Text="{Binding Count}" FontFamily="Consolas"/></TextBlock>
                             </mtuuc:WrapPanel>
                             <StackPanel Grid.Column="1" Grid.RowSpan="2" Orientation="Horizontal" VerticalAlignment="Top">
-                                <Button Content="&#xE70F;" Command="{Binding ElementName=PART_WriteDataView, Path=DataContext.EditWriterCommand}" CommandParameter="{Binding}" Margin="3" Style="{StaticResource SelectorItemButtonStyle}">
+                                <Button Content="&#xE70F;" Command="{Binding ElementName=PART_WriteDataView, Path=DataContext.EditWriterCommand}" 
+                                        CommandParameter="{Binding}" Margin="3" Style="{StaticResource SelectorItemButtonStyle}"
+                                        IsEnabled="{Binding IsBusy, Converter={StaticResource NegationConverter}}">
                                     <ToolTipService.ToolTip>
                                         <TextBlock x:Uid="ItemEditButton"/>
                                     </ToolTipService.ToolTip>
                                 </Button>
-                                <Button Content="&#xE74D;" Command="{Binding ElementName=PART_WriteDataView, Path=DataContext.DeleteWriterCommand}" CommandParameter="{Binding}" Margin="3" Style="{StaticResource SelectorItemButtonStyle}">
+                                <Button Content="&#xE74D;" Command="{Binding ElementName=PART_WriteDataView, Path=DataContext.DeleteWriterCommand}" 
+                                        CommandParameter="{Binding}" Margin="3" Style="{StaticResource SelectorItemButtonStyle}"
+                                        IsEnabled="{Binding IsBusy, Converter={StaticResource NegationConverter}}">
                                     <ToolTipService.ToolTip>
                                         <TextBlock x:Uid="ItemDeleteButton"/>
                                     </ToolTipService.ToolTip>
                                 </Button>
                             </StackPanel>
-                            <ContentControl Grid.Row="2" Grid.ColumnSpan="2" IsTabStop="False" Content="{Binding}" ContentTemplateSelector="{StaticResource ModbusWriterDataTemplateSelector}"/>
+                            <ContentControl Grid.Row="2" Grid.ColumnSpan="2" IsTabStop="False" Content="{Binding}" 
+                                            ContentTemplateSelector="{StaticResource ModbusWriterDataTemplateSelector}"
+                                            IsEnabled="{Binding IsBusy, Converter={StaticResource NegationConverter}}"/>
                         </Grid>
                         <Rectangle Grid.Row="1" Height="1" Fill="{ThemeResource SystemControlForegroundBaseLowBrush}" Margin="6,0"/>
                         <Grid Grid.Row="2">
@@ -1199,7 +1205,9 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="0,0,6,0" VerticalAlignment="Top">
-                                <Button Content="&#xE724;" Command="{Binding ElementName=PART_WriteDataView, Path=DataContext.ModbusWriteCommand}" CommandParameter="{Binding}" Margin="3" Style="{StaticResource SelectorItemButtonStyle}">
+                                <Button Content="&#xE724;" Command="{Binding ElementName=PART_WriteDataView, Path=DataContext.ModbusWriteCommand}"
+                                        IsEnabled="{Binding IsBusy, Converter={StaticResource NegationConverter}}"
+                                        CommandParameter="{Binding}" Margin="3" Style="{StaticResource SelectorItemButtonStyle}">
                                     <ToolTipService.ToolTip>
                                         <TextBlock x:Uid="Text_Send"/>
                                     </ToolTipService.ToolTip>
@@ -1222,6 +1230,7 @@
                                 <TextBlock Margin="5,2" FontSize="12" TextWrapping="WrapWholeWords"><Run x:Uid="Text_Status" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
                                     <Run Text="{Binding Status, Converter={StaticResource StatusTextConverter}}"/></TextBlock>
                             </Grid>
+                            <ProgressRing IsActive="{Binding IsBusy}" HorizontalAlignment="Right" Margin="6,0"/>
                         </Grid>
                     </Grid>
                 </Border>

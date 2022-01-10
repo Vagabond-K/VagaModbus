@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
+using VagabondK.Protocols.Channels;
+using VagabondK.Protocols.Logging;
 using VagabondK.Protocols.Modbus;
 using VagabondK.Protocols.Modbus.Serialization;
 
@@ -94,25 +97,6 @@ namespace VagaModbusAnalyzer
 
         [JsonIgnore]
         public string RequestMessage { get => Get<string>(); private set => Set(value); }
-
-        public void Write(ModbusMaster modbusMaster, ICrossThreadDispatcher dispatcher)
-        {
-            try
-            {
-                dispatcher.Invoke(() => { IsBusy = true; });
-                var response = modbusMaster.Request(Request, ResponseTimeout);
-                dispatcher.Invoke(() =>
-                {
-                    IsBusy = false;
-                    Status = "Text_Succeed/Text";
-                });
-            }
-            catch (Exception ex)
-            {
-                dispatcher.Invoke(() => { IsBusy = false; });
-                throw ex;
-            }
-        }
 
         private static readonly ModbusRtuSerializer modbusRtuSerializer = new ModbusRtuSerializer();
         private static readonly ModbusTcpSerializer modbusTcpSerializer = new ModbusTcpSerializer();

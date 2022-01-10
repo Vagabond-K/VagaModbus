@@ -26,6 +26,7 @@
     </Style>
     
     <local:SelectedModbusScanDataSummary x:Key="SelectedModbusScanDataSummary"/>
+    <converters:NegationConverter x:Key="NegationConverter"/>
     <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityInverseConverter" Inverse="True"/>
     <converters:HexConverter x:Key="HexConverter" Length="0"/>
