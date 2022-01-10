@@ -45,6 +45,7 @@
     <converters:ModbusEndianToTextConverter x:Key="ModbusEndianToTextConverter"/>
     <converters:BooleanToObjectConverter x:Key="IsFirstByteToSubAddressConverter" TrueValue="A" FalseValue="B"/>
     <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
+    <converters:DecimalToByteConverter x:Key="DecimalToByteConverter"/>
 
     <ControlTemplate x:Key="NoneAnimationToggleSwitch" TargetType="ToggleSwitch">
         <Grid Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="{TemplateBinding CornerRadius}">

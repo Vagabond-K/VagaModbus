@@ -25,23 +25,23 @@ namespace VagaModbusAnalyzer.Controls
             InputScope = scope;
         }
 
-        public double? MaxValue
+        public double MaxValue
         {
-            get { return (double?)GetValue(MaxValueProperty); }
+            get { return (double)GetValue(MaxValueProperty); }
             set { SetValue(MaxValueProperty, value); }
         }
 
         public static readonly DependencyProperty MaxValueProperty =
-            DependencyProperty.Register("MaxValue", typeof(double?), typeof(NumericBox), new PropertyMetadata(null));
+            DependencyProperty.Register("MaxValue", typeof(double), typeof(NumericBox), new PropertyMetadata(double.NaN));
 
-        public double? MinValue
+        public double MinValue
         {
-            get { return (double?)GetValue(MinValueProperty); }
+            get { return (double)GetValue(MinValueProperty); }
             set { SetValue(MinValueProperty, value); }
         }
 
         public static readonly DependencyProperty MinValueProperty =
-            DependencyProperty.Register("MinValue", typeof(double?), typeof(NumericBox), new PropertyMetadata(null));
+            DependencyProperty.Register("MinValue", typeof(double), typeof(NumericBox), new PropertyMetadata(double.NaN));
 
 
         public bool AllowNullInput
@@ -119,8 +119,8 @@ namespace VagaModbusAnalyzer.Controls
                     double maxValue = double.MaxValue;
                     double minValue = double.MinValue;
 
-                    if (MaxValue != null) maxValue = Math.Min(maxValue, MaxValue.Value);
-                    if (MinValue != null) minValue = Math.Max(minValue, MinValue.Value);
+                    if (!double.IsNaN(MaxValue)) maxValue = Math.Min(maxValue, MaxValue);
+                    if (!double.IsNaN(MinValue)) minValue = Math.Max(minValue, MinValue);
 
                     if (newValue > maxValue) newValue = maxValue;
                     if (newValue < minValue) newValue = minValue;
@@ -137,8 +137,8 @@ namespace VagaModbusAnalyzer.Controls
                     double maxValue = float.MaxValue;
                     double minValue = float.MinValue;
 
-                    if (MaxValue != null) maxValue = Math.Min(maxValue, MaxValue.Value);
-                    if (MinValue != null) minValue = Math.Max(minValue, MinValue.Value);
+                    if (!double.IsNaN(MaxValue)) maxValue = Math.Min(maxValue, MaxValue);
+                    if (!double.IsNaN(MinValue)) minValue = Math.Max(minValue, MinValue);
 
                     if (newValue > maxValue) newValue = (float)maxValue;
                     if (newValue < minValue) newValue = (float)minValue;
@@ -155,8 +155,8 @@ namespace VagaModbusAnalyzer.Controls
                     var maxValue = GetMaxValue(ActualEditType);
                     var minValue = GetMinValue(ActualEditType);
 
-                    if (MaxValue != null) maxValue = Math.Min(maxValue, DoubleToDecimal(MaxValue.Value));
-                    if (MinValue != null) minValue = Math.Max(minValue, DoubleToDecimal(MinValue.Value));
+                    if (!double.IsNaN(MaxValue)) maxValue = Math.Min(maxValue, DoubleToDecimal(MaxValue));
+                    if (!double.IsNaN(MinValue)) minValue = Math.Max(minValue, DoubleToDecimal(MinValue));
 
                     if (newValue > maxValue) newValue = maxValue;
                     if (newValue < minValue) newValue = minValue;
@@ -172,7 +172,7 @@ namespace VagaModbusAnalyzer.Controls
                 {
                     if (AllowNullInput)
                         Value = null;
-                    else if (MinValue == null || MinValue.Value <= 0)
+                    else if (double.IsNaN(MinValue) || MinValue <= 0)
                         Value = ChangeType(0, ValueType);
                     else
                         Value = ChangeType(MinValue, ValueType);
@@ -261,6 +261,17 @@ namespace VagaModbusAnalyzer.Controls
             base.OnLostFocus(e);
         }
 
+        protected override void OnKeyDown(KeyRoutedEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                GetBindingExpression(ValueProperty)?.UpdateSource();
+                SetValueToText();
+            }
+        }
+
         private void SetValueToText()
         {
             string text;
@@ -280,7 +291,11 @@ namespace VagaModbusAnalyzer.Controls
             if (text.Length > 1 && text[text.Length - 1] == '.')
                 text = text.Remove(text.Length - 1);
 
+            var oldSelectionStart = SelectionStart;
+            var oldSelectionLength = SelectionLength;
             Text = text;
+            SelectionStart = oldSelectionStart;
+            SelectionLength = oldSelectionLength;
 
             try
             {

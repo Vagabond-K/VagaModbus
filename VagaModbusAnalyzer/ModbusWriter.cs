@@ -34,6 +34,7 @@ namespace VagaModbusAnalyzer
         public ModbusObjectType ObjectType { get => Get(ModbusObjectType.HoldingRegister); set => Set(value); }
         public byte SlaveAddress { get => Get((byte)1); set => Set(value); }
         public ushort Address { get => Get((ushort)0); set => Set(value); }
+        public ushort Count { get => Get((ushort)0); set => Set(value); }
         public int ResponseTimeout { get => Get(5000); set => Set(value); }
         public bool UseMultipleWriteWhenSingle { get => Get(false); set => Set(value); }
         public ObservableCollection<ModbusWriteValue> WriteValues { get => Get<ObservableCollection<ModbusWriteValue>>(); set => Set(value); }
@@ -51,20 +52,20 @@ namespace VagaModbusAnalyzer
                     case ModbusObjectType.HoldingRegister:
                         ModbusRequest request;
                         if (!IsWriteSingle || UseMultipleWriteWhenSingle)
-                            request = new ModbusWriteHoldingRegisterRequest(SlaveAddress, Address, WriteValues.SelectMany(value => value.Bytes));
+                        {
+                            var bytes = WriteValues.SelectMany(value => value.Bytes).ToArray();
+                            if (bytes.Length % 2 == 1)
+                                Array.Resize(ref bytes, bytes.Length + 1);
+                            request = new ModbusWriteHoldingRegisterRequest(SlaveAddress, Address, bytes);
+                        }
                         else
                         {
-                            var bytes = (BitConverter.IsLittleEndian
-                                ? WriteValues.FirstOrDefault()?.Bytes?.Reverse()?.ToArray()
-                                : WriteValues.FirstOrDefault()?.Bytes?.ToArray()) ?? new byte[] { 0, 0 };
+                            var bytes = WriteValues.SelectMany(value => value.Bytes).ToArray();
+                            if (bytes.Length % 2 == 1)
+                                Array.Resize(ref bytes, bytes.Length + 1);
 
-                            if (bytes.Length == 0)
-                                bytes = new byte[] { 0, 0 };
-
-                            if (bytes.Length == 1)
-                                bytes = BitConverter.IsLittleEndian
-                                    ? new byte[] { 0, bytes[0] }
-                                    : new byte[] { bytes[0], 0 };
+                            if (BitConverter.IsLittleEndian)
+                                Array.Reverse(bytes);
 
                             request = new ModbusWriteHoldingRegisterRequest(SlaveAddress, Address, BitConverter.ToUInt16(bytes, 0));
                         }
@@ -116,47 +117,54 @@ namespace VagaModbusAnalyzer
 
         internal void UpdateRequestMessage()
         {
-            if (Channel != null)
+            try
             {
-                switch (Channel.ModbusType)
+                if (Channel != null)
                 {
-                    case ModbusType.RTU:
-                        RequestMessage = BitConverter.ToString(modbusRtuSerializer.Serialize(Request).ToArray()).Replace('-', ' ');
-                        break;
-                    case ModbusType.TCP:
-                        RequestMessage = "?? ??" + BitConverter.ToString(modbusTcpSerializer.Serialize(Request).ToArray()).Replace('-', ' ').Remove(0, 5);
-                        break;
-                    case ModbusType.ASCII:
-                        RequestMessage = BitConverter.ToString(modbusAsciiSerializer.Serialize(Request).ToArray()).Replace('-', ' ');
-                        //StringBuilder stringBuilder = new StringBuilder();
-                        //foreach (var b in modbusAsciiSerializer.Serialize(Request))
-                        //{
-                        //    switch (b)
-                        //    {
-                        //        case 0x0D:
-                        //            stringBuilder.Append("\\r");
-                        //            break;
-                        //        case 0x0A:
-                        //            stringBuilder.Append("\\n");
-                        //            break;
-                        //        default:
-                        //            if (b >= 33 && b <= 126)
-                        //                stringBuilder.Append((char)b);
-                        //            else
-                        //            {
-                        //                stringBuilder.Append("{0x");
-                        //                stringBuilder.Append(b.ToString("X2"));
-                        //                stringBuilder.Append("}");
-                        //            }
-                        //            break;
-                        //    }
-                        //}
-                        //RequestMessage = stringBuilder.ToString();
-                        break;
+                    switch (Channel.ModbusType)
+                    {
+                        case ModbusType.RTU:
+                            RequestMessage = BitConverter.ToString(modbusRtuSerializer.Serialize(Request).ToArray()).Replace('-', ' ');
+                            break;
+                        case ModbusType.TCP:
+                            RequestMessage = "?? ??" + BitConverter.ToString(modbusTcpSerializer.Serialize(Request).ToArray()).Replace('-', ' ').Remove(0, 5);
+                            break;
+                        case ModbusType.ASCII:
+                            RequestMessage = BitConverter.ToString(modbusAsciiSerializer.Serialize(Request).ToArray()).Replace('-', ' ');
+                            //StringBuilder stringBuilder = new StringBuilder();
+                            //foreach (var b in modbusAsciiSerializer.Serialize(Request))
+                            //{
+                            //    switch (b)
+                            //    {
+                            //        case 0x0D:
+                            //            stringBuilder.Append("\\r");
+                            //            break;
+                            //        case 0x0A:
+                            //            stringBuilder.Append("\\n");
+                            //            break;
+                            //        default:
+                            //            if (b >= 33 && b <= 126)
+                            //                stringBuilder.Append((char)b);
+                            //            else
+                            //            {
+                            //                stringBuilder.Append("{0x");
+                            //                stringBuilder.Append(b.ToString("X2"));
+                            //                stringBuilder.Append("}");
+                            //            }
+                            //            break;
+                            //    }
+                            //}
+                            //RequestMessage = stringBuilder.ToString();
+                            break;
+                    }
                 }
+                else
+                    RequestMessage = string.Empty;
             }
-            else
-                RequestMessage = string.Empty;
+            catch (Exception ex)
+            {
+                RequestMessage = ex.Message;
+            }
         }
 
         protected override bool OnPropertyChanging(QueryPropertyChangingEventArgs e)
@@ -185,6 +193,7 @@ namespace VagaModbusAnalyzer
                             item.modbusWriter = this;
                     }
                     UpdateWriteValueAddresses(WriteValues);
+                    UpdateCount();
                     OnPropertyChanged(new PropertyChangedEventArgs(nameof(Request)));
                     UpdateRequestMessage();
                     break;
@@ -215,12 +224,37 @@ namespace VagaModbusAnalyzer
 
                 UpdateWriteValueAddresses(e.NewItems.Cast<ModbusWriteValue>());
             }
+
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(Request)));
             UpdateRequestMessage();
+            UpdateCount();
+        }
+
+        private void UpdateCount()
+        {
+            if (WriteValues == null)
+            {
+                Count = 0;
+            }
+            else
+            {
+                switch (ObjectType)
+                {
+                    case ModbusObjectType.HoldingRegister:
+                        Count = (ushort)Math.Ceiling((decimal)WriteValues.Sum(item => item.ByteLength) / 2);
+                        break;
+                    case ModbusObjectType.Coil:
+                        Count = (ushort)WriteValues.Sum(item => item.ByteLength);
+                        break;
+                }
+            }
+            IsWriteSingle = Count == 1;
         }
 
         internal void UpdateWriteValueAddresses(IEnumerable<ModbusWriteValue> list)
         {
+            if (WriteValues == null) return;
+
             int? totalLength = null;
             foreach (var item in list)
             {
@@ -249,9 +283,6 @@ namespace VagaModbusAnalyzer
                     totalLength += item.ByteLength;
                 }
             }
-
-            IsWriteSingle = WriteValues.Count == 1
-                && (ObjectType == ModbusObjectType.Coil || ObjectType == ModbusObjectType.HoldingRegister && WriteValues[0].ByteLength <= 2);
         }
 
     }

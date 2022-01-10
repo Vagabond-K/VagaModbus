@@ -44,6 +44,7 @@ namespace VagaModbusAnalyzer.ViewModels
                     }
                     else
                     {
+                        modbusWriter.Channel = AppData.SelectedChannel;
                         modbusWriter.WriteValues.Add(new ModbusWriteValue());
                     }
                 }

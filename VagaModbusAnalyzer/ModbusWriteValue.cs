@@ -52,6 +52,13 @@ namespace VagaModbusAnalyzer
         [JsonIgnore]
         public ModbusEndian[] ModbusEndians => IsFirstByte && ByteLength >= 4 && ByteLength % 2 == 0 ? allEndians : filteredEndians;
 
+        [JsonIgnore]
+        public double MaxValue => Type == TypeCode.Single || Type == TypeCode.Double ? double.NaN : maxValues[ByteLength - 1];
+
+        [JsonIgnore]
+        public double MinValue => Type == TypeCode.Single || Type == TypeCode.Double ? double.NaN : minValues[ByteLength - 1];
+
+
         private static readonly ModbusEndian[] allEndians = new ModbusEndian[]
         {
             ModbusEndian.AllBig,

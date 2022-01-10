@@ -191,7 +191,9 @@
                         </AppBarButton.Icon>
                     </AppBarButton>
                     <Grid Grid.Column="1" Width="10"></Grid>
-                    <TextBlock Grid.Column="2" Text="{Binding ElementName=PART_AppFrame, Path=Content.DataContext.Title}" VerticalAlignment="Center" FontSize="15" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock Grid.Column="2" Text="{Binding ElementName=PART_AppFrame, Path=Content.DataContext.Title}"
+                               ToolTipService.ToolTip="{Binding ElementName=PART_AppFrame, Path=Content.DataContext.Title}"
+                               VerticalAlignment="Center" FontSize="15" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
                 </Grid>
             </CommandBar.Content>
         </controls:OpenDownCommandBar>

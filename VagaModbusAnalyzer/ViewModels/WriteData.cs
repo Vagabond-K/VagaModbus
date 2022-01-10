@@ -37,7 +37,7 @@ namespace VagaModbusAnalyzer.ViewModels
         private async void AddHoldingRegisterWriter()
         {
             EditingModbusWriter = null;
-            await shell.OpenPage<EditModbusHoldingRegisterWriter>($"{AppData.SelectedChannel.Name} > {stringLocalizer["WriteDataView_AppBarButton_AddHoldingRegisterWriter/Label"]}");
+            await shell.OpenPage<EditModbusHoldingRegisterWriter>($"{stringLocalizer["MasterDetailMenuButton_WriteData/Content"]} > {stringLocalizer["WriteDataView_AppBarButton_AddHoldingRegisterWriter/Label"]}");
         }
 
         private async void AddCoilWriter()
@@ -85,7 +85,7 @@ namespace VagaModbusAnalyzer.ViewModels
                     }
                     break;
                 case VagabondK.Protocols.Modbus.ModbusObjectType.HoldingRegister:
-                    await shell.OpenPage<EditModbusHoldingRegisterWriter>($"{AppData.SelectedChannel.Name} > {stringLocalizer["WriteDataView_AppBarButton_EditHoldingRegisterWriter/Label"]}");
+                    await shell.OpenPage<EditModbusHoldingRegisterWriter>($"{stringLocalizer["MasterDetailMenuButton_WriteData/Content"]} > {stringLocalizer["WriteDataView_AppBarButton_EditHoldingRegisterWriter/Label"]}");
                     break;
             }
         }

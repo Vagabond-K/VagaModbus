@@ -128,11 +128,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\BitFlagsBox.cs" />
     <Compile Include="Controls\FloatingPanelPresentor.cs" />
     <Compile Include="Controls\ModbusScanBitDataItemView.cs" />
     <Compile Include="Controls\TextBoxExtensions.cs" />
     <Compile Include="Converters\BinaryConverter.cs" />
     <Compile Include="Converters\EnumToDescriptionConverter.cs" />
+    <Compile Include="Converters\DecimalToByteConverter.cs" />
+    <Compile Include="Converters\ModbusWriteNumericWidthConverter.cs" />
     <Compile Include="Converters\ObjectToBooleanConverter.cs" />
     <Compile Include="Converters\ChannelLogBackgroundColorConverter.cs" />
     <Compile Include="Converters\ChannelLogToMessageConverter.cs" />
@@ -170,6 +173,7 @@
     <Compile Include="Converters\EnumComboBoxConverter.cs" />
     <Compile Include="Infrastructures\ItemWidthCalculator.cs" />
     <Compile Include="Converters\ModbusEndianToTextConverter.cs" />
+    <Compile Include="Infrastructures\ModbusWriteHoldingRegisterDataTemplateSelector.cs" />
     <Compile Include="Infrastructures\ModbusWriterDataTemplateSelector.cs" />
     <Compile Include="Infrastructures\ModbusScanDataTemplateSelector.cs" />
     <Compile Include="Infrastructures\NavigationManager.cs" />

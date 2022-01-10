@@ -420,8 +420,8 @@
   <data name="Text_Hexadecimal.Text" xml:space="preserve">
     <value>16진수</value>
   </data>
-  <data name="Text_LogicalValue.Text" xml:space="preserve">
-    <value>논리 값</value>
+  <data name="Text_Value.Text" xml:space="preserve">
+    <value>값</value>
   </data>
   <data name="Text_DoubleValue.Text" xml:space="preserve">
     <value>배정밀도 소수</value>
@@ -641,5 +641,8 @@
   </data>
   <data name="WriteDataView_AppBarButton_EditHoldingRegisterWriter.Label" xml:space="preserve">
     <value>Holding Register 쓰기 편집</value>
+  </data>
+  <data name="Text_ChannelName.Text" xml:space="preserve">
+    <value>채널 이름</value>
   </data>
 </root>

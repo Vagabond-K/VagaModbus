@@ -348,8 +348,8 @@
   <data name="Text_Little_endian.Text" xml:space="preserve">
     <value>Little-endian</value>
   </data>
-  <data name="Text_LogicalValue.Text" xml:space="preserve">
-    <value>Logical Value</value>
+  <data name="Text_Value.Text" xml:space="preserve">
+    <value>Value</value>
   </data>
   <data name="Text_NumOfData.Text" xml:space="preserve">
     <value>Number of data</value>
@@ -641,5 +641,8 @@
   </data>
   <data name="WriteDataView_AppBarButton_EditHoldingRegisterWriter.Label" xml:space="preserve">
     <value>Edit write to holding register</value>
+  </data>
+  <data name="Text_ChannelName.Text" xml:space="preserve">
+    <value>Channel name</value>
   </data>
 </root>
