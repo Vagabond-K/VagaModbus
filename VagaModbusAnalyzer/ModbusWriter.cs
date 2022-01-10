@@ -101,12 +101,15 @@ namespace VagaModbusAnalyzer
             {
                 dispatcher.Invoke(() => { IsBusy = true; });
                 var response = modbusMaster.Request(Request, ResponseTimeout);
-                dispatcher.Invoke(() => { IsBusy = false; });
+                dispatcher.Invoke(() =>
+                {
+                    IsBusy = false;
+                    Status = "Text_Succeed/Text";
+                });
             }
             catch (Exception ex)
             {
                 dispatcher.Invoke(() => { IsBusy = false; });
-
                 throw ex;
             }
         }
@@ -203,6 +206,9 @@ namespace VagaModbusAnalyzer
                     break;
                 case nameof(Address):
                     UpdateWriteValueAddresses(WriteValues);
+                    break;
+                case nameof(RequestMessage):
+                    Status = null;
                     break;
             }
         }

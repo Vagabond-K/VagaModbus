@@ -645,4 +645,7 @@
   <data name="Text_ChannelName.Text" xml:space="preserve">
     <value>Channel name</value>
   </data>
+  <data name="Text_Succeed.Text" xml:space="preserve">
+    <value>Succeed</value>
+  </data>
 </root>

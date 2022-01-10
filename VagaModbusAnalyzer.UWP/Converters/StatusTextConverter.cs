@@ -6,7 +6,7 @@ using Windows.UI.Xaml.Data;
 
 namespace VagaModbusAnalyzer.Converters
 {
-    public class ScanStatusTextConverter : IValueConverter
+    public class StatusTextConverter : IValueConverter
     {
         private static EnumToLocalizedStringConverter enumToLocalizedStringConverter = new EnumToLocalizedStringConverter();
 

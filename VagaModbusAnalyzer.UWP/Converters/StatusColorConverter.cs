@@ -6,7 +6,7 @@ using Windows.UI.Xaml.Data;
 
 namespace VagaModbusAnalyzer.Converters
 {
-    public class ScanStatusColorConverter : IValueConverter
+    public class StatusColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

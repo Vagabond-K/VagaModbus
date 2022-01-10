@@ -161,8 +161,8 @@
     <Compile Include="Converters\EnumToLocalizedStringConverter.cs" />
     <Compile Include="Converters\ObjectEqualsConverter.cs" />
     <Compile Include="Converters\ObjectEqualsToVisibilityConverter.cs" />
-    <Compile Include="Converters\ScanStatusColorConverter.cs" />
-    <Compile Include="Converters\ScanStatusTextConverter.cs" />
+    <Compile Include="Converters\StatusColorConverter.cs" />
+    <Compile Include="Converters\StatusTextConverter.cs" />
     <Compile Include="Converters\SerialHandshakeToStringConverter.cs" />
     <Compile Include="Converters\SerialStopBitCountToStringConverter.cs" />
     <Compile Include="Infrastructures\ChannelFactory.cs" />

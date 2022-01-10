@@ -35,8 +35,8 @@
     <converters:BinaryConverter x:Key="BinaryConverter8" Length="8"/>
     <converters:EnumToLocalizedStringConverter x:Key="EnumToLocalizedStringConverter"/>
     <converters:TimeStampStringConverter x:Key="TimeStampStringConverter"/>
-    <converters:ScanStatusColorConverter x:Key="ScanStatusColorConverter"/>
-    <converters:ScanStatusTextConverter x:Key="ScanStatusTextConverter"/>
+    <converters:StatusColorConverter x:Key="StatusColorConverter"/>
+    <converters:StatusTextConverter x:Key="StatusTextConverter"/>
     <converters:ObjectEqualsConverter x:Key="ObjectEqualsConverter"/>
     <converters:ObjectEqualsConverter x:Key="ObjectNotEqualsConverter" Inverse="True"/>
     <converters:ObjectEqualsToVisibilityConverter x:Key="ObjectEqualsToVisibileConverter"/>

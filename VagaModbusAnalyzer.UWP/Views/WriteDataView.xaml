@@ -1216,11 +1216,11 @@
                         </Grid>
                         <Grid Grid.Row="3">
                             <Grid.Background>
-                                <SolidColorBrush Color="{Binding Status, Converter={StaticResource ScanStatusColorConverter}}"/>
+                                <SolidColorBrush Color="{Binding Status, Converter={StaticResource StatusColorConverter}}"/>
                             </Grid.Background>
                             <Grid Margin="6">
                                 <TextBlock Margin="5,2" FontSize="12" TextWrapping="WrapWholeWords"><Run x:Uid="Text_Status" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/><Run Text=":" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
-                                    <Run Text="{Binding Status, Converter={StaticResource ScanStatusTextConverter}}"/></TextBlock>
+                                    <Run Text="{Binding Status, Converter={StaticResource StatusTextConverter}}"/></TextBlock>
                             </Grid>
                         </Grid>
                     </Grid>

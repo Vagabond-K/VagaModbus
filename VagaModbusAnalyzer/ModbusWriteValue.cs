@@ -31,7 +31,7 @@ namespace VagaModbusAnalyzer
 
         internal ModbusWriter modbusWriter;
 
-        public TypeCode Type { get => Get(TypeCode.UInt64); set => Set(value); }
+        public TypeCode Type { get => Get(TypeCode.Decimal); set => Set(value); }
         public ushort ByteLength { get => Get((ushort)2); set => Set(value); }
         public ModbusEndian ModbusEndian { get => Get(() => ModbusEndian.AllBig); set => Set(value); }
         public decimal Value { get => Get(0M); set => Set(value); }
@@ -89,6 +89,7 @@ namespace VagaModbusAnalyzer
                     case TypeCode.Int16:
                     case TypeCode.Int32:
                     case TypeCode.Int64:
+                    case TypeCode.Decimal:
                         decimal value = Value;
                         int byteLength = ByteLength;
                         if (byteLength > 0 && byteLength <= 8)
@@ -204,6 +205,7 @@ namespace VagaModbusAnalyzer
                 case TypeCode.Int16:
                 case TypeCode.Int32:
                 case TypeCode.Int64:
+                case TypeCode.Decimal:
                     decimal value = Value;
                     int byteLength = ByteLength;
                     if (byteLength > 0 && byteLength <= 8)
