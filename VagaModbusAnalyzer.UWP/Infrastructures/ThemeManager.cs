@@ -17,9 +17,10 @@ namespace VagaModbusAnalyzer.Infrastructures
     [ServiceDescription(Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton)]
     public class ThemeManager : NotifyPropertyChangeObject
     {
-        public ThemeManager(IDialog dialog)
+        public ThemeManager(IDialog dialog, ICrossThreadDispatcher dispatcher)
         {
             this.dialog = dialog;
+            this.dispatcher = dispatcher;
 
             uiSettings = new UISettings();
             Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary
@@ -45,6 +46,7 @@ namespace VagaModbusAnalyzer.Infrastructures
 
         private readonly UISettings uiSettings;
         private readonly IDialog dialog;
+        private readonly ICrossThreadDispatcher dispatcher;
 
         public ElementTheme AppTheme
         {
@@ -147,7 +149,7 @@ namespace VagaModbusAnalyzer.Infrastructures
 
         private void RefreshTheme()
         {
-            if (Window.Current.Content is FrameworkElement root)
+            if (Window.Current?.Content is FrameworkElement root)
             {
                 root.RequestedTheme = AppTheme;
                 var resources = Application.Current.Resources;
@@ -156,7 +158,7 @@ namespace VagaModbusAnalyzer.Infrastructures
 
         private void RefreshAccentColor()
         {
-            if (Window.Current.Content is FrameworkElement root)
+            if (Window.Current?.Content is FrameworkElement root)
             {
                 if (UseWindowsDefaultAccentColor)
                 {
@@ -188,20 +190,20 @@ namespace VagaModbusAnalyzer.Infrastructures
             }
         }
 
-        private async void UISettingsColorValuesChanged(UISettings sender, object args)
+        private void UISettingsColorValuesChanged(UISettings sender, object args)
         {
             if (UseWindowsDefaultAccentColor)
             {
-                await Window.Current.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, () =>
+                dispatcher?.Invoke(() =>
                 {
                     SetWindowsSettingAccentColors(sender);
                 });
             }
         }
 
-        private async void ApplicationDataChanged(ApplicationData sender, object args)
+        private void ApplicationDataChanged(ApplicationData sender, object args)
         {
-            await Window.Current.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, () =>
+            dispatcher?.Invoke(() =>
             {
                 try
                 {
