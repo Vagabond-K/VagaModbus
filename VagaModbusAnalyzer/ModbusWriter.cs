@@ -182,7 +182,6 @@ namespace VagaModbusAnalyzer
                             item.modbusWriter = this;
                     }
                     UpdateWriteValueAddresses(WriteValues);
-                    UpdateCount();
                     OnPropertyChanged(new PropertyChangedEventArgs(nameof(Request)));
                     UpdateRequestMessage();
                     break;
@@ -216,10 +215,9 @@ namespace VagaModbusAnalyzer
 
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(Request)));
             UpdateRequestMessage();
-            UpdateCount();
         }
 
-        private void UpdateCount()
+        internal void UpdateCount()
         {
             if (WriteValues == null)
             {
@@ -272,6 +270,8 @@ namespace VagaModbusAnalyzer
                     totalLength += item.ByteLength;
                 }
             }
+
+            UpdateCount();
         }
 
     }
