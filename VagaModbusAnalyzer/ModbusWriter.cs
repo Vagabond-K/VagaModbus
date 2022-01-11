@@ -30,6 +30,7 @@ namespace VagaModbusAnalyzer
                 writeValue.CopyTo(result);
                 return result;
             }));
+
             modbusWriter.Channel = Channel;
             modbusWriter.UseMultipleWriteWhenSingle = UseMultipleWriteWhenSingle;
         }
