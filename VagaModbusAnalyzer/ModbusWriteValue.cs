@@ -217,6 +217,10 @@ namespace VagaModbusAnalyzer
                         if (value < minValue) Value = minValue;
                     }
                     break;
+                case TypeCode.Boolean:
+                    if (Value < 0) Value = 0;
+                    if (Value > 255) Value = 255;
+                    break;
             }
         }
     }

@@ -13,6 +13,8 @@ namespace VagaModbusAnalyzer.Converters
         {
             if (value is decimal decimalValue)
             {
+                if (decimalValue < 0) decimalValue = 0;
+                if (decimalValue > 255) decimalValue = 255;
                 return decimal.ToByte(decimalValue);
             }
             return (byte)0;

@@ -648,4 +648,10 @@
   <data name="Text_Succeed.Text" xml:space="preserve">
     <value>Succeed</value>
   </data>
+  <data name="Text_NumOfCoils.Text" xml:space="preserve">
+    <value>Number of coils</value>
+  </data>
+  <data name="Text_NumOfRegister.Text" xml:space="preserve">
+    <value>Number of registers</value>
+  </data>
 </root>
