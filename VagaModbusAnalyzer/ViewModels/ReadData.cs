@@ -41,6 +41,9 @@ namespace VagaModbusAnalyzer.ViewModels
                 {
                     ObjectType = editModbusScan.ObjectType,
                     SlaveAddress = (byte)editModbusScan.SlaveAddress,
+                    DetectSlaveAddress = editModbusScan.DetectSlaveAddress,
+                    DetectSlaveAddrStart = (byte)editModbusScan.DetectSlaveAddrStart,
+                    DetectSlaveAddrEnd = (byte)editModbusScan.DetectSlaveAddrEnd,
                     Address = (ushort)editModbusScan.Address,
                     Length = (ushort)editModbusScan.Length,
                     ResponseTimeout = editModbusScan.ResponseTimeout
@@ -53,15 +56,18 @@ namespace VagaModbusAnalyzer.ViewModels
             if (await dialog.ShowDialog<EditModbusScan>(stringLocalizer["EditModbusScanView_EditScan/Title"], viewModel =>
             {
                 viewModel.SlaveAddress = modbusScan.SlaveAddress;
+                viewModel.DetectSlaveAddress = modbusScan.DetectSlaveAddress;
+                viewModel.DetectSlaveAddrStart = modbusScan.DetectSlaveAddrStart;
+                viewModel.DetectSlaveAddrEnd = modbusScan.DetectSlaveAddrEnd;
                 viewModel.ObjectType = modbusScan.ObjectType;
                 viewModel.Address = modbusScan.Address;
                 viewModel.Length = modbusScan.Length;
                 viewModel.ResponseTimeout = modbusScan.ResponseTimeout;
             }, out var editModbusScan) == true)
             {
+                bool updated = false;
                 lock (modbusScan)
                 {
-                    bool updated = false;
                     if (modbusScan.ObjectType != editModbusScan.ObjectType)
                     {
                         modbusScan.ObjectType = editModbusScan.ObjectType;
@@ -70,6 +76,21 @@ namespace VagaModbusAnalyzer.ViewModels
                     if (modbusScan.SlaveAddress != editModbusScan.SlaveAddress)
                     {
                         modbusScan.SlaveAddress = (byte)editModbusScan.SlaveAddress;
+                        updated = true;
+                    }
+                    if (modbusScan.DetectSlaveAddress != editModbusScan.DetectSlaveAddress)
+                    {
+                        modbusScan.DetectSlaveAddress = editModbusScan.DetectSlaveAddress;
+                        updated = true;
+                    }
+                    if (modbusScan.DetectSlaveAddrStart != editModbusScan.DetectSlaveAddrStart)
+                    {
+                        modbusScan.DetectSlaveAddrStart = (byte)editModbusScan.DetectSlaveAddrStart;
+                        updated = true;
+                    }
+                    if (modbusScan.DetectSlaveAddrEnd != editModbusScan.DetectSlaveAddrEnd)
+                    {
+                        modbusScan.DetectSlaveAddrEnd = (byte)editModbusScan.DetectSlaveAddrEnd;
                         updated = true;
                     }
                     if (modbusScan.Address != editModbusScan.Address)
@@ -86,8 +107,13 @@ namespace VagaModbusAnalyzer.ViewModels
                     modbusScan.ResponseTimeout = editModbusScan.ResponseTimeout;
 
                     if (updated)
-                        modbusScan.OnSettingChanged();
+                    {
+                        modbusScan.CurrentSlaveAddress = null;
+                        modbusScan.Status = null;
+                    }
                 }
+                if (updated)
+                    modbusScan.OnSettingChanged();
             }
         }
 

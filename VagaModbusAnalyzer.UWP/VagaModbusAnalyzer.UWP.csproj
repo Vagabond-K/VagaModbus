@@ -11,7 +11,7 @@
     <AssemblyName>VagaModbusAnalyzer.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17763.0</TargetPlatformVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -24,7 +24,7 @@
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <PackageCertificateThumbprint>6A8E5839B06FD05A5A56D2D710FC8C6511749EF7</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>9F80A1A7CC03D9B22B8669E5C300FA52984E846E</PackageCertificateThumbprint>
     <PackageCertificateKeyFile />
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
   </PropertyGroup>
@@ -239,6 +239,7 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <None Include="VagaModbusAnalyzer.UWP_TemporaryKey.pfx" />
     <PRIResource Include="Strings\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
@@ -306,10 +307,10 @@
       <Version>2.1.190606001</Version>
     </PackageReference>
     <PackageReference Include="VagabondK.Protocols.Channels">
-      <Version>1.0.4</Version>
+      <Version>1.1.21</Version>
     </PackageReference>
     <PackageReference Include="VagabondK.Protocols.Channels.SerialPort">
-      <Version>1.0.6</Version>
+      <Version>1.1.21</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

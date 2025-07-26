@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VagabondK.Protocols.Modbus;
 using VagabondK.Protocols.Modbus.Data;
 
 namespace VagaModbusAnalyzer
@@ -18,12 +19,19 @@ namespace VagaModbusAnalyzer
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var result = serializer.Deserialize<JObject>(reader);
-            return new ModbusEndian((bool)result["InnerBigEndian"], (bool)result["OuterBigEndian"]);
+            var inner = (bool)result["InnerBigEndian"];
+            var outer = (bool)result["OuterBigEndian"];
+            return (inner ? ModbusEndian.InnerBig : ModbusEndian.AllLittle) | (outer ? ModbusEndian.OuterBig : ModbusEndian.AllLittle);
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            jsonSerializer.Serialize(writer, value);
+            var endian = (ModbusEndian)value;
+            jsonSerializer.Serialize(writer, new
+            {
+                InnerBigEndian = endian.HasFlag(ModbusEndian.InnerBig),
+                OuterBigEndian = endian.HasFlag(ModbusEndian.OuterBig),
+            });
         }
     }
 }

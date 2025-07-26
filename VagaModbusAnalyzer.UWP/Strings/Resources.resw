@@ -654,4 +654,7 @@
   <data name="Text_NumOfRegister.Text" xml:space="preserve">
     <value>Number of registers</value>
   </data>
+  <data name="CheckBox_DetectSlaveAddress.Content" xml:space="preserve">
+    <value>Detect Slave Address</value>
+  </data>
 </root>

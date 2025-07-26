@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using VagabondK.Protocols.Modbus;
 using VagabondK.Protocols.Modbus.Data;
 
 namespace VagaModbusAnalyzer
@@ -62,8 +63,8 @@ namespace VagaModbusAnalyzer
         private static readonly ModbusEndian[] allEndians = new ModbusEndian[]
         {
             ModbusEndian.AllBig,
-            new ModbusEndian(false, true),
-            new ModbusEndian(true, false),
+            ModbusEndian.OuterBig,
+            ModbusEndian.InnerBig,
             ModbusEndian.AllLittle
         };
 
@@ -107,8 +108,8 @@ namespace VagaModbusAnalyzer
                             bytes = BitConverter.IsLittleEndian ? bytes.Take(byteLength).ToArray() : bytes.Skip(8 - byteLength).ToArray();
 
                             if (IsFirstByte && ByteLength >= 4 && ByteLength % 2 == 0)
-                                bytes = ModbusEndian.Sort(bytes);
-                            else if (ModbusEndian.OuterBigEndian == BitConverter.IsLittleEndian)
+                                bytes = ModbusEndian.Sort(bytes, true);
+                            else if (ModbusEndian.HasFlag(ModbusEndian.OuterBig) == BitConverter.IsLittleEndian)
                                 bytes = bytes.Reverse().ToArray();
 
                             return bytes;

@@ -40,6 +40,7 @@
         <converters:ObjectEqualsToVisibilityConverter x:Key="ObjectNotEqualsToVisibilityConverter" Inverse="True"/>
         <converters:IsTypeToVisibilityConverter x:Key="IsTypeToVisibilityConverter"/>
         <converters:HexConverter x:Key="HexConverter"/>
+        <converters:EnumComboBoxConverter x:Key="EnumComboBoxConverter"/>
         <converters:ModbusExceptionToDetailMessageConverter x:Key="ModbusExceptionToDetailMessageConverter"/>
         <converters:ChannelLogToMessageConverter x:Key="ChannelLogToMessageConverter"/>
         

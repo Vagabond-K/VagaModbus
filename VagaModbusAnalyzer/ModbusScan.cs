@@ -12,14 +12,20 @@ namespace VagaModbusAnalyzer
         public ModbusObjectType ObjectType { get => Get(ModbusObjectType.InputRegister); set => Set(value); }
 
         public byte SlaveAddress { get => Get((byte)1); set => Set(value); }
+        public bool DetectSlaveAddress { get => Get(false); set => Set(value); }
+        public byte DetectSlaveAddrStart { get => Get((byte)0); set => Set(value); }
+        public byte DetectSlaveAddrEnd { get => Get((byte)255); set => Set(value); }
         public ushort Address { get => Get((ushort)0); set => Set(value); }
         public ushort Length { get => Get((ushort)1); set => Set(value); }
-        public int ResponseTimeout { get => Get(5000); set => Set(value); }
+        public int ResponseTimeout { get => Get(1000); set => Set(value); }
 
         public bool RunScan { get => Get(true); set => Set(value); }
 
         [JsonIgnore]
         public ModbusRequest Request { get => Get(() => { return new ModbusReadRequest(SlaveAddress, ObjectType, Address, Length); }); }
+
+        [JsonIgnore]
+        public byte? CurrentSlaveAddress { get => Get<byte?>(); set => Set(value); }
 
         [JsonIgnore]
         public IEnumerable Data { get => Get(() => { return CreateAddressItems(); }); private set => Set(value); }

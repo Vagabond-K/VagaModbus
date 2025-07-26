@@ -654,4 +654,7 @@
   <data name="Text_NumOfRegister.Text" xml:space="preserve">
     <value>Register 개수</value>
   </data>
+  <data name="CheckBox_DetectSlaveAddress.Content" xml:space="preserve">
+    <value>슬레이브 어드레스 찾기</value>
+  </data>
 </root>

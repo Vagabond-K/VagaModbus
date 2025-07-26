@@ -57,11 +57,27 @@
                 <converters:EnumComboBoxItem Text="Holding Register" Value="{local:ToByte Value=3}"/>
                 <converters:EnumComboBoxItem Text="Coil" Value="{local:ToByte Value=1}"/>
             </ComboBox>
-            <controls:NumericBox Value="{Binding SlaveAddress, Mode=TwoWay}" ValueType="Byte" MinValue="0" MaxValue="255">
+            <controls:NumericBox Value="{Binding SlaveAddress, Mode=TwoWay}" IsEnabled="{Binding IsChecked, ElementName=DetectSlaveAddress, Converter={converters:NegationConverter}}" ValueType="Byte" MinValue="0" MaxValue="255">
                 <TextBox.Header>
                     <TextBlock x:Uid="Text_SlaveAddress"/>
                 </TextBox.Header>
             </controls:NumericBox>
+
+            <Grid Margin="3,0,3,6">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <CheckBox x:Uid="CheckBox_DetectSlaveAddress" x:Name="DetectSlaveAddress" Grid.ColumnSpan="3" IsChecked="{Binding DetectSlaveAddress, Mode=TwoWay}" Margin="3,0"/>
+                <controls:NumericBox Grid.Row="1" Value="{Binding DetectSlaveAddrStart, Mode=TwoWay}" IsEnabled="{Binding IsChecked, ElementName=DetectSlaveAddress}" ValueType="Byte" MinValue="0" MaxValue="255" Margin="3,0"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="~" VerticalAlignment="Center"/>
+                <controls:NumericBox Grid.Row="1" Grid.Column="2" Value="{Binding DetectSlaveAddrEnd, Mode=TwoWay}" IsEnabled="{Binding IsChecked, ElementName=DetectSlaveAddress}" ValueType="Byte" MinValue="0" MaxValue="255" Margin="3,0"/>
+            </Grid>
             <controls:NumericBox Value="{Binding Address, Mode=TwoWay}" ValueType="UInt16" MinValue="0" MaxValue="65535">
                 <TextBox.Header>
                     <TextBlock x:Uid="Text_DataAddress"/>

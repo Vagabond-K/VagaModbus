@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VagabondK.Protocols.Modbus;
 using VagabondK.Protocols.Modbus.Data;
 
 namespace VagaModbusAnalyzer.Data

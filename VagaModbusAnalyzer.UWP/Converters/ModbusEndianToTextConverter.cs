@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VagabondK.Protocols.Modbus;
 using VagabondK.Protocols.Modbus.Data;
 using VagaModbusAnalyzer.Infrastructures;
 using Windows.UI.Xaml.Data;
@@ -16,14 +17,14 @@ namespace VagaModbusAnalyzer.Converters
         {
             if (value is ModbusEndian modbusEndian)
             {
-                if (modbusEndian.OuterBigEndian)
+                if (modbusEndian.HasFlag(ModbusEndian.OuterBig))
                 {
-                    if (modbusEndian.InnerBigEndian) return StringLocalizer.GetString("Text_Big_endian/Text") + " (ABCD)";
+                    if (modbusEndian.HasFlag(ModbusEndian.InnerBig)) return StringLocalizer.GetString("Text_Big_endian/Text") + " (ABCD)";
                     else return StringLocalizer.GetString("Text_Mixed_endian/Text") + " (BADC)";
                 }
                 else
                 {
-                    if (modbusEndian.InnerBigEndian) return StringLocalizer.GetString("Text_Mixed_endian/Text") + " (CDAB)";
+                    if (modbusEndian.HasFlag(ModbusEndian.InnerBig)) return StringLocalizer.GetString("Text_Mixed_endian/Text") + " (CDAB)";
                     else return StringLocalizer.GetString("Text_Little_endian/Text") + " (DCBA)";
                 }
             }

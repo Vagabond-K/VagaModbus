@@ -1,10 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Xaml;
 
 namespace VagaModbusAnalyzer.Infrastructures
 {
@@ -20,7 +15,7 @@ namespace VagaModbusAnalyzer.Infrastructures
 
         public void Invoke(Action callback)
         {
-            mainViewModel?.MainPage?.Dispatcher?.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => callback?.Invoke());
+            mainViewModel?.MainPage?.Dispatcher?.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => callback?.Invoke());//?.AsTask()?.Wait();
         }
     }
 }
