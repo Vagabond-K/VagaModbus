@@ -13,6 +13,8 @@ Modbus RTU, Modbus TCP, Modbus ASCII 등의 프로토콜 버전을 지원하며,
 
 마지막으로, 통신 중에 발생한 요청/응답 메시지를 기록하여 조회할 수 있는 로깅 기능을 제공하고 있습니다.  
 
+프로그램의 모든 기능은 무료로 사용 가능합니다. 필요하신 분들께 도움이 되길 희망합니다.  
+
 ## 업데이트 내용 및 사용법
 - [v1.0](https://blog.naver.com/vagabond-k/222488169575): 통신 채널 관리 및 데이터 읽기, 로깅 기능 제공
 - [v1.1](https://blog.naver.com/vagabond-k/222619234580): Holding Register 및 Coil 쓰기 기능 제공
