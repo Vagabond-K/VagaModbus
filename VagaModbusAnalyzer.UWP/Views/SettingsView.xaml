@@ -114,8 +114,10 @@
                             </StackPanel.Resources>
                             <HyperlinkButton Content="Website" NavigateUri="https://www.vagabond-k.com"/>
                             <HyperlinkButton Content="GitHub" NavigateUri="https://github.com/Vagabond-K"/>
+                            <HyperlinkButton Content="NuGet" NavigateUri="https://www.nuget.org/profiles/Vagabond-K"/>
                             <HyperlinkButton Content="LinkedIn" NavigateUri="https://www.linkedin.com/in/vagabond-k"/>
                             <HyperlinkButton Content="Blog" NavigateUri="https://blog.naver.com/vagabond-k"/>
+                            <HyperlinkButton Content=".NET Dev" NavigateUri="https://forum.dotnetdev.kr/u/vagabond-k/summary"/>
                             <HyperlinkButton Content="YouTube" NavigateUri="https://www.youtube.com/c/VagabondK"/>
                         </StackPanel>
                     </StackPanel>

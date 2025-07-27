@@ -95,7 +95,7 @@
                     <Run Text="{Binding PortName, TargetNullValue=None}"/><Run Text="," Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
                     <Run Text="{Binding BaudRate}"/><Run Text="bps," Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
                     <Run Text="{Binding DataBits}"/><Run Text="bit," Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
-                    <Run Text="{Binding StopBitCount, Converter={StaticResource SerialStopBitCountToStringConverter}}"/><Run Text="bit" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                    <Run Text="{Binding StopBits, Converter={StaticResource SerialStopBitCountToStringConverter}}"/><Run Text="bit" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
                 </TextBlock>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock>
